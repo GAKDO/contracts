@@ -1,0 +1,37 @@
+# TRACE 코드 값의 원본. 서버는 DB CHECK 제약으로, 화면·에이전트·부스는 이 파일로 같은 값을 쓴다.
+# 값을 더하면 각 서버의 마이그레이션(CHECK 제약)도 함께 고친다. (GAKDO/docs db/V1__init.sql 기준, 2026-10-31)
+version: 0.1.0
+
+rental:
+  status: [OPEN, RETURNED, CLOSED]
+  checkpoint_type: [OUT, RCV, RET]          # 출고·수령·반납
+  checkpoint_status: [OPEN, CAPTURED, GRADED, SEALED]
+device:
+  os: [MACOS, WINDOWS]
+  status: [ACTIVE, MAINTENANCE, RETIRED]    # FR-RNT-05
+  form_factor: [CLAMSHELL]
+capture:
+  source: [BOOTH, PHONE]
+  set_status: [UPLOADING, UPLOADED, INSPECTED, GRADED]
+  quality: [OK, UNJUDGEABLE]
+  face: [TOP, BOT, SF, SB, SL, SR, KB, SCR0, SCR1]   # 9면
+  light: [L1, L2, L3, ROOM, OFF]
+  camera: [CAM, PHONE]
+inspection:
+  alignment_method: [CONTOUR, LIGHTGLUE]
+  defect_class: [scratch, dent, crack, stain]       # 긁힘·찍힘·균열·오염
+  defect_source: [AUTO, HUMAN]
+  match_status: [NEW, EXISTING]
+  grade: [A, B, C, D]
+diagnostics:
+  component_kind: [CPU, RAM, SSD, BATTERY, DISPLAY, OTHER]
+  capacity_unit: [mAh, mWh]
+  benchmark_metric: [CPU_SINGLE, CPU_MULTI, MEM_COPY, DISK_READ, DISK_WRITE]
+  flag_kind: [COMPONENT_CHANGED, CAPACITY_DROP, BENCH_DROP]
+ml:
+  split: [TRAIN, VAL, TEST]
+auth:
+  role: [ADMIN, CUSTOMER]
+  account_status: [PENDING, ACTIVE, WITHDRAWN]
+  email_token_purpose: [VERIFY, RESET]
+  client_kind: [BOOTH]
