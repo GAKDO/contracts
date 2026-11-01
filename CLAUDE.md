@@ -30,6 +30,18 @@ TRACE의 OpenAPI·진단 JSON Schema·이벤트 스키마·codes.yaml 레포입�
 OpenAPI 3.1 YAML(openapi/<서버>.yaml), JSON Schema 2020-12(diagnostics/, events/), 예시는 examples/에. 검사는 CI '계약 검사'와 같은 yamllint·check-jsonschema·redocly lint. codes.yaml 값을 enum으로 참조하고 복사하지 않는다.
 ```
 
+## 팀 운영 (모든 세션)
+
+- **세션을 시작하면 먼저 `/trace-standup start`, 끝내기 전에 `/trace-standup end`.** 보드와 어제·오늘 기록을 읽고, 오늘 할 일·한 일·남은 것·막힌 것을 GAKDO/docs `team/`에 적는다.
+- 세션에 이 레포와 함께 **GAKDO/docs를 연결**하면 바로 읽고 쓸 수 있다.
+- 남은 작업은 `team/board.md`, 코드 컨벤션 전체는 `team/conventions.md`. 아래는 이 레포에 해당하는 요약이다.
+
+## 코드 컨벤션 요약
+
+- YAML·JSON은 2칸 들여쓰기, 키는 camelCase(쿠버네티스 매니페스트는 쿠버네티스 규칙).
+- 코드 값은 `codes.yaml`만 참조하고 복사하지 않음.
+- 커밋 `<종류>(<범위>): <내용>`, PR 하나 = 백로그 기능 하나(코드 400줄 넘으면 나눔), PR 본문에 백로그 ID·요구사항 ID·테스트 방법.
+
 ## 꼭 지킬 것
 
 - 계약(API·이벤트·진단 JSON·코드 값)을 바꿔야 하면 코드를 고치지 말고 멈추고 사람에게 알린다.
