@@ -25,6 +25,15 @@
       "sha256": "5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
     }
   ],
+  "device": {
+    "modelCode": "MBA13-M2",
+    "dimensions": {
+      "widthMm": 304.1,
+      "depthMm": 215.0,
+      "baseHMm": 7.0,
+      "lidHMm": 4.0
+    }
+  },
   "skippedFaces": {
     "SCR1": "화면이 켜지지 않음"
   }

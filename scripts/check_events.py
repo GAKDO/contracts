@@ -63,6 +63,9 @@ def bad_cases(key: str) -> list[tuple[str, Callable[[dict], None]]]:
             ("없는 면 코드", lambda e: e["photos"][0].update(face="XX")),
             ("sha256 대문자", lambda e: e["photos"][0].update(sha256=e["photos"][0]["sha256"].upper())),
             ("사진 0장", lambda e: e.update(photos=[])),
+            ("기종 치수 0", lambda e: e["device"]["dimensions"].update(widthMm=0)),
+            ("기종 치수 빠짐", lambda e: e["device"].pop("dimensions")),
+            ("기종 코드 소문자", lambda e: e["device"].update(modelCode="mba13-m2")),
         ]
     if key == "trace.inspect.completed":
         cases += [
