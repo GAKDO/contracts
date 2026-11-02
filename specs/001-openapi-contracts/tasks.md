@@ -97,7 +97,7 @@ description: "C1 OpenAPI 5개 작업 목록"
 - [x] T029 [P] `openapi/README.md` 갱신: 파일 목록, 공통 규칙, 생성 파일, 검사 명령, `x-trace-access`·`x-trace-error-codes` 뜻
 - [x] T030 [P] `CHANGELOG.md`에 0.3.0(codes.yaml)·OpenAPI 0.1.0 항목
 - [x] T031 quickstart.md의 검사 전부 실행, `scripts/check-no-secrets.sh` 통과
-- [ ] T032 PR 본문: 백로그 C1, 요구사항(FR 전체 API), 원본과 다른 점 4가지, 브랜치 이름 사유, B·C 확인표, 검사 결과. PR을 연 뒤 B·C에게 리뷰 요청(SC-004)
+- [x] T032 PR 본문: 백로그 C1, 요구사항(FR 전체 API), 원본과 다른 점 4가지, 브랜치 이름 사유, B·C 확인표, 검사 결과. PR을 연 뒤 B·C에게 리뷰 요청(SC-004)
 
 ---
 
