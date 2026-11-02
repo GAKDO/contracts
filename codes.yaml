@@ -1,8 +1,9 @@
 # TRACE 코드 값의 원본. 서버는 DB CHECK 제약으로, 화면·에이전트·부스는 이 파일로 같은 값을 쓴다.
 # 값을 더하면 각 서버의 마이그레이션(CHECK 제약)도 함께 고친다. (GAKDO/docs db/V1__init.sql 기준, 2026-10-31)
 # 0.3.0(2026-11-02): capture.face_required, auth.token_role, report.chain_status·progress_stage, error_code 추가 (C1).
+# 0.4.0(2026-11-02): diagnostics에 진단 JSON 값(battery_status·storage_status·skipped_reason·storage_protocol·battery_condition·thermal_state) 추가 (C2).
 #   OpenAPI용 enum은 scripts/gen_openapi_codes.py로 만든다. 값은 문자열이어야 한다(OFF·ON·YES·NO는 따옴표).
-version: 0.3.0
+version: 0.4.0
 
 rental:
   status: [OPEN, RETURNED, CLOSED]
@@ -34,6 +35,13 @@ diagnostics:
   capacity_unit: [mAh, mWh]
   benchmark_metric: [CPU_SINGLE, CPU_MULTI, MEM_COPY, DISK_READ, DISK_WRITE]
   flag_kind: [COMPONENT_CHANGED, CAPACITY_DROP, BENCH_DROP]
+  # 아래는 진단 JSON(diagnostics/result.schema.json)이 쓰는 값 (C2)
+  battery_status: [OK, SKIPPED, NO_BATTERY]          # 배터리 읽기 결과. NO_BATTERY = 배터리 없는 기기
+  storage_status: [OK, SKIPPED]                      # SSD 읽기 결과
+  skipped_reason: [NO_PERMISSION, UNSUPPORTED, TOOL_ERROR, NO_AC_POWER]   # 생략 사유. NO_AC_POWER는 벤치마크만
+  storage_protocol: [NVME, ATA]
+  battery_condition: [NORMAL, SERVICE_RECOMMENDED]   # OS 판정. macOS "Good"(·"Normal") → NORMAL, 그 밖 → SERVICE_RECOMMENDED
+  thermal_state: [NOMINAL, FAIR, SERIOUS, CRITICAL]  # macOS ProcessInfo.thermalState, Windows는 null
 ml:
   split: [TRAIN, VAL, TEST]
 report:

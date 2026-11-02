@@ -13,6 +13,7 @@ main에 버전이 적힌 CHANGELOG가 올라가면 release.yml이 태그와 GitH
 
 ### 추가
 - 이벤트 스키마 5종(`events/trace.*.schema.json`)과 봉투 `events/envelope.schema.json`, 예시 `examples/events/`, codes.yaml → JSON Schema `$defs` 생성본 `schemas/codes.gen.schema.json`과 이벤트 계약 검사 스크립트 (C3)
+- 진단 결과 JSON Schema v1 `diagnostics/result.schema.json`(`diag.v1`), 예시 7개와 예시 검사, codes.yaml 0.4.0 진단 값 6종, diagnostics-server 업로드 본문을 이 스키마 `$ref`로 (C2)
 - 서버별 OpenAPI 3.1 계약 5개(auth·rental·capture·diagnostics·report, 경로 46개)와 공통 형식 `openapi/components/common.yaml` (C1)
 - codes.yaml 0.3.0: `error_code`(오류 code 34개), `auth.token_role`, `report.chain_status`, `report.progress_stage` (C1)
 - codes.yaml → OpenAPI enum 생성 스크립트와 CI 일치 검사, rest-api-v0 경로 대조 스크립트 (C1)

@@ -1,11 +1,11 @@
 openapi: 3.1.0
 info:
   title: TRACE diagnostics-server
-  version: 0.1.0
+  version: 0.2.0
   description: |
     진단 JSON 업로드와 시점별 진단 요약·이전 시점 비교·점검 플래그. 원본은 GAKDO/docs design/rest-api-v0.md "diagnostics-server" 표.
 
-    - 업로드 본문의 상세 형식은 C2(진단 결과 JSON Schema)가 정한다. C2가 머지되면 `DiagnosticUpload`를 그 스키마의 `$ref`로 바꾼다(더하는 변경).
+    - 업로드 본문은 C2 진단 결과 JSON Schema(`diagnostics/result.schema.json`, `schemaVersion: diag.v1`)를 그대로 참조한다.
     - 읽지 못한 값은 0이 아니라 null이고, 생략 사유를 함께 둔다(헌법 III).
     - 오류는 모두 `application/problem+json`(Problem, `code`는 codes.yaml `error_code`).
 servers:
@@ -65,11 +65,74 @@ paths:
             schema:
               $ref: '#/components/schemas/DiagnosticUpload'
             example:
-              schemaVersion: '1'
-              deviceSerial: C02EXAMPLE01
-              os: MACOS
+              schemaVersion: diag.v1
               agentVersion: 0.1.0
-              consentedAt: '2026-11-12T09:02:00+09:00'
+              collectedAt: '2026-11-06T14:03:22+09:00'
+              consentedAt: '2026-11-06T14:04:10+09:00'
+              os: {type: MACOS, version: '15.1', arch: arm64}
+              device: {serial: C02TEST00001, manufacturer: Apple, model: 'Mac14,2', modelName: 'MacBook Air (M2, 2022)'}
+              conditions: {acPower: true, batteryPercent: 92, thermalState: NOMINAL, processCount: 312, uptimeSec: 5400}
+              components:
+                - kind: CPU
+                  identifier: Apple M2
+                  detail: {cores: 8}
+                - kind: RAM
+                  identifier: 8 GB
+                  detail: {totalBytes: 8589934592}
+                - kind: SSD
+                  identifier: APPLE SSD AP0256Z
+                  detail: {serial: SSDTEST01, capacityBytes: 251000193024}
+                - kind: BATTERY
+                  identifier: bq40z651
+                  detail: {serial: BATTEST01}
+                - kind: DISPLAY
+                  identifier: Built-in Liquid Retina
+                  detail: {resolution: 2560x1664}
+              battery:
+                status: OK
+                skippedReason: null
+                cycleCount: 214
+                designCapacity: {value: 4382, unit: mAh}
+                fullChargeCapacity: {value: 3901, unit: mAh}
+                osMaxCapacityPercent: 89
+                osCondition: NORMAL
+              storage:
+                status: OK
+                skippedReason: null
+                protocol: NVME
+                percentageUsed: 3
+                availableSpare: 100
+                criticalWarning: 0
+                mediaErrors: 0
+                powerOnHours: 812
+              benchmarks:
+                - metric: CPU_SINGLE
+                  unit: ops/s
+                  trials: [1021.3, 1018.9, 1025.0]
+                  median: 1021.3
+                - metric: CPU_MULTI
+                  unit: ops/s
+                  trials: [6120.4, 6088.1, 6131.7]
+                  median: 6120.4
+                - metric: MEM_COPY
+                  unit: MB/s
+                  trials: [41200, 40950, 41380]
+                  median: 41200
+                - metric: DISK_READ
+                  unit: MB/s
+                  trials: [2810, 2795, 2830]
+                  median: 2810
+                - metric: DISK_WRITE
+                  unit: MB/s
+                  trials: [2105, 2090, 2118]
+                  median: 2105
+              benchmarkSkippedReason: null
+              sources:
+                - system_profiler SPHardwareDataType -json
+                - system_profiler SPPowerDataType -json
+                - ioreg -r -c AppleSmartBattery
+                - smartctl -j -a disk0
+                - trace-bench 0.1.0
       responses:
         '201':
           description: 저장됨
@@ -213,25 +276,8 @@ components:
       $ref: './components/common.yaml#/components/securitySchemes/bearerJwt'
   schemas:
     DiagnosticUpload:
-      type: object
-      description: |
-        진단 결과 JSON(C2 `diagnostics/` 스키마). C1에서는 공통 머리 필드만 적고 나머지는 C2 스키마가 정한다.
-        컴퓨터 이름·사용자 이름은 보내기 전에 지운다(헌법 V).
-      required: [schemaVersion, deviceSerial, os, agentVersion, consentedAt]
-      properties:
-        schemaVersion:
-          type: string
-        deviceSerial:
-          type: string
-          maxLength: 64
-        os:
-          $ref: './components/codes.gen.yaml#/components/schemas/DeviceOs'
-        agentVersion:
-          type: string
-          maxLength: 32
-        consentedAt:
-          $ref: './components/common.yaml#/components/schemas/DateTime'
-      additionalProperties: true
+      # 진단 결과 JSON v1(C2). 원본은 diagnostics/result.schema.json, 예시는 examples/diagnostics/
+      $ref: '../diagnostics/result.schema.json'
     InspectionFlag:
       type: object
       required: [kind, baseRunId, detail]
