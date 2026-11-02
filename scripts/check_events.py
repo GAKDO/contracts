@@ -30,6 +30,7 @@ DESIGN_TABLE: dict[str, tuple[str, set[str]]] = {
     "trace.checkpoint.graded": ("capture-server", {"trace.report.updates"}),
     "trace.diagnostics.recorded": ("diagnostics-server", {"trace.report.updates"}),
     "trace.record.sealed": ("report-server", {"trace.auth.receipts"}),
+    "trace.checkpoint.started": ("rental-server", {"trace.report.updates"}),
 }
 ENVELOPE = ["schemaVersion", "eventId", "occurredAt", "rentalId", "checkpointId"]
 
@@ -75,8 +76,23 @@ def bad_cases(key: str) -> list[tuple[str, Callable[[dict], None]]]:
         ]
     if key == "trace.checkpoint.graded":
         cases += [("없는 등급", lambda e: e.update(grade="E")), ("없는 시점", lambda e: e.update(checkpointType="OUTBOUND"))]
+    if key == "trace.checkpoint.graded":
+        cases += [
+            ("핀의 없는 면", lambda e: e["pins"][0].update(face="XX")),
+            ("핀 isNew 빠짐", lambda e: e["pins"][0].pop("isNew")),
+            ("핀 좌표 음수", lambda e: e["pins"][0].update(x=-1)),
+        ]
     if key == "trace.diagnostics.recorded":
-        cases += [("없는 플래그 종류", lambda e: e["flags"][0].update(kind="SLOW"))]
+        cases += [
+            ("없는 플래그 종류", lambda e: e["flags"][0].update(kind="SLOW")),
+            ("maxCapacityPct 문자열", lambda e: e.update(maxCapacityPct="84%")),
+        ]
+    if key == "trace.checkpoint.started":
+        cases += [
+            ("없는 시점", lambda e: e.update(checkpointType="OUTBOUND")),
+            ("기종 이름 빔", lambda e: e.update(modelName="")),
+            ("시리얼 빠짐", lambda e: e.pop("serial")),
+        ]
     if key == "trace.record.sealed":
         cases += [
             ("seq 1인데 prevHash 있음", lambda e: e.update(seq=1)),

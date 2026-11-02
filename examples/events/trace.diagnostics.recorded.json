@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.0",
+  "schemaVersion": "1.1",
   "eventId": "GwDyVZSKOPiNusw9FbqMY",
   "occurredAt": "2026-11-09T14:10:30+09:00",
   "rentalId": "Ws0HLv6QRbDILPWOcz5I2",
@@ -10,7 +10,11 @@
   "flags": [
     {
       "kind": "CAPACITY_DROP",
-      "detail": {"baseMaxCapacityPct": 91.2, "maxCapacityPct": 84.5}
+      "detail": {
+        "baseMaxCapacityPct": 91.2,
+        "maxCapacityPct": 84.5
+      }
     }
-  ]
+  ],
+  "maxCapacityPct": 84.5
 }

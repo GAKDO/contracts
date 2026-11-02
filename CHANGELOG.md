@@ -25,6 +25,7 @@ main에 버전이 적힌 CHANGELOG가 올라가면 release.yml이 태그와 GitH
 - 조명 코드에 L4(앞 스침광, 키보드 촬영) 추가, 부스 카메라 코드 CAM을 CAM1(앞 반)·CAM2(뒤 반)로 나눔 (11/1 부스 설계)
 
 ### 추가
+- 이벤트 1.1(선택 필드, 깨지지 않음): `trace.checkpoint.graded.pins`(흠집 핀 face·x·y·isNew), `trace.diagnostics.recorded.maxCapacityPct`, 새 이벤트 `trace.checkpoint.started`(rental-server, 기종 코드·이름·시리얼). 리포트의 핀·기종·배터리 칸을 채우려고 (11/2 민서 결정, RP1 후속)
 - 기종·치수 `device`{modelCode, dimensions}: `POST /captures/sets` 요청(선택)과 이벤트 `trace.capture.uploaded`(선택). 시연 기종이 여럿(맥북·그램·델)이라 inspect-worker가 기종마다 표준 좌표 크기를 정함. 빼면 worker 기본 기종. 1.0.0 고정 전 추가라 이벤트 schemaVersion은 1.0 그대로 (11/2 민서 결정, 추가만)
 - report-server 관리자 수동 봉인(시연 우회로) `POST /api/v1/reports/rentals/{rentalId}/checkpoints/{checkpointId}/seal`과 사용 기록 `GET /api/v1/reports/manual-seals`, codes.yaml 0.7.0 `RECORD_ALREADY_SEALED` (11/2 결정, RP1)
 - `POST /captures/sets/{setId}/uploads`: 아직 안 올라간 사진의 업로드 URL 다시 받기 (11/2 결정)

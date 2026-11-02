@@ -79,6 +79,43 @@
           }
         }
       }
+    },
+    "pins": {
+      "type": "array",
+      "maxItems": 500,
+      "description": "1.1 추가(선택). 이 시점 흠집의 3D 핀 위치. 표준 좌표 px(capture/faces.md, 1 px = 0.25 mm) 중심점과 신규 여부. 판정 불가 면의 흠집은 넣지 않는다. 없으면 report-server는 빈 배열로 본다",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "defectId",
+          "face",
+          "x",
+          "y",
+          "isNew"
+        ],
+        "properties": {
+          "defectId": {
+            "$ref": "envelope.schema.json#/$defs/PublicId"
+          },
+          "face": {
+            "$ref": "../schemas/codes.gen.schema.json#/$defs/CaptureFace"
+          },
+          "x": {
+            "type": "number",
+            "minimum": 0,
+            "description": "표준 좌표 px, 흠집 중심"
+          },
+          "y": {
+            "type": "number",
+            "minimum": 0
+          },
+          "isNew": {
+            "type": "boolean",
+            "description": "newDefectIds에 있으면 true"
+          }
+        }
+      }
     }
   },
   "unevaluatedProperties": false
