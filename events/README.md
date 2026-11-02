@@ -1,6 +1,6 @@
 # 이벤트
 
-RabbitMQ topic exchange `trace.events`로 오가는 이벤트 5종의 JSON Schema(2020-12)를 둔다. 원본 표는 GAKDO/docs `design/mvp-design.md`의 "이벤트 계약"이다.
+RabbitMQ topic exchange `trace.events`로 오가는 이벤트 6종의 JSON Schema(2020-12)를 둔다. 원본 표는 GAKDO/docs `design/mvp-design.md`의 "이벤트 계약"이다.
 
 | 라우팅 키 | 스키마 | 발행 | 소비 (큐) | 예시 |
 | --- | --- | --- | --- | --- |
@@ -8,6 +8,7 @@ RabbitMQ topic exchange `trace.events`로 오가는 이벤트 5종의 JSON Schem
 | `trace.inspect.completed` | [trace.inspect.completed.schema.json](trace.inspect.completed.schema.json) | inspect-worker | capture-server (`trace.capture.inspected`) | [예시](../examples/events/trace.inspect.completed.json) |
 | `trace.checkpoint.graded` | [trace.checkpoint.graded.schema.json](trace.checkpoint.graded.schema.json) | capture-server | report-server (`trace.report.updates`) | [예시](../examples/events/trace.checkpoint.graded.json) |
 | `trace.diagnostics.recorded` | [trace.diagnostics.recorded.schema.json](trace.diagnostics.recorded.schema.json) | diagnostics-server | report-server (`trace.report.updates`) | [예시](../examples/events/trace.diagnostics.recorded.json) |
+| `trace.checkpoint.started` | [trace.checkpoint.started.schema.json](trace.checkpoint.started.schema.json) | rental-server | report-server (`trace.report.updates`) | [예시](../examples/events/trace.checkpoint.started.json) |
 | `trace.record.sealed` | [trace.record.sealed.schema.json](trace.record.sealed.schema.json) | report-server | auth-server 영수증 메일 (`trace.auth.receipts`), web(SSE, report-server가 전달), 검색 색인(선택) | [예시](../examples/events/trace.record.sealed.json) |
 
 ## 공통 규칙
@@ -28,6 +29,12 @@ RabbitMQ topic exchange `trace.events`로 오가는 이벤트 5종의 JSON Schem
 - `trace.inspect.completed`: `alignments[].method`·`rectifiedKey`, `defects[].defectId`·`lengthMm`·`areaMm2`, `failedPhotos`
 - `trace.checkpoint.graded`: `captureSetId`, `checkpointType`, `photos[]{photoId, sha256}`(report-server가 해시 체인에 넣을 사진 해시)
 - `trace.diagnostics.recorded`: `baseRunId`(비교 기준, 첫 진단은 null)
+
+## 1.1에서 더한 것 (11/2 민서 결정, 선택 필드라 1.0 소비자는 그대로 동작)
+
+- `trace.checkpoint.graded.pins[]`{defectId, face, x, y, isNew}: 리포트 3D 핀(표준 좌표 px 중심)
+- `trace.diagnostics.recorded.maxCapacityPct`: 리포트 배터리 최대 용량(%)
+- 새 이벤트 `trace.checkpoint.started`(rental-server → report-server): 시점 시작 때 기종 코드·이름·시리얼. 리포트·검증 화면의 기종 이름
 
 ## 검사
 

@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/GAKDO/contracts/main/events/trace.checkpoint.started.schema.json",
+  "title": "시점 시작",
+  "description": "rental-server가 렌탈의 시점(출고·수령·반납)을 시작할 때 발행한다. report-server가 리포트·검증 화면의 기종과 시점 종류를 REST 없이 알게 한다. (FR-RPT-03, FR-INT-02, 1.1 추가)",
+  "x-routing-key": "trace.checkpoint.started",
+  "x-publisher": "rental-server",
+  "x-consumers": [
+    {
+      "service": "report-server",
+      "queue": "trace.report.updates"
+    }
+  ],
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "envelope.schema.json#/$defs/Envelope"
+    }
+  ],
+  "required": [
+    "checkpointType",
+    "deviceId",
+    "serial",
+    "modelCode",
+    "modelName"
+  ],
+  "properties": {
+    "checkpointType": {
+      "$ref": "../schemas/codes.gen.schema.json#/$defs/RentalCheckpointType"
+    },
+    "deviceId": {
+      "$ref": "envelope.schema.json#/$defs/PublicId"
+    },
+    "serial": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "description": "기기 시리얼(관리자 화면용, 공개 검증에는 내보내지 않음)"
+    },
+    "modelCode": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 32,
+      "description": "rental-server 기종 코드(예: MBA13-M2)"
+    },
+    "modelName": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "description": "사람이 읽는 기종 이름"
+    }
+  },
+  "unevaluatedProperties": false
+}

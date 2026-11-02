@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "1.0",
+  "schemaVersion": "1.1",
   "eventId": "YiVEm0HBig7kDTuyuXFsY",
   "occurredAt": "2026-11-09T14:08:02+09:00",
   "rentalId": "Ws0HLv6QRbDILPWOcz5I2",
@@ -8,10 +8,37 @@
   "checkpointType": "RCV",
   "grade": "B",
   "ruleVersion": "grade-rule-1.0",
-  "newDefectIds": ["fBSvifsp4FWaM07ql1SET"],
-  "unjudgeableFaces": ["KB", "SCR1"],
+  "newDefectIds": [
+    "fBSvifsp4FWaM07ql1SET"
+  ],
+  "unjudgeableFaces": [
+    "KB",
+    "SCR1"
+  ],
   "photos": [
-    {"photoId": "aAXQFO2Vz6ZTFbPctC2dq", "sha256": "3a7bd3e2360a3d29eea436fcfb7e44c735d117c42d1c1835420b6b9942dd4f1b"},
-    {"photoId": "MR9xaeQrOBS8Jx4XqyKzi", "sha256": "5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"}
+    {
+      "photoId": "aAXQFO2Vz6ZTFbPctC2dq",
+      "sha256": "3a7bd3e2360a3d29eea436fcfb7e44c735d117c42d1c1835420b6b9942dd4f1b"
+    },
+    {
+      "photoId": "MR9xaeQrOBS8Jx4XqyKzi",
+      "sha256": "5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+    }
+  ],
+  "pins": [
+    {
+      "defectId": "fBSvifsp4FWaM07ql1SET",
+      "face": "TOP",
+      "x": 812.5,
+      "y": 433.0,
+      "isNew": true
+    },
+    {
+      "defectId": "q3GzSm2YF0rTnVxk8LbWe",
+      "face": "SL",
+      "x": 120.0,
+      "y": 40.5,
+      "isNew": false
+    }
   ]
 }
