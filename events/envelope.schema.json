@@ -14,7 +14,7 @@
           "description": "이벤트 ID. 같은 eventId가 두 번 와도 결과가 같아야 한다(멱등)."
         },
         "occurredAt": { "$ref": "#/$defs/DateTime", "description": "발행하는 쪽에서 일이 끝난 시각" },
-        "rentalId": { "$ref": "#/$defs/Uuid", "description": "rental-server의 렌탈 ID(값으로만 든다)" },
+        "rentalId": { "$ref": "#/$defs/Uuid", "description": "rental-server의 렌탈 ID(값으로만 든다). capture-server는 세트 생성 요청의 rentalId, diagnostics-server는 AGENT JWT의 rentalId 클레임에서 얻는다" },
         "checkpointId": { "$ref": "#/$defs/Uuid", "description": "rental-server의 시점 ID(값으로만 든다)" }
       }
     },

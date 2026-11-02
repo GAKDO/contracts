@@ -44,7 +44,7 @@ paths:
       operationId: uploadDiagnosticRun
       summary: 진단 JSON 업로드
       description: |
-        진단 에이전트가 사용자 동의 뒤 진단 JSON을 올린다. checkpointId는 본문이 아니라 AGENT 토큰의 scope에서 읽는다.
+        진단 에이전트가 사용자 동의 뒤 진단 JSON을 올린다. checkpointId는 본문이 아니라 AGENT 토큰의 scope에서, rentalId는 토큰의 rentalId 클레임에서 읽는다(이벤트 봉투용).
         이전 시점과 비교해 점검 플래그를 만들어 돌려준다. (FR-DIA-05·06)
         - 같은 시점에 이미 올렸으면 409 DIAGNOSTIC_ALREADY_UPLOADED.
         - 형식이 진단 JSON Schema와 다르면 422 DIAGNOSTIC_SCHEMA_INVALID, 시리얼이 렌탈 기기와 다르면 422 DEVICE_SERIAL_MISMATCH.
