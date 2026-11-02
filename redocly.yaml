@@ -1,0 +1,6 @@
+# OpenAPI 린트 규칙 (CI '계약 검사'의 OpenAPI 린트 단계가 읽는다)
+extends:
+  - recommended
+rules:
+  info-license: off          # 내부 계약이라 라이선스를 적지 않는다
+  info-license-strict: off

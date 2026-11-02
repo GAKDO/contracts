@@ -83,13 +83,13 @@
 | `DiagnosticUpload` | C2 스키마 참조 자리(C1에서는 object) |
 | `DiagnosticRunCreated` | runId, flags[`InspectionFlag`] |
 | `InspectionFlag` | kind(`FlagKind`), detail(object), baseRunId |
-| `CheckpointDiagnostics` | checkpointId, runId, collectedAt, os, battery{cycleCount, designCapacity, fullChargeCapacity, capacityUnit, maxCapacityPct, condition}, ssd{percentUsed, availableSparePct, criticalWarning, powerOnHours, mediaErrors, skippedReason}, components[{kind, identifier}], benchmarks[{metric, median}], previous(같은 형태 축약, null 가능), flags[] — 읽지 못한 값은 null |
+| `CheckpointDiagnostics` | checkpointId, current(`RunSummary`), previous(`RunSummary`, 없으면 null), flags[] — `RunSummary` = runId, collectedAt, os, battery{cycleCount, designCapacity, fullChargeCapacity, capacityUnit, maxCapacityPct, condition}, ssd{percentUsed, availableSparePct, criticalWarning, powerOnHours, mediaErrors, skippedReason}, components[{kind, identifier}], benchmarks[{metric, median}]. 읽지 못한 값은 null |
 
 ## report-server
 
 | 스키마 | 필드 |
 | --- | --- |
-| `RentalTimeline` | rentalId, modelCode, chainStatus(`ReportChainStatus`: VALID·BROKEN·PENDING), checkpoints[{checkpointId, type, status, occurredAt, grade?, newDefectCount, pins[{defectId, face, x, y, isNew}], diagnosticsSummary{maxCapacityPct, flags[]}, sealedAt?}] |
+| `RentalTimeline` | rentalId, modelCode, verifyUrl(첫 봉인 전 null), chainStatus(`ReportChainStatus`: VALID·BROKEN·PENDING), checkpoints[{checkpointId, type, status, occurredAt, grade?, newDefectCount, pins[{defectId, face, x, y, isNew}], diagnosticsSummary{maxCapacityPct, flags[]}, sealedAt?}] |
 | `ProgressEvent` (SSE `progress`) | checkpointId, stage(`ReportProgressStage`: UPLOADED·ALIGNED·INSPECTED·GRADED·SEALED), percent(0~100), at |
 | `DoneEvent` (SSE `done`) | checkpointId, grade |
 | `ChainRecord` / `Chain` | seq, checkpointId, checkpointType, payloadHash, prevHash(null 가능), signature, signedAt / rentalId, valid, records[] |

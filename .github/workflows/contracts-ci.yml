@@ -22,9 +22,11 @@ jobs:
         with:
           node-version: 22
       - name: 도구 설치
-        run: python -m pip install -q yamllint check-jsonschema
+        run: python -m pip install -q yamllint check-jsonschema pyyaml
       - name: YAML 문법
         run: 'yamllint -d "{extends: relaxed, rules: {line-length: {max: 160}}}" .'
+      - name: 코드 값 생성본 일치
+        run: python scripts/gen_openapi_codes.py --check
       - name: JSON Schema 메타스키마
         run: |
           files=$(git ls-files '*.schema.json')
@@ -32,6 +34,6 @@ jobs:
           check-jsonschema --check-metaschema $files
       - name: OpenAPI 린트
         run: |
-          files=$(git ls-files 'openapi/*.yaml')
+          files=$(git ls-files 'openapi/*-server.yaml')
           if [ -z "$files" ]; then echo "OpenAPI 파일이 아직 없습니다."; exit 0; fi
           npx -y @redocly/cli@2 lint $files
