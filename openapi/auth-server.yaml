@@ -587,7 +587,7 @@ paths:
       tags: [자격]
       operationId: createPairingCode
       summary: 에이전트 페어링 코드 발급
-      description: 진단 에이전트가 시점 하나에 붙을 6자리 코드(5분, 해시만 저장). (FR-AUTH-02)
+      description: 진단 에이전트가 시점 하나에 붙을 6자리 코드(5분, 해시만 저장). 렌탈과 시점을 함께 정하고, 교환한 AGENT JWT에 둘 다 들어간다. (FR-AUTH-02)
       security:
         - bearerJwt: []
       x-trace-requirements: [FR-AUTH-02]
@@ -602,6 +602,7 @@ paths:
             schema:
               $ref: '#/components/schemas/PairingCodeCreateRequest'
             example:
+              rentalId: 0193a1c2-0000-7000-8000-000000000201
               checkpointId: 0193a1c2-0000-7000-8000-000000000301
       responses:
         '201':
@@ -624,7 +625,7 @@ paths:
       tags: [자격]
       operationId: exchangePairingCode
       summary: 페어링 코드 → AGENT JWT
-      description: 6자리 코드를 AGENT JWT(10분, role AGENT, scope=checkpointId)로 바꾼다. 코드는 한 번만 쓸 수 있다. (FR-AUTH-02)
+      description: 6자리 코드를 AGENT JWT(10분, role AGENT, scope=checkpointId, 클레임 rentalId)로 바꾼다. 코드는 한 번만 쓸 수 있다. diagnostics-server는 이벤트 봉투의 rentalId를 이 클레임에서 읽는다. (FR-AUTH-02)
       security: []
       x-trace-requirements: [FR-AUTH-02]
       requestBody:
@@ -646,6 +647,7 @@ paths:
                 accessToken: eyJhbGciOiJSUzI1NiJ9.agent.signature
                 tokenType: Bearer
                 expiresIn: 600
+                rentalId: 0193a1c2-0000-7000-8000-000000000201
                 checkpointId: 0193a1c2-0000-7000-8000-000000000301
         '400':
           description: 코드 틀림 또는 형식 오류
@@ -894,8 +896,10 @@ components:
     PairingCodeCreateRequest:
       type: object
       additionalProperties: false
-      required: [checkpointId]
+      required: [rentalId, checkpointId]
       properties:
+        rentalId:
+          $ref: './components/common.yaml#/components/schemas/Uuid'
         checkpointId:
           $ref: './components/common.yaml#/components/schemas/Uuid'
     PairingCodeResponse:
@@ -915,7 +919,7 @@ components:
           $ref: '#/components/schemas/SixDigitCode'
     AgentTokenResponse:
       type: object
-      required: [accessToken, tokenType, expiresIn, checkpointId]
+      required: [accessToken, tokenType, expiresIn, rentalId, checkpointId]
       properties:
         accessToken:
           type: string
@@ -925,6 +929,9 @@ components:
         expiresIn:
           type: integer
           description: 초(600)
+        rentalId:
+          $ref: './components/common.yaml#/components/schemas/Uuid'
+          description: 페어링 코드를 만들 때 정한 렌탈. JWT의 rentalId 클레임과 같다
         checkpointId:
           $ref: './components/common.yaml#/components/schemas/Uuid'
     Jwks:
