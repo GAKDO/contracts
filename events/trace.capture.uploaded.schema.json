@@ -74,6 +74,10 @@
         }
       }
     },
+    "device": {
+      "$ref": "envelope.schema.json#/$defs/DeviceModel",
+      "description": "찍은 기기의 기종·치수. 세트 생성 요청의 device를 그대로 옮긴다. 없으면 inspect-worker가 기본 기종(TRACE_DEVICE_MODEL)으로 펼친다. 여러 기종을 쓰면 꼭 싣는다"
+    },
     "skippedFaces": {
       "type": "object",
       "description": "건너뛴 선택 면과 사유(예: {\"SCR1\": \"화면 켜지지 않음\"}). 없으면 생략",

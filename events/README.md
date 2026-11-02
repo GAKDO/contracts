@@ -25,7 +25,7 @@ RabbitMQ topic exchange `trace.events`로 오가는 이벤트 6종의 JSON Schem
 
 설계서 "핵심 필드" 칸에 없지만 소비하는 쪽이 REST 없이 일하려면 필요한 필드를 더했다(서비스끼리는 이벤트로만 주고받는다).
 
-- `trace.capture.uploaded`: `photos[].camera`(부스 카메라 2대가 같은 면·조명을 찍음), `skippedFaces`(건너뛴 선택 면과 사유)
+- `trace.capture.uploaded`: `photos[].camera`(부스 카메라 2대가 같은 면·조명을 찍음), `skippedFaces`(건너뛴 선택 면과 사유), `device`(기종·치수, inspect-worker가 기종마다 표준 좌표 크기를 정함)
 - `trace.inspect.completed`: `alignments[].method`·`rectifiedKey`, `defects[].defectId`·`lengthMm`·`areaMm2`, `failedPhotos`
 - `trace.checkpoint.graded`: `captureSetId`, `checkpointType`, `photos[]{photoId, sha256}`(report-server가 해시 체인에 넣을 사진 해시)
 - `trace.diagnostics.recorded`: `baseRunId`(비교 기준, 첫 진단은 null)
