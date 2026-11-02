@@ -22,6 +22,7 @@ main에 버전이 적힌 CHANGELOG가 올라가면 release.yml이 태그와 GitH
 - 조명 코드에 L4(앞 스침광, 키보드 촬영) 추가, 부스 카메라 코드 CAM을 CAM1(앞 반)·CAM2(뒤 반)로 나눔 (11/1 부스 설계)
 
 ### 추가
+- report-server 관리자 수동 봉인(시연 우회로) `POST /api/v1/reports/rentals/{rentalId}/checkpoints/{checkpointId}/seal`과 사용 기록 `GET /api/v1/reports/manual-seals`, codes.yaml 0.7.0 `RECORD_ALREADY_SEALED` (11/2 결정, RP1)
 - `POST /captures/sets/{setId}/uploads`: 아직 안 올라간 사진의 업로드 URL 다시 받기 (11/2 결정)
 - `capture/faces.md`: 면별 표준 좌표 방향·배율(1 px = 0.25 mm) (11/2 결정)
 - `diagnostics/influx.md`: InfluxDB `trace-pilot` measurement·태그·필드 이름 (11/2 결정)
