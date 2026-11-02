@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/GAKDO/contracts/main/events/trace.capture.uploaded.schema.json",
+  "title": "촬영 세트 업로드 완료",
+  "description": "촬영 세트의 사진이 모두 MinIO에 올라간 뒤(출처별 필수 면, SCR1 선택) capture-server가 발행한다. inspect-worker가 정합·탐지·텍스처를 시작한다. (FR-CAP-05, FR-INS-01·02)",
+  "x-routing-key": "trace.capture.uploaded",
+  "x-publisher": "capture-server",
+  "x-consumers": [
+    {
+      "service": "inspect-worker",
+      "queue": "trace.inspect.requested"
+    }
+  ],
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "envelope.schema.json#/$defs/Envelope"
+    }
+  ],
+  "required": [
+    "captureSetId",
+    "source",
+    "needDetection",
+    "photos"
+  ],
+  "properties": {
+    "captureSetId": {
+      "$ref": "envelope.schema.json#/$defs/Uuid"
+    },
+    "source": {
+      "$ref": "../schemas/codes.gen.schema.json#/$defs/CaptureSource"
+    },
+    "needDetection": {
+      "type": "boolean",
+      "description": "inspect-worker가 흠집 탐지까지 할지. PHONE은 true, 부스는 Jetson이 탐지해 REST로 올렸으므로 false"
+    },
+    "photos": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 54,
+      "description": "세트의 사진(9면 × 조명, 부스는 카메라 2대)",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "photoId",
+          "face",
+          "light",
+          "camera",
+          "objectKey",
+          "sha256"
+        ],
+        "properties": {
+          "photoId": {
+            "$ref": "envelope.schema.json#/$defs/Uuid"
+          },
+          "face": {
+            "$ref": "../schemas/codes.gen.schema.json#/$defs/CaptureFace"
+          },
+          "light": {
+            "$ref": "../schemas/codes.gen.schema.json#/$defs/CaptureLight"
+          },
+          "camera": {
+            "$ref": "../schemas/codes.gen.schema.json#/$defs/CaptureCamera"
+          },
+          "objectKey": {
+            "$ref": "envelope.schema.json#/$defs/ObjectKey",
+            "description": "버킷 trace-raw 안의 원본 사진 키"
+          },
+          "sha256": {
+            "$ref": "envelope.schema.json#/$defs/Sha256",
+            "description": "원본 사진 SHA-256(해시 체인 재료)"
+          }
+        }
+      }
+    },
+    "skippedFaces": {
+      "type": "object",
+      "description": "건너뛴 선택 면과 사유(예: {\"SCR1\": \"화면 켜지지 않음\"}). 없으면 생략",
+      "propertyNames": {
+        "$ref": "../schemas/codes.gen.schema.json#/$defs/CaptureFace"
+      },
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      }
+    }
+  },
+  "unevaluatedProperties": false
+}

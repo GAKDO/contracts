@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "1.0",
+  "eventId": "0193a1c2-0000-7000-8000-000000000a03",
+  "occurredAt": "2026-11-09T14:08:02+09:00",
+  "rentalId": "0193a1c2-0000-7000-8000-000000000201",
+  "checkpointId": "0193a1c2-0000-7000-8000-000000000302",
+  "captureSetId": "0193a1c2-0000-7000-8000-000000000401",
+  "checkpointType": "RCV",
+  "grade": "B",
+  "ruleVersion": "grade-rule-1.0",
+  "newDefectIds": ["0193a1c2-0000-7000-8000-000000000601"],
+  "unjudgeableFaces": ["KB", "SCR1"],
+  "photos": [
+    {"photoId": "0193a1c2-0000-7000-8000-000000000501", "sha256": "3a7bd3e2360a3d29eea436fcfb7e44c735d117c42d1c1835420b6b9942dd4f1b"},
+    {"photoId": "0193a1c2-0000-7000-8000-000000000502", "sha256": "5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"}
+  ]
+}

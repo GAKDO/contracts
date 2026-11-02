@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "1.0",
+  "eventId": "0193a1c2-0000-7000-8000-000000000a05",
+  "occurredAt": "2026-11-09T14:10:31+09:00",
+  "rentalId": "0193a1c2-0000-7000-8000-000000000201",
+  "checkpointId": "0193a1c2-0000-7000-8000-000000000302",
+  "seq": 2,
+  "checkpointType": "RCV",
+  "grade": "B",
+  "payloadHash": "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+  "prevHash": "2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae",
+  "signedAt": "2026-11-09T14:10:31+09:00"
+}

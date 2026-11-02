@@ -22,16 +22,20 @@ jobs:
         with:
           node-version: 22
       - name: 도구 설치
-        run: python -m pip install -q yamllint check-jsonschema pyyaml
+        run: python -m pip install -q yamllint check-jsonschema pyyaml jsonschema
       - name: YAML 문법
         run: 'yamllint -d "{extends: relaxed, rules: {line-length: {max: 160}}}" .'
       - name: 코드 값 생성본 일치
-        run: python scripts/gen_openapi_codes.py --check
+        run: |
+          python scripts/gen_openapi_codes.py --check
+          python scripts/gen_schema_codes.py --check
       - name: JSON Schema 메타스키마
         run: |
           files=$(git ls-files '*.schema.json')
           if [ -z "$files" ]; then echo "스키마 파일이 아직 없습니다."; exit 0; fi
           check-jsonschema --check-metaschema $files
+      - name: 이벤트 계약 (라우팅 키·예시·위반 사례)
+        run: python scripts/check_events.py
       - name: OpenAPI 린트
         run: |
           files=$(git ls-files 'openapi/*-server.yaml')

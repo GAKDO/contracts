@@ -1,0 +1,179 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/GAKDO/contracts/main/events/trace.inspect.completed.schema.json",
+  "title": "정합·탐지·텍스처 완료",
+  "description": "inspect-worker가 세트의 면 정합(표준 좌표), 흠집 탐지(needDetection일 때), 텍스처 생성을 마치고 발행한다. capture-server가 결과를 inspection 스키마에 저장하고 시점 비교·등급을 시작한다. (FR-INS-01·02)",
+  "x-routing-key": "trace.inspect.completed",
+  "x-publisher": "inspect-worker",
+  "x-consumers": [
+    {
+      "service": "capture-server",
+      "queue": "trace.capture.inspected"
+    }
+  ],
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "envelope.schema.json#/$defs/Envelope"
+    }
+  ],
+  "required": [
+    "captureSetId",
+    "modelVersion",
+    "alignments",
+    "defects",
+    "textureKeys"
+  ],
+  "properties": {
+    "captureSetId": {
+      "$ref": "envelope.schema.json#/$defs/Uuid"
+    },
+    "modelVersion": {
+      "$ref": "envelope.schema.json#/$defs/ModelVersion",
+      "description": "탐지·정합에 쓴 모델 버전. 탐지를 하지 않았어도 정합 모델 버전을 적는다"
+    },
+    "alignments": {
+      "type": "array",
+      "description": "정합에 성공한 사진. 실패한 사진은 failedPhotos에 사유와 함께",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "photoId",
+          "method",
+          "homography",
+          "errorPx",
+          "rectifiedKey"
+        ],
+        "properties": {
+          "photoId": {
+            "$ref": "envelope.schema.json#/$defs/Uuid"
+          },
+          "method": {
+            "$ref": "../schemas/codes.gen.schema.json#/$defs/InspectionAlignmentMethod"
+          },
+          "homography": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 3,
+            "description": "사진 → 표준 좌표 3×3 행렬(행 우선)",
+            "items": {
+              "type": "array",
+              "minItems": 3,
+              "maxItems": 3,
+              "items": {
+                "type": "number"
+              }
+            }
+          },
+          "errorPx": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0,
+            "description": "정합 오차(픽셀). 잴 수 없으면 null"
+          },
+          "rectifiedKey": {
+            "$ref": "envelope.schema.json#/$defs/ObjectKey",
+            "description": "버킷 trace-derived 안의 펼친 이미지 키"
+          }
+        }
+      }
+    },
+    "defects": {
+      "type": "array",
+      "description": "탐지한 흠집. needDetection이 false면 빈 배열",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "defectId",
+          "photoId",
+          "class",
+          "polygon",
+          "confidence"
+        ],
+        "properties": {
+          "defectId": {
+            "$ref": "envelope.schema.json#/$defs/Uuid",
+            "description": "worker가 만든 ID. 같은 이벤트가 다시 와도 같은 흠집을 두 번 저장하지 않게 한다"
+          },
+          "photoId": {
+            "$ref": "envelope.schema.json#/$defs/Uuid"
+          },
+          "class": {
+            "$ref": "../schemas/codes.gen.schema.json#/$defs/InspectionDefectClass"
+          },
+          "polygon": {
+            "type": "array",
+            "minItems": 3,
+            "description": "표준 좌표 꼭짓점 [[x, y], …](mm)",
+            "items": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": {
+                "type": "number"
+              }
+            }
+          },
+          "confidence": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "lengthMm": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0,
+            "description": "길이(mm). 잴 수 없으면 null"
+          },
+          "areaMm2": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0,
+            "description": "면적(mm²). 잴 수 없으면 null"
+          }
+        }
+      }
+    },
+    "textureKeys": {
+      "type": "object",
+      "description": "면별 텍스처 이미지 키(버킷 trace-derived). 만들지 못한 면은 빠진다",
+      "propertyNames": {
+        "$ref": "../schemas/codes.gen.schema.json#/$defs/CaptureFace"
+      },
+      "additionalProperties": {
+        "$ref": "envelope.schema.json#/$defs/ObjectKey"
+      }
+    },
+    "failedPhotos": {
+      "type": "array",
+      "description": "정합하지 못한 사진과 사유(헌법 III). 없으면 생략하거나 빈 배열",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "photoId",
+          "reason"
+        ],
+        "properties": {
+          "photoId": {
+            "$ref": "envelope.schema.json#/$defs/Uuid"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          }
+        }
+      }
+    }
+  },
+  "unevaluatedProperties": false
+}

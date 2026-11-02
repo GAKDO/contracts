@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/GAKDO/contracts/main/events/trace.checkpoint.graded.schema.json",
+  "title": "시점 비교·등급 완료",
+  "description": "capture-server가 이전 시점 흠집과 비교(신규·기존)하고 등급을 매긴 뒤 발행한다. report-server가 해시 체인에 넣을 사진 해시와 타임라인 등급을 받는다. (FR-INS-03·04, FR-INT-01)",
+  "x-routing-key": "trace.checkpoint.graded",
+  "x-publisher": "capture-server",
+  "x-consumers": [
+    {
+      "service": "report-server",
+      "queue": "trace.report.updates"
+    }
+  ],
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "envelope.schema.json#/$defs/Envelope"
+    }
+  ],
+  "required": [
+    "captureSetId",
+    "checkpointType",
+    "grade",
+    "ruleVersion",
+    "newDefectIds",
+    "unjudgeableFaces",
+    "photos"
+  ],
+  "properties": {
+    "captureSetId": {
+      "$ref": "envelope.schema.json#/$defs/Uuid"
+    },
+    "checkpointType": {
+      "$ref": "../schemas/codes.gen.schema.json#/$defs/RentalCheckpointType"
+    },
+    "grade": {
+      "$ref": "../schemas/codes.gen.schema.json#/$defs/InspectionGrade"
+    },
+    "ruleVersion": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 32,
+      "description": "등급 규칙 버전(FR-INS-04)"
+    },
+    "newDefectIds": {
+      "type": "array",
+      "uniqueItems": true,
+      "description": "이전 시점에 없던 흠집 ID. 출고(OUT)는 비교 대상이 없어 빈 배열",
+      "items": {
+        "$ref": "envelope.schema.json#/$defs/Uuid"
+      }
+    },
+    "unjudgeableFaces": {
+      "type": "array",
+      "uniqueItems": true,
+      "description": "판정할 수 없던 면(정합 실패·흐림·건너뛴 선택 면)",
+      "items": {
+        "$ref": "../schemas/codes.gen.schema.json#/$defs/CaptureFace"
+      }
+    },
+    "photos": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 54,
+      "description": "해시 체인 재료. 세트 사진의 ID와 SHA-256",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "photoId",
+          "sha256"
+        ],
+        "properties": {
+          "photoId": {
+            "$ref": "envelope.schema.json#/$defs/Uuid"
+          },
+          "sha256": {
+            "$ref": "envelope.schema.json#/$defs/Sha256"
+          }
+        }
+      }
+    }
+  },
+  "unevaluatedProperties": false
+}
