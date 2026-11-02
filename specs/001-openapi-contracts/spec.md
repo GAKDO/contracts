@@ -10,6 +10,13 @@
 
 **Input**: "auth, rental, capture, diagnostics, report 서버의 REST API를 OpenAPI 3.1 파일 5개(openapi/<서버>.yaml)로 고정한다. 원본은 GAKDO/docs design/rest-api-v0.md의 경로·역할 표와 요청·응답 예시다. 모든 오류는 RFC 9457 Problem Details, JSON 필드는 camelCase, ID는 UUIDv7, 시각은 ISO 8601 + 오프셋이다. 각 경로에 필요한 역할(ADMIN, CUSTOMER, BOOTH, AGENT)과 범위를 적고, /api/v1/<경로>/ping은 인증 없음으로 둔다. 코드 값은 codes.yaml을 참조한다. 수용 기준: redocly lint가 통과하고, rest-api-v0.md의 모든 경로가 빠짐없이 있으며, 화면(C)·에이전트(B) 담당이 리뷰에서 승인한다."
 
+## Clarifications
+
+### Session 2026-11-02
+
+- Q: `GET /devices` 목록은 표의 페이지 번호(`page=`)를 유지할까요, 공통 커서 규칙으로 맞출까요? → A: 커서로 통일
+- Q: 오류 `code` 값 목록은 어디에 고정할까요? → A: codes.yaml에 `error_code` 목록으로 고정
+
 ## 사용자 시나리오와 테스트 *(필수)*
 
 이 기능의 "사용자"는 계약을 읽고 코드를 만드는 팀원(서버 A, 화면 C, 에이전트·부스 B)과 그들의 Claude 세션이다.
@@ -95,11 +102,11 @@ A가 gateway(GW1)의 역할 검사와 통합 테스트를 만들 때, 경로마�
 - **FR-005**: 2xx가 아닌 모든 응답은 RFC 9457 Problem Details 형식(`application/problem+json`)이고 `code` 필드를 가진다.
 - **FR-006**: 요청·응답 본문의 모든 필드는 camelCase이고, ID는 UUIDv7 형식, 시각은 ISO 8601 + 오프셋 형식으로 적는다.
 - **FR-007**: 면·조명·카메라·시점·상태·등급 같은 코드 값은 codes.yaml 0.2.0의 값만 쓰고, 값 목록을 손으로 다르게 쓰지 않는다.
-- **FR-008**: 목록 응답은 공통 규칙(`limit`, `cursor` → `items`, `nextCursor`)을 따른다. [NEEDS CLARIFICATION: `GET /devices`는 표에 `page=`로 적혀 있음 — 커서로 맞출지, 페이지 번호로 둘지]
+- **FR-008**: 모든 목록 응답은 공통 규칙(`limit`, `cursor` → `items`, `nextCursor`)을 따른다. `GET /devices`도 표의 `page=` 대신 커서를 쓴다(원본과 다른 점으로 PR 본문에 적는다).
 - **FR-009**: 촬영 완료와 진단 업로드는 `Idempotency-Key` 요청 헤더를 필수로 적는다.
 - **FR-010**: 가입·로그인·코드 확인·페어링 교환에는 429(분당 10회 초과) 응답을 적는다.
 - **FR-011**: rest-api-v0.md의 요청·응답 예시(촬영 세트 만들기, 검증, 오류 예시)를 계약의 예시로 그대로 옮기고, 화면별 API 표의 호출마다 성공 예시를 하나 이상 둔다.
-- **FR-012**: 오류 `code` 값의 목록을 정한다. [NEEDS CLARIFICATION: `code` 값을 codes.yaml에 목록으로 고정할지, OpenAPI에 응답별 예시로만 둘지]
+- **FR-012**: 오류 `code` 값은 codes.yaml에 `error_code` 목록(UPPER_SNAKE, 예: `RENTAL_OPEN_EXISTS`)으로 고정하고, 계약은 그 목록을 참조한다. 응답마다 그 응답이 낼 수 있는 `code` 값을 적는다. codes.yaml 버전을 올린다(값 추가이므로 부 버전).
 - **FR-013**: 계약 파일은 계약 검사(yamllint·redocly lint)를 통과한다.
 - **FR-014**: 계약에 비밀번호·토큰·키 같은 비밀 값이나 실제 개인정보 예시를 넣지 않는다(예시 값은 지어낸 값).
 
