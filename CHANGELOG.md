@@ -7,6 +7,7 @@ main에 버전이 적힌 CHANGELOG가 올라가면 release.yml이 태그와 GitH
 ## [Unreleased]
 
 ### 변경
+- 이벤트 `trace.inspect.completed`의 흠집 `polygon` 단위 설명을 mm → 표준 좌표 px(1 px = 0.25 mm)로 고침. REST·DB·capture/faces.md와 맞춤, 값 형식은 그대로 (11/2 C 지적)
 - 부스 탐지 저장: 같은 세트에 다시 보내면 그 세트의 부스 탐지를 통째로 바꿈(중복 없음, Idempotency-Key 없음) (11/2 B 질문)
 - 세트 생성 `photos` 최대 54 → 80 (카메라 2대를 셈하지 않던 설명을 고침, 부스 실제 29장) (11/2 C 지적)
 - 세트 생성 설명의 URL 다시 받기 경로에 `/api/v1`을 붙임 (문구만, 11/2 C 지적)

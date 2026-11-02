@@ -56,7 +56,7 @@
             "type": "array",
             "minItems": 3,
             "maxItems": 3,
-            "description": "사진 → 표준 좌표 3×3 행렬(행 우선)",
+            "description": "사진 px → 표준 좌표 px 3×3 행렬(행 우선, capture/faces.md)",
             "items": {
               "type": "array",
               "minItems": 3,
@@ -108,7 +108,7 @@
           "polygon": {
             "type": "array",
             "minItems": 3,
-            "description": "표준 좌표 꼭짓점 [[x, y], …](mm)",
+            "description": "표준 좌표 꼭짓점 [[x, y], …](px, 1 px = 0.25 mm, capture/faces.md). 길이·넓이만 mm(lengthMm·areaMm2)",
             "items": {
               "type": "array",
               "minItems": 2,

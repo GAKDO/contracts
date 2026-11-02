@@ -10,6 +10,7 @@ web(3D 트윈·핀), 부스 촬영 목록과 폰 윤곽 가이드가 모두 이 
 - 배율은 **1 px = 0.25 mm**(4 px/mm)로 고정한다. 이미지 크기는 기종 치수(`rental.device_model`의 width·depth·base_h·lid_h, mm)에서 정해진다.
   흠집 길이(`lengthMm`)·넓이(`areaMm2`)는 이 배율로 계산한다.
 - 원본 사진 좌표(부스 탐지 `PhotoPolygon`)는 사진마다의 호모그래피(`trace.inspect.completed`의 `alignments`)로 이 좌표에 옮긴다.
+- 흠집 다각형은 **어디서나 표준 좌표 px**다: 검사 완료 이벤트, REST 응답(`Polygon`), DB `inspection.defect.polygon`. 단위 바꾸기는 없다. mm는 길이·넓이·거리 값에만 쓴다.
 
 ## 면별 방향
 
