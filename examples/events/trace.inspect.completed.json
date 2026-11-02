@@ -1,24 +1,24 @@
 {
   "schemaVersion": "1.0",
-  "eventId": "0193a1c2-0000-7000-8000-000000000a02",
+  "eventId": "EnE1vUhwL5Z9wfL6uVBJp",
   "occurredAt": "2026-11-09T14:07:40+09:00",
-  "rentalId": "0193a1c2-0000-7000-8000-000000000201",
-  "checkpointId": "0193a1c2-0000-7000-8000-000000000302",
-  "captureSetId": "0193a1c2-0000-7000-8000-000000000401",
+  "rentalId": "Ws0HLv6QRbDILPWOcz5I2",
+  "checkpointId": "h40b9AN9xMQhXRHrOyJWB",
+  "captureSetId": "Z4U03wInx137yk13jDsmn",
   "modelVersion": "yolo11s-seg-2026.11.08",
   "alignments": [
     {
-      "photoId": "0193a1c2-0000-7000-8000-000000000501",
+      "photoId": "aAXQFO2Vz6ZTFbPctC2dq",
       "method": "LIGHTGLUE",
       "homography": [[1.02, 0.01, -12.5], [-0.004, 0.99, 8.1], [0.0, 0.0, 1.0]],
       "errorPx": 1.8,
-      "rectifiedKey": "rectified/0193a1c2-0000-7000-8000-000000000501.png"
+      "rectifiedKey": "rectified/aAXQFO2Vz6ZTFbPctC2dq.png"
     }
   ],
   "defects": [
     {
-      "defectId": "0193a1c2-0000-7000-8000-000000000601",
-      "photoId": "0193a1c2-0000-7000-8000-000000000501",
+      "defectId": "fBSvifsp4FWaM07ql1SET",
+      "photoId": "aAXQFO2Vz6ZTFbPctC2dq",
       "class": "scratch",
       "polygon": [[120.5, 80.0], [134.0, 82.5], [133.2, 84.0], [119.8, 81.6]],
       "confidence": 0.87,
@@ -27,11 +27,11 @@
     }
   ],
   "textureKeys": {
-    "TOP": "textures/0193a1c2-0000-7000-8000-000000000401/TOP.png"
+    "TOP": "textures/Z4U03wInx137yk13jDsmn/TOP.png"
   },
   "failedPhotos": [
     {
-      "photoId": "0193a1c2-0000-7000-8000-000000000502",
+      "photoId": "MR9xaeQrOBS8Jx4XqyKzi",
       "reason": "윤곽 4점을 찾지 못함"
     }
   ]

@@ -25,7 +25,7 @@
   ],
   "properties": {
     "runId": {
-      "$ref": "envelope.schema.json#/$defs/Uuid"
+      "$ref": "envelope.schema.json#/$defs/PublicId"
     },
     "sha256": {
       "$ref": "envelope.schema.json#/$defs/Sha256",
@@ -34,7 +34,7 @@
     "baseRunId": {
       "anyOf": [
         {
-          "$ref": "envelope.schema.json#/$defs/Uuid"
+          "$ref": "envelope.schema.json#/$defs/PublicId"
         },
         {
           "type": "null"

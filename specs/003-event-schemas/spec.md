@@ -8,7 +8,7 @@
 
 **Backlog**: C3 (담당 A, 마감 11/3 계약 고정) · 요구사항 FR-CAP-05, FR-INS-01~04, FR-INT-01
 
-**Input**: "RabbitMQ trace.events로 오가는 이벤트 5종의 JSON Schema(events/*.schema.json)를 만든다. 원본은 GAKDO/docs design/mvp-design.md의 "이벤트 계약" 표다. 모든 이벤트는 schemaVersion, eventId(UUIDv7), occurredAt, rentalId, checkpointId 봉투를 가진다. 수용 기준: 이벤트마다 예시 1개가 스키마를 통과하고, 라우팅 키가 설계서 표와 같다."
+**Input**: "RabbitMQ trace.events로 오가는 이벤트 5종의 JSON Schema(events/*.schema.json)를 만든다. 원본은 GAKDO/docs design/mvp-design.md의 "이벤트 계약" 표다. 모든 이벤트는 schemaVersion, eventId(UUIDv7, 11/2 NanoID 21자로 바뀜), occurredAt, rentalId, checkpointId 봉투를 가진다. 수용 기준: 이벤트마다 예시 1개가 스키마를 통과하고, 라우팅 키가 설계서 표와 같다."
 
 ## Clarifications
 
@@ -34,7 +34,7 @@ capture-server(CA1·CA2), inspect-worker(ML2), diagnostics-server(DI1), report-s
 **수용 시나리오**:
 
 1. **Given** 이벤트 5종, **When** `examples/events/<키>.json`을 스키마로 검증하면, **Then** 모두 통과한다.
-2. **Given** 봉투 필드가 빠졌거나 eventId가 UUIDv7이 아니거나 occurredAt에 오프셋이 없는 본문, **When** 검증하면, **Then** 실패한다.
+2. **Given** 봉투 필드가 빠졌거나 eventId가 NanoID 21자가 아니거나 occurredAt에 오프셋이 없는 본문, **When** 검증하면, **Then** 실패한다.
 3. **Given** codes.yaml에 없는 코드 값(면·등급·흠집 클래스·플래그·시점), **When** 검증하면, **Then** 실패한다.
 
 ### 사용자 이야기 2 - 라우팅 키와 큐가 설계서와 같다 (P1)

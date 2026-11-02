@@ -26,7 +26,7 @@
   ],
   "properties": {
     "captureSetId": {
-      "$ref": "envelope.schema.json#/$defs/Uuid"
+      "$ref": "envelope.schema.json#/$defs/PublicId"
     },
     "modelVersion": {
       "$ref": "envelope.schema.json#/$defs/ModelVersion",
@@ -47,7 +47,7 @@
         ],
         "properties": {
           "photoId": {
-            "$ref": "envelope.schema.json#/$defs/Uuid"
+            "$ref": "envelope.schema.json#/$defs/PublicId"
           },
           "method": {
             "$ref": "../schemas/codes.gen.schema.json#/$defs/InspectionAlignmentMethod"
@@ -96,11 +96,11 @@
         ],
         "properties": {
           "defectId": {
-            "$ref": "envelope.schema.json#/$defs/Uuid",
+            "$ref": "envelope.schema.json#/$defs/PublicId",
             "description": "worker가 만든 ID. 같은 이벤트가 다시 와도 같은 흠집을 두 번 저장하지 않게 한다"
           },
           "photoId": {
-            "$ref": "envelope.schema.json#/$defs/Uuid"
+            "$ref": "envelope.schema.json#/$defs/PublicId"
           },
           "class": {
             "$ref": "../schemas/codes.gen.schema.json#/$defs/InspectionDefectClass"
@@ -164,7 +164,7 @@
         ],
         "properties": {
           "photoId": {
-            "$ref": "envelope.schema.json#/$defs/Uuid"
+            "$ref": "envelope.schema.json#/$defs/PublicId"
           },
           "reason": {
             "type": "string",

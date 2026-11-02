@@ -1,12 +1,12 @@
 # Phase 1 데이터 모델: C1 OpenAPI 5개
 
-필드 이름은 camelCase, ID는 `Uuid`(format uuid, UUIDv7), 시각은 `DateTime`(format date-time, 오프셋 필수). 필드 출처는 GAKDO/docs `design/ddl.md`. 코드 값 타입은 `codes.gen.yaml`의 enum(예: `DeviceStatus` = codes.yaml `device.status`).
+필드 이름은 camelCase, ID는 `PublicId`(NanoID 21자, DB 기본 키는 내보내지 않음), 시각은 `DateTime`(format date-time, 오프셋 필수). 필드 출처는 GAKDO/docs `design/ddl.md`. 코드 값 타입은 `codes.gen.yaml`의 enum(예: `DeviceStatus` = codes.yaml `device.status`).
 
 ## 공통 (components/common.yaml)
 
 | 이름 | 형태 |
 | --- | --- |
-| `Uuid` | string, format uuid, pattern UUIDv7(`^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$`) |
+| `PublicId` | string, pattern NanoID 21자(`^[A-Za-z0-9_-]{21}$`). 11/2 `Uuid`(UUIDv7)에서 바꿈(헌법 1.1.0) |
 | `DateTime` | string, format date-time, pattern으로 오프셋(`Z` 또는 `±hh:mm`) 강제 |
 | `Sha256` | string, `^[0-9a-f]{64}$` |
 | `Problem` | `type`(uri, 기본 about:blank), `title`, `status`(int), `detail`, `instance`, **`code`(ErrorCode, 필수)**, `errors`(필드 오류 배열, 400에서만: `{field, message}`) |

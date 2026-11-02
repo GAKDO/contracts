@@ -50,7 +50,10 @@ def bad_cases(key: str) -> list[tuple[str, Callable[[dict], None]]]:
         (f"봉투 {f} 빠짐", lambda e, f=f: e.pop(f)) for f in ENVELOPE
     ]
     cases += [
-        ("eventId가 UUIDv4", lambda e: e.update(eventId="0193a1c2-0000-4000-8000-000000000a01")),
+        ("eventId가 UUID 형식", lambda e: e.update(eventId="0193a1c2-0000-7000-8000-000000000a01")),
+        ("eventId 20자", lambda e: e.update(eventId="KRMZfXJuFEOzJeErsbsH")),
+        ("eventId에 URL에 안전하지 않은 글자", lambda e: e.update(eventId="KRMZfXJuFEOzJeErsbs+e")),
+        ("rentalId가 정수(내부 id)", lambda e: e.update(rentalId=42)),
         ("occurredAt에 오프셋 없음", lambda e: e.update(occurredAt="2026-11-09T14:05:12")),
         ("schemaVersion 주 버전 2", lambda e: e.update(schemaVersion="2.0")),
         ("모르는 필드", lambda e: e.update(unknownField=1)),
