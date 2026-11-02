@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/GAKDO/contracts/main/events/trace.record.sealed.schema.json",
+  "title": "해시 체인 봉인",
+  "description": "report-server가 시점의 사진·진단 해시를 묶어 이전 기록 해시에 잇고 Ed25519로 서명한 뒤 발행한다. web(SSE), auth-server 영수증 메일, 검색 색인(선택)이 받는다. (FR-INT-01·03)",
+  "x-routing-key": "trace.record.sealed",
+  "x-publisher": "report-server",
+  "x-consumers": [
+    {
+      "service": "auth-server",
+      "queue": "trace.auth.receipts"
+    },
+    {
+      "service": "web",
+      "queue": "SSE(report-server가 전달)"
+    }
+  ],
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "envelope.schema.json#/$defs/Envelope"
+    }
+  ],
+  "required": [
+    "seq",
+    "checkpointType",
+    "grade",
+    "payloadHash",
+    "prevHash",
+    "signedAt"
+  ],
+  "properties": {
+    "seq": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "렌탈 건 안의 체인 순번(1부터)"
+    },
+    "checkpointType": {
+      "$ref": "../schemas/codes.gen.schema.json#/$defs/RentalCheckpointType"
+    },
+    "grade": {
+      "$ref": "../schemas/codes.gen.schema.json#/$defs/InspectionGrade"
+    },
+    "payloadHash": {
+      "$ref": "envelope.schema.json#/$defs/Sha256",
+      "description": "사진·진단 JSON 해시를 묶은 값"
+    },
+    "prevHash": {
+      "anyOf": [
+        {
+          "$ref": "envelope.schema.json#/$defs/Sha256"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "이전 기록의 해시. seq 1은 null"
+    },
+    "signedAt": {
+      "$ref": "envelope.schema.json#/$defs/DateTime"
+    }
+  },
+  "unevaluatedProperties": false,
+  "if": {
+    "properties": {
+      "seq": {
+        "const": 1
+      }
+    },
+    "required": [
+      "seq"
+    ]
+  },
+  "then": {
+    "properties": {
+      "prevHash": {
+        "type": "null"
+      }
+    }
+  },
+  "else": {
+    "properties": {
+      "prevHash": {
+        "type": "string"
+      }
+    }
+  }
+}

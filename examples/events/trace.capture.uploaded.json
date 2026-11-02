@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "1.0",
+  "eventId": "0193a1c2-0000-7000-8000-000000000a01",
+  "occurredAt": "2026-11-09T14:05:12+09:00",
+  "rentalId": "0193a1c2-0000-7000-8000-000000000201",
+  "checkpointId": "0193a1c2-0000-7000-8000-000000000302",
+  "captureSetId": "0193a1c2-0000-7000-8000-000000000401",
+  "source": "PHONE",
+  "needDetection": true,
+  "photos": [
+    {
+      "photoId": "0193a1c2-0000-7000-8000-000000000501",
+      "face": "TOP",
+      "light": "ROOM",
+      "camera": "PHONE",
+      "objectKey": "captures/0193a1c2-0000-7000-8000-000000000401/TOP-ROOM-PHONE.jpg",
+      "sha256": "3a7bd3e2360a3d29eea436fcfb7e44c735d117c42d1c1835420b6b9942dd4f1b"
+    },
+    {
+      "photoId": "0193a1c2-0000-7000-8000-000000000502",
+      "face": "KB",
+      "light": "ROOM",
+      "camera": "PHONE",
+      "objectKey": "captures/0193a1c2-0000-7000-8000-000000000401/KB-ROOM-PHONE.jpg",
+      "sha256": "5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+    }
+  ],
+  "skippedFaces": {
+    "SCR1": "화면이 켜지지 않음"
+  }
+}
