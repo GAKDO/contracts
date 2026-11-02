@@ -17,13 +17,13 @@ description: "C1 OpenAPI 5개 작업 목록"
 ## Phase 1: Setup
 
 - [ ] T001 `redocly.yaml`(레포 루트) 추가: `extends: [recommended]`, `info-license` 끔, 확장 필드 `x-trace-*` 허용
-- [ ] T002 [P] `scripts/check_openapi_coverage.py` 작성: rest-api-v0.md의 서버별 표(메서드·경로)를 읽어 `openapi/*-server.yaml`의 operation과 대조, 빠진 것·남는 것·합계(46) 출력, 다르면 종료 코드 1
+- [ ] T002 [P] `scripts/check_openapi_coverage.py` 작성: rest-api-v0.md의 서버별 표(메서드·경로)를 읽어 `openapi/*-server.yaml`의 operation과 대조, 빠진 것·남는 것·합계(46) 출력, 다르면 종료 코드 1. 예외: `/.well-known/jwks.json`은 `/api/v1` 없이 대조, 표의 쿼리(`?modelCode=…`)는 떼고 비교, ping 5개는 스크립트에 고정 목록
 
 ---
 
 ## Phase 2: Foundational (모든 이야기의 전제)
 
-- [ ] T003 `codes.yaml`에 `error_code`(data-model.md 표의 34개)와 `auth.token_role: [ADMIN, CUSTOMER, BOOTH, AGENT]` 추가, `version: 0.3.0`, 머리 주석 갱신
+- [ ] T003 `codes.yaml`에 `error_code`(data-model.md 표의 34개)와 `auth.token_role: [ADMIN, CUSTOMER, BOOTH, AGENT]`, `report.chain_status: [VALID, BROKEN, PENDING]`, `report.progress_stage: [UPLOADED, ALIGNED, INSPECTED, GRADED, SEALED]` 추가, `version: 0.3.0`, 머리 주석 갱신
 - [ ] T004 `scripts/gen_openapi_codes.py` 작성: codes.yaml의 각 목록 → `openapi/components/codes.gen.yaml`의 enum 스키마(PascalCase 이름: `DeviceStatus`, `CaptureFace`, `ErrorCode` 등), `--check`는 생성 결과와 파일이 다르면 종료 코드 1. 파일 머리에 "생성 파일, 손으로 고치지 않음"
 - [ ] T005 T004로 `openapi/components/codes.gen.yaml` 생성
 - [ ] T006 `openapi/components/common.yaml` 작성: `Uuid`·`DateTime`·`Sha256`·`Problem`(code 필수, `ErrorCode` 참조)·`FieldError`·`PingResponse`, 파라미터 `Limit`·`Cursor`·`IdempotencyKey`, 응답 `BadRequest`·`Unauthorized`·`Forbidden`·`NotFound`·`TooManyRequests`, 보안 방식 `bearerJwt`·`refreshCookie`
@@ -67,9 +67,9 @@ description: "C1 OpenAPI 5개 작업 목록"
 
 ## Phase 5: US3 에이전트·부스 담당이 자기 호출을 확인한다 (P2)
 
-**Goal**: B가 쓰는 경로 7개(#14·#16·#32·#33·#34·#39 + #35 읽기)의 인증·범위·중복 키·오류가 빠짐없음
+**Goal**: B가 쓰는 경로 6개(#14·#16·#32·#33·#34·#39)의 인증·범위·중복 키·오류가 빠짐없음
 
-**Independent Test**: 7개 경로 각각에서 인증 방법, scope, `Idempotency-Key`(#33·#39), 오류 code를 계약만 보고 설명 가능
+**Independent Test**: 6개 경로 각각에서 인증 방법, scope, `Idempotency-Key`(#33·#39), 오류 code를 계약만 보고 설명 가능
 
 - [ ] T020 [US3] `openapi/capture-server.yaml`·`openapi/diagnostics-server.yaml`: #33·#39에 `IdempotencyKey` 파라미터(필수)와 422 `IDEMPOTENCY_KEY_CONFLICT`, 같은 키 재요청은 첫 응답을 돌려준다는 description
 - [ ] T021 [US3] `openapi/auth-server.yaml`: #14·#16 토큰 수명(1시간·10분)과 `scope` 클레임 내용을 description에, 429는 #16만
@@ -97,7 +97,7 @@ description: "C1 OpenAPI 5개 작업 목록"
 - [ ] T029 [P] `openapi/README.md` 갱신: 파일 목록, 공통 규칙, 생성 파일, 검사 명령, `x-trace-access`·`x-trace-error-codes` 뜻
 - [ ] T030 [P] `CHANGELOG.md`에 0.3.0(codes.yaml)·OpenAPI 0.1.0 항목
 - [ ] T031 quickstart.md의 검사 전부 실행, `scripts/check-no-secrets.sh` 통과
-- [ ] T032 PR 본문: 백로그 C1, 요구사항(FR 전체 API), 원본과 다른 점 4가지, B·C 확인표, 검사 결과
+- [ ] T032 PR 본문: 백로그 C1, 요구사항(FR 전체 API), 원본과 다른 점 4가지, 브랜치 이름 사유, B·C 확인표, 검사 결과. PR을 연 뒤 B·C에게 리뷰 요청(SC-004)
 
 ---
 

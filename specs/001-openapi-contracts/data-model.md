@@ -89,8 +89,8 @@
 
 | 스키마 | 필드 |
 | --- | --- |
-| `RentalTimeline` | rentalId, modelCode, chainStatus(`VALID`·`BROKEN`·`PENDING`), checkpoints[{checkpointId, type, status, occurredAt, grade?, newDefectCount, pins[{defectId, face, x, y, isNew}], diagnosticsSummary{maxCapacityPct, flags[]}, sealedAt?}] |
-| `ProgressEvent` (SSE `progress`) | checkpointId, stage(`UPLOADED`·`ALIGNED`·`INSPECTED`·`GRADED`·`SEALED`), percent(0~100), at |
+| `RentalTimeline` | rentalId, modelCode, chainStatus(`ReportChainStatus`: VALID·BROKEN·PENDING), checkpoints[{checkpointId, type, status, occurredAt, grade?, newDefectCount, pins[{defectId, face, x, y, isNew}], diagnosticsSummary{maxCapacityPct, flags[]}, sealedAt?}] |
+| `ProgressEvent` (SSE `progress`) | checkpointId, stage(`ReportProgressStage`: UPLOADED·ALIGNED·INSPECTED·GRADED·SEALED), percent(0~100), at |
 | `DoneEvent` (SSE `done`) | checkpointId, grade |
 | `ChainRecord` / `Chain` | seq, checkpointId, checkpointType, payloadHash, prevHash(null 가능), signature, signedAt / rentalId, valid, records[] |
 | `VerifyResponse` | valid, modelName, records[{seq, checkpointType, grade, payloadHash, signedAt}], checkedAt — 개인정보·사진·진단 상세 없음 |

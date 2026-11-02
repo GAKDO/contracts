@@ -26,7 +26,7 @@ rest-api-v0.md의 경로 41개와 ping 5개를 서버별 OpenAPI 3.1 파일 5개
 
 **Constraints**: 11/3 고정 뒤에는 더하는 변경만. 파일마다 openapi-typescript가 따로 돌 수 있게 외부 `$ref`는 상대 경로만 쓴다. 비밀·실명 예시 금지.
 
-**Scale/Scope**: 경로 46개, 공통 컴포넌트 약 10개, 오류 code 약 35개
+**Scale/Scope**: 경로 46개, 공통 컴포넌트 약 10개, 오류 code 34개
 
 ## 헌법 점검
 
@@ -34,12 +34,14 @@ rest-api-v0.md의 경로 41개와 ping 5개를 서버별 OpenAPI 3.1 파일 5개
 
 | 원칙 | 점검 | 결과 |
 | --- | --- | --- |
-| I. 계약이 먼저다 | 이 기능이 계약 자체. 코드 값은 codes.yaml이 원본이고 OpenAPI는 생성본을 참조(손으로 복사하지 않음). codes.yaml 변경은 값 추가(`error_code`)만 | 통과 |
+| I. 계약이 먼저다 | 이 기능이 계약 자체. 코드 값은 codes.yaml이 원본이고 OpenAPI는 생성본을 참조(손으로 복사하지 않음). codes.yaml 변경은 값 추가(`error_code`, `auth.token_role`, `report.chain_status`, `report.progress_stage`)만 | 통과 |
 | II. 서비스 경계 | 서버마다 파일 하나, 다른 서버 ID는 값(uuid)으로만. 사진은 사전 서명 URL만 주고 본문을 받지 않음 | 통과 |
 | III. 기록은 고칠 수 없다 | 사진·진단에 `sha256` 필드, 체인에 `payloadHash`·`prevHash`·`signature`. 읽지 못한 값은 null 허용 + 사유 필드 | 통과 |
 | IV. 테스트와 품질 게이트 | 수용 기준 = redocly lint 통과 + 경로 대조 + B·C 승인. CI에 생성본 일치 검사 추가 | 통과 |
 | V. 비밀과 개인정보 | 예시는 지어낸 값. 검증 응답에 개인정보 없음. ping만 인증 없음, 역할은 최소 | 통과 |
 | VI. 단순하게 | rest-api-v0 표에 있는 경로만. 공통 파일 1개, 스크립트 2개(각 100줄 안팎) | 통과 |
+
+브랜치: 헌법의 Spec Kit 기본값은 `feature/001-openapi-contracts`이지만 이 세션의 지정 브랜치 `claude/project-thread-1s3ob8`를 쓴다(PR 본문에 적음).
 
 원본과 다른 점(PR 본문에 적고 승인받음): `GET /devices`의 `page` → 커서, 오류 `code`를 codes.yaml로 고정, `POST /pilot/participants`에 400·409 추가, 인증 경로마다 401·403 추가.
 
@@ -62,7 +64,7 @@ specs/001-openapi-contracts/
 ### 레포 (contracts)
 
 ```text
-codes.yaml                         # + error_code, version 0.3.0
+codes.yaml                         # + error_code, auth.token_role, report.*, version 0.3.0
 openapi/
 ├── README.md                      # 파일 목록·규칙 갱신
 ├── components/

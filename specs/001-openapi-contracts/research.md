@@ -37,7 +37,7 @@
 
 - **결정**: `text/event-stream`, 이벤트 이름 `progress`(`{checkpointId, stage, percent, at}`), `done`(`{checkpointId, grade}`), `error`(Problem). stage는 `UPLOADED → ALIGNED → INSPECTED → GRADED → SEALED`. 스키마는 `components`에 두고 description에 형식을 적는다.
 - **이유**: OpenAPI 3.1은 SSE 이벤트 스키마 표준이 없어서 응답 스키마를 문자열로 두고 이벤트 데이터 스키마를 따로 정의해 참조한다.
-- **열린 점**: stage 값은 codes.yaml에 없다. 화면 표시용이라 C 리뷰에서 확인하고, 필요하면 codes.yaml에 더한다.
+- stage 값은 codes.yaml `report.progress_stage`에, 타임라인의 체인 상태(VALID·BROKEN·PENDING)는 `report.chain_status`에 더한다(FR-007). 값 이름은 C 리뷰에서 확인한다.
 
 ## R7. 진단 업로드 본문
 

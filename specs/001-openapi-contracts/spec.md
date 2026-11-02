@@ -59,7 +59,7 @@ B가 진단 에이전트(AG1·AG2)와 부스(BO1·BO2)를 만들 때 페어링 �
 
 **이 우선순위인 이유**: AG1이 11/9, BO2가 11/6이라 C1보다 늦게 시작하지만 계약 고정 뒤에는 깨는 변경을 할 수 없다.
 
-**독립 테스트**: B가 쓰는 7개 경로에서 인증 방법, 범위(boothId·checkpointId), `Idempotency-Key`, 오류 응답을 계약만 보고 설명할 수 있다.
+**독립 테스트**: B가 쓰는 6개 경로(#14·#16·#32·#33·#34·#39)에서 인증 방법, 범위(boothId·checkpointId), `Idempotency-Key`, 오류 응답을 계약만 보고 설명할 수 있다.
 
 **수용 시나리오**:
 
@@ -106,7 +106,7 @@ A가 gateway(GW1)의 역할 검사와 통합 테스트를 만들 때, 경로마�
 - **FR-009**: 촬영 완료와 진단 업로드는 `Idempotency-Key` 요청 헤더를 필수로 적는다.
 - **FR-010**: 가입·로그인·코드 확인·페어링 교환에는 429(분당 10회 초과) 응답을 적는다.
 - **FR-011**: rest-api-v0.md의 요청·응답 예시(촬영 세트 만들기, 검증, 오류 예시)를 계약의 예시로 그대로 옮기고, 화면별 API 표의 호출마다 성공 예시를 하나 이상 둔다.
-- **FR-012**: 오류 `code` 값은 codes.yaml에 `error_code` 목록(UPPER_SNAKE, 예: `RENTAL_OPEN_EXISTS`)으로 고정하고, 계약은 그 목록을 참조한다. 응답마다 그 응답이 낼 수 있는 `code` 값을 적는다. codes.yaml 버전을 올린다(값 추가이므로 부 버전).
+- **FR-012**: 오류 `code` 값은 codes.yaml에 `error_code` 목록(UPPER_SNAKE, 예: `RENTAL_OPEN_EXISTS`)으로 고정하고, 계약은 그 목록을 참조한다. 응답마다 그 응답이 낼 수 있는 `code` 값을 적는다. 함께 JWT `role` 클레임 값 `auth.token_role`(ADMIN·CUSTOMER·BOOTH·AGENT), 체인 상태 `report.chain_status`, 진행 단계 `report.progress_stage`도 codes.yaml에 더한다. 값 추가이므로 부 버전(0.3.0)을 올린다.
 - **FR-013**: 계약 파일은 계약 검사(yamllint·redocly lint)를 통과한다.
 - **FR-014**: 계약에 비밀번호·토큰·키 같은 비밀 값이나 실제 개인정보 예시를 넣지 않는다(예시 값은 지어낸 값).
 
