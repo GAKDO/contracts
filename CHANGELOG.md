@@ -7,6 +7,9 @@ main에 버전이 적힌 CHANGELOG가 올라가면 release.yml이 태그와 GitH
 ## [Unreleased]
 
 ### 변경
+- 부스 탐지 `Detection`: `camera`(필수) 추가, `polygon`은 원본 사진 px(`PhotoPolygon`). 표준 좌표 변환은 inspect-worker의 alignments로 capture-server가 (11/2 결정, **깨지는 변경**)
+- 기기 수정: 폐기(RETIRED) 기기는 수리 중으로만 되돌림. RETIRED → ACTIVE는 409 `DEVICE_STATUS_TRANSITION_INVALID` (codes.yaml 0.6.0, 11/2 결정)
+- 촬영 세트 생성 설명: 같은 세트에서 겹치지 않는 키를 (face, light) → (face, light, camera)로 (문구만, DB·서버는 이미 카메라까지)
 - 이벤트 `trace.capture.uploaded`의 `photos[].objectKey` 설명: 버킷 trace-raw → trace-captures와 키 형식 (문구만, 스키마 값 그대로. CA1 구현과 맞춤)
 - ID 형식 `Uuid`(UUIDv7) → `PublicId`(NanoID 21자, `^[A-Za-z0-9_-]{21}$`): OpenAPI 5개·이벤트 봉투(eventId 포함 모든 `*Id`)·예시. DB 기본 키(bigint)는 내보내지 않음 (헌법 1.1.0, docs decisions.md 11/2, **깨지는 변경**)
 - codes.yaml 0.5.0: 폰 필수 면 `face_required.PHONE` = TOP·BOT·SF·SB·SL·SR·SCR0 (KB 제외, SCR1 선택, 11/2 확정)
@@ -15,6 +18,9 @@ main에 버전이 적힌 CHANGELOG가 올라가면 release.yml이 태그와 GitH
 - 조명 코드에 L4(앞 스침광, 키보드 촬영) 추가, 부스 카메라 코드 CAM을 CAM1(앞 반)·CAM2(뒤 반)로 나눔 (11/1 부스 설계)
 
 ### 추가
+- `POST /captures/sets/{setId}/uploads`: 아직 안 올라간 사진의 업로드 URL 다시 받기 (11/2 결정)
+- `capture/faces.md`: 면별 표준 좌표 방향·배율(1 px = 0.25 mm) (11/2 결정)
+- `diagnostics/influx.md`: InfluxDB `trace-pilot` measurement·태그·필드 이름 (11/2 결정)
 - 이벤트 봉투 rentalId 경로: `POST /captures/sets` 요청과 페어링 코드 발급 요청에 `rentalId`(필수), AGENT 토큰 응답·JWT에 `rentalId` (C1·C3 보강, 11/3 고정 전)
 - 이벤트 스키마 5종(`events/trace.*.schema.json`)과 봉투 `events/envelope.schema.json`, 예시 `examples/events/`, codes.yaml → JSON Schema `$defs` 생성본 `schemas/codes.gen.schema.json`과 이벤트 계약 검사 스크립트 (C3)
 - 진단 결과 JSON Schema v1 `diagnostics/result.schema.json`(`diag.v1`), 예시 7개와 예시 검사, codes.yaml 0.4.0 진단 값 6종, diagnostics-server 업로드 본문을 이 스키마 `$ref`로 (C2)

@@ -8,6 +8,8 @@ TRACE 레포들이 함께 지키는 **계약의 원본**입니다. 서버·화�
 | `openapi/` | 서버별 OpenAPI 3.1 | 11/3까지 |
 | `diagnostics/` | 진단 결과 JSON Schema와 예시 | 11/3까지 |
 | `events/` | RabbitMQ 이벤트 스키마 | 11/3까지 |
+| `capture/faces.md` | 면별 표준 좌표 방향·배율(펼친 이미지, 3D 텍스처, 촬영 가이드 기준) | 11/2 확정 |
+| `diagnostics/influx.md` | 파일럿 추이 InfluxDB `trace-pilot` 이름 | 11/2 확정 |
 
 - 담당: A (B·C 리뷰)
 - 설계: [GAKDO/docs](https://github.com/GAKDO/docs)
