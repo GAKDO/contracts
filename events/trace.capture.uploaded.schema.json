@@ -65,7 +65,7 @@
           },
           "objectKey": {
             "$ref": "envelope.schema.json#/$defs/ObjectKey",
-            "description": "버킷 trace-raw 안의 원본 사진 키"
+            "description": "버킷 trace-captures 안의 원본 사진 키(형식 captures/{captureSetId}/{face}-{light}-{camera}.{jpg|png})"
           },
           "sha256": {
             "$ref": "envelope.schema.json#/$defs/Sha256",
