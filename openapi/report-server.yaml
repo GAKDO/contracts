@@ -214,6 +214,9 @@ paths:
         자동 봉인과 같은 해시 체인에 잇고 `trace.record.sealed`를 낸다. 지금까지 받은 사진·진단 해시를 묶고, 수동 봉인이라는 사실과 사유도
         봉인 내용(payloadHash)에 들어간다. 쓸 때마다 사용 기록(`GET /api/v1/reports/manual-seals`)에 남는다.
         이미 봉인된 시점은 409 RECORD_ALREADY_SEALED, 앞 시점(출고 → 수령 → 반납)이 봉인되지 않았으면 409 CHECKPOINT_ORDER_VIOLATION. (FR-INT-01)
+        `checkpointType`은 report-server가 이벤트(trace.checkpoint.graded)로 이미 아는 그 시점의 종류와 같아야 하고, 다르면 400 VALIDATION_FAILED
+        (`errors[].field = checkpointType`)로 거절해 잘못된 종류가 체인에 남지 않게 한다. 이벤트를 하나도 받지 못한 시점이면 요청 값을 쓴다.
+        `checkpointId`가 다른 렌탈의 시점이면 404.
       security:
         - bearerJwt: []
       x-trace-requirements: [FR-INT-01]
@@ -252,6 +255,8 @@ paths:
           $ref: './components/common.yaml#/components/responses/Unauthorized'
         '403':
           $ref: './components/common.yaml#/components/responses/Forbidden'
+        '404':
+          $ref: './components/common.yaml#/components/responses/NotFound'
         '409':
           description: 이미 봉인됨 또는 앞 시점이 봉인되지 않음
           x-trace-error-codes: [RECORD_ALREADY_SEALED, CHECKPOINT_ORDER_VIOLATION]
