@@ -35,7 +35,7 @@ rest-api-v0.md의 경로 41개와 ping 5개를 서버별 OpenAPI 3.1 파일 5개
 | 원칙 | 점검 | 결과 |
 | --- | --- | --- |
 | I. 계약이 먼저다 | 이 기능이 계약 자체. 코드 값은 codes.yaml이 원본이고 OpenAPI는 생성본을 참조(손으로 복사하지 않음). codes.yaml 변경은 값 추가(`error_code`, `auth.token_role`, `report.chain_status`, `report.progress_stage`)만 | 통과 |
-| II. 서비스 경계 | 서버마다 파일 하나, 다른 서버 ID는 값(uuid)으로만. 사진은 사전 서명 URL만 주고 본문을 받지 않음 | 통과 |
+| II. 서비스 경계 | 서버마다 파일 하나, 다른 서버 ID는 값(publicId)으로만. 사진은 사전 서명 URL만 주고 본문을 받지 않음 | 통과 |
 | III. 기록은 고칠 수 없다 | 사진·진단에 `sha256` 필드, 체인에 `payloadHash`·`prevHash`·`signature`. 읽지 못한 값은 null 허용 + 사유 필드 | 통과 |
 | IV. 테스트와 품질 게이트 | 수용 기준 = redocly lint 통과 + 경로 대조 + B·C 승인. CI에 생성본 일치 검사 추가 | 통과 |
 | V. 비밀과 개인정보 | 예시는 지어낸 값. 검증 응답에 개인정보 없음. ping만 인증 없음, 역할은 최소 | 통과 |
@@ -68,7 +68,7 @@ codes.yaml                         # + error_code, auth.token_role, report.*, ve
 openapi/
 ├── README.md                      # 파일 목록·규칙 갱신
 ├── components/
-│   ├── common.yaml                # Problem, CursorPage, Uuid, DateTime, 보안 방식, 공통 응답·파라미터
+│   ├── common.yaml                # Problem, CursorPage, PublicId, DateTime, 보안 방식, 공통 응답·파라미터
 │   └── codes.gen.yaml             # codes.yaml에서 생성 (손으로 고치지 않음)
 ├── auth-server.yaml               # 16 + ping
 ├── rental-server.yaml             # 12 + ping

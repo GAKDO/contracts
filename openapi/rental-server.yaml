@@ -67,7 +67,7 @@ paths:
             schema:
               $ref: '#/components/schemas/RentalCreateRequest'
             example:
-              deviceId: 0193a1c2-0000-7000-8000-000000000501
+              deviceId: aAXQFO2Vz6ZTFbPctC2dq
               renterRef: R-2026-0012
       responses:
         '201':
@@ -82,8 +82,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/Rental'
               example:
-                rentalId: 0193a1c2-0000-7000-8000-000000000201
-                deviceId: 0193a1c2-0000-7000-8000-000000000501
+                rentalId: Ws0HLv6QRbDILPWOcz5I2
+                deviceId: aAXQFO2Vz6ZTFbPctC2dq
                 renterRef: R-2026-0012
                 status: OPEN
                 startedAt: null
@@ -152,8 +152,8 @@ paths:
                 $ref: '#/components/schemas/RentalPage'
               example:
                 items:
-                  - rentalId: 0193a1c2-0000-7000-8000-000000000201
-                    deviceId: 0193a1c2-0000-7000-8000-000000000501
+                  - rentalId: Ws0HLv6QRbDILPWOcz5I2
+                    deviceId: aAXQFO2Vz6ZTFbPctC2dq
                     serial: C02EXAMPLE01
                     modelCode: MBA13-M2
                     status: OPEN
@@ -188,19 +188,19 @@ paths:
               schema:
                 $ref: '#/components/schemas/Rental'
               example:
-                rentalId: 0193a1c2-0000-7000-8000-000000000201
-                deviceId: 0193a1c2-0000-7000-8000-000000000501
+                rentalId: Ws0HLv6QRbDILPWOcz5I2
+                deviceId: aAXQFO2Vz6ZTFbPctC2dq
                 renterRef: R-2026-0012
                 status: OPEN
                 startedAt: '2026-11-12T09:00:00+09:00'
                 endedAt: null
                 createdAt: '2026-11-12T08:50:00+09:00'
                 checkpoints:
-                  - checkpointId: 0193a1c2-0000-7000-8000-000000000301
+                  - checkpointId: aJ3bYet82WYF8iVlHstT2
                     type: OUT
                     status: SEALED
                     occurredAt: '2026-11-12T09:00:00+09:00'
-                  - checkpointId: 0193a1c2-0000-7000-8000-000000000302
+                  - checkpointId: h40b9AN9xMQhXRHrOyJWB
                     type: RCV
                     status: OPEN
                     occurredAt: null
@@ -243,7 +243,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Checkpoint'
               example:
-                checkpointId: 0193a1c2-0000-7000-8000-000000000302
+                checkpointId: h40b9AN9xMQhXRHrOyJWB
                 type: RCV
                 status: OPEN
                 occurredAt: null
@@ -336,7 +336,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Device'
               example:
-                deviceId: 0193a1c2-0000-7000-8000-000000000501
+                deviceId: aAXQFO2Vz6ZTFbPctC2dq
                 serial: C02EXAMPLE01
                 modelCode: MBA13-M2
                 modelName: MacBook Air (M2, 2022)
@@ -408,7 +408,7 @@ paths:
                 $ref: '#/components/schemas/DevicePage'
               example:
                 items:
-                  - deviceId: 0193a1c2-0000-7000-8000-000000000501
+                  - deviceId: aAXQFO2Vz6ZTFbPctC2dq
                     serial: C02EXAMPLE01
                     modelCode: MBA13-M2
                     modelName: MacBook Air (M2, 2022)
@@ -432,7 +432,7 @@ paths:
         in: path
         required: true
         schema:
-          $ref: './components/common.yaml#/components/schemas/Uuid'
+          $ref: './components/common.yaml#/components/schemas/PublicId'
     patch:
       tags: [기기]
       operationId: updateDevice
@@ -463,7 +463,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Device'
               example:
-                deviceId: 0193a1c2-0000-7000-8000-000000000501
+                deviceId: aAXQFO2Vz6ZTFbPctC2dq
                 serial: C02EXAMPLE01
                 modelCode: MBA13-M2
                 modelName: MacBook Air (M2, 2022)
@@ -657,7 +657,7 @@ paths:
               $ref: '#/components/schemas/PilotParticipantCreateRequest'
             example:
               alias: P01
-              deviceId: 0193a1c2-0000-7000-8000-000000000501
+              deviceId: aAXQFO2Vz6ZTFbPctC2dq
               consentAt: '2026-11-11T14:00:00+09:00'
       responses:
         '201':
@@ -667,9 +667,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/PilotParticipant'
               example:
-                participantId: 0193a1c2-0000-7000-8000-000000000601
+                participantId: fBSvifsp4FWaM07ql1SET
                 alias: P01
-                deviceId: 0193a1c2-0000-7000-8000-000000000501
+                deviceId: aAXQFO2Vz6ZTFbPctC2dq
                 consentAt: '2026-11-11T14:00:00+09:00'
                 createdAt: '2026-11-11T14:01:00+09:00'
         '400':
@@ -699,7 +699,7 @@ components:
       in: path
       required: true
       schema:
-        $ref: './components/common.yaml#/components/schemas/Uuid'
+        $ref: './components/common.yaml#/components/schemas/PublicId'
   schemas:
     ModelCode:
       type: string
@@ -711,7 +711,7 @@ components:
       required: [deviceId, renterRef]
       properties:
         deviceId:
-          $ref: './components/common.yaml#/components/schemas/Uuid'
+          $ref: './components/common.yaml#/components/schemas/PublicId'
         renterRef:
           type: string
           minLength: 1
@@ -722,7 +722,7 @@ components:
       required: [checkpointId, type, status, occurredAt]
       properties:
         checkpointId:
-          $ref: './components/common.yaml#/components/schemas/Uuid'
+          $ref: './components/common.yaml#/components/schemas/PublicId'
         type:
           $ref: './components/codes.gen.yaml#/components/schemas/RentalCheckpointType'
         status:
@@ -744,9 +744,9 @@ components:
       required: [rentalId, deviceId, renterRef, status, startedAt, endedAt, createdAt, checkpoints]
       properties:
         rentalId:
-          $ref: './components/common.yaml#/components/schemas/Uuid'
+          $ref: './components/common.yaml#/components/schemas/PublicId'
         deviceId:
-          $ref: './components/common.yaml#/components/schemas/Uuid'
+          $ref: './components/common.yaml#/components/schemas/PublicId'
         renterRef:
           type: string
         status:
@@ -772,9 +772,9 @@ components:
       required: [rentalId, deviceId, serial, modelCode, status, createdAt]
       properties:
         rentalId:
-          $ref: './components/common.yaml#/components/schemas/Uuid'
+          $ref: './components/common.yaml#/components/schemas/PublicId'
         deviceId:
-          $ref: './components/common.yaml#/components/schemas/Uuid'
+          $ref: './components/common.yaml#/components/schemas/PublicId'
         serial:
           type: string
         modelCode:
@@ -833,7 +833,7 @@ components:
       required: [deviceId, serial, modelCode, modelName, os, color, assetNo, status, retiredAt, createdAt, updatedAt]
       properties:
         deviceId:
-          $ref: './components/common.yaml#/components/schemas/Uuid'
+          $ref: './components/common.yaml#/components/schemas/PublicId'
         serial:
           type: string
         modelCode:
@@ -954,7 +954,7 @@ components:
           type: string
           pattern: '^P\d{2,3}$'
         deviceId:
-          $ref: './components/common.yaml#/components/schemas/Uuid'
+          $ref: './components/common.yaml#/components/schemas/PublicId'
         consentAt:
           $ref: './components/common.yaml#/components/schemas/DateTime'
     PilotParticipant:
@@ -962,11 +962,11 @@ components:
       required: [participantId, alias, deviceId, consentAt, createdAt]
       properties:
         participantId:
-          $ref: './components/common.yaml#/components/schemas/Uuid'
+          $ref: './components/common.yaml#/components/schemas/PublicId'
         alias:
           type: string
         deviceId:
-          $ref: './components/common.yaml#/components/schemas/Uuid'
+          $ref: './components/common.yaml#/components/schemas/PublicId'
         consentAt:
           $ref: './components/common.yaml#/components/schemas/DateTime'
         createdAt:

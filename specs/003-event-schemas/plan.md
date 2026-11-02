@@ -27,7 +27,7 @@
 ## 구조
 
 ```text
-events/envelope.schema.json            # $defs: Envelope, SchemaVersion, Uuid, DateTime, Sha256, ObjectKey, ModelVersion
+events/envelope.schema.json            # $defs: Envelope, SchemaVersion, PublicId, DateTime, Sha256, ObjectKey, ModelVersion
 events/trace.<도메인>.<동작>.schema.json  # 5개
 examples/events/trace.*.json           # 5개
 schemas/codes.gen.schema.json          # 생성본 (scripts/gen_schema_codes.py)

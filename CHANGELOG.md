@@ -7,6 +7,7 @@ main에 버전이 적힌 CHANGELOG가 올라가면 release.yml이 태그와 GitH
 ## [Unreleased]
 
 ### 변경
+- ID 형식 `Uuid`(UUIDv7) → `PublicId`(NanoID 21자, `^[A-Za-z0-9_-]{21}$`): OpenAPI 5개·이벤트 봉투(eventId 포함 모든 `*Id`)·예시. DB 기본 키(bigint)는 내보내지 않음 (헌법 1.1.0, docs decisions.md 11/2, **깨지는 변경**)
 - codes.yaml 0.5.0: 폰 필수 면 `face_required.PHONE` = TOP·BOT·SF·SB·SL·SR·SCR0 (KB 제외, SCR1 선택, 11/2 확정)
 - codes.yaml 조명 값 `OFF`를 따옴표로 감쌈. YAML 1.1 파서(PyYAML·SnakeYAML)가 불리언 false로 읽던 문제 (값은 그대로)
 - codes.yaml 0.3.0: 면 코드 설명과 출처별 필수 면 `face_required`를 더함. 부스는 8면(SCR1은 선택, 건너뛰면 사유), 폰은 WE2에서 정함 (11/2)

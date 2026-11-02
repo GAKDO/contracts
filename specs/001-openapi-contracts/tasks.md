@@ -26,7 +26,7 @@ description: "C1 OpenAPI 5개 작업 목록"
 - [x] T003 `codes.yaml`에 `error_code`(data-model.md 표의 34개)와 `auth.token_role: [ADMIN, CUSTOMER, BOOTH, AGENT]`, `report.chain_status: [VALID, BROKEN, PENDING]`, `report.progress_stage: [UPLOADED, ALIGNED, INSPECTED, GRADED, SEALED]` 추가, `version: 0.3.0`, 머리 주석 갱신
 - [x] T004 `scripts/gen_openapi_codes.py` 작성: codes.yaml의 각 목록 → `openapi/components/codes.gen.yaml`의 enum 스키마(PascalCase 이름: `DeviceStatus`, `CaptureFace`, `ErrorCode` 등), `--check`는 생성 결과와 파일이 다르면 종료 코드 1. 파일 머리에 "생성 파일, 손으로 고치지 않음"
 - [x] T005 T004로 `openapi/components/codes.gen.yaml` 생성
-- [x] T006 `openapi/components/common.yaml` 작성: `Uuid`·`DateTime`·`Sha256`·`Problem`(code 필수, `ErrorCode` 참조)·`FieldError`·`PingResponse`, 파라미터 `Limit`·`Cursor`·`IdempotencyKey`, 응답 `BadRequest`·`Unauthorized`·`Forbidden`·`NotFound`·`TooManyRequests`, 보안 방식 `bearerJwt`·`refreshCookie`
+- [x] T006 `openapi/components/common.yaml` 작성: `PublicId`(11/2 `Uuid`에서 바꿈)·`DateTime`·`Sha256`·`Problem`(code 필수, `ErrorCode` 참조)·`FieldError`·`PingResponse`, 파라미터 `Limit`·`Cursor`·`IdempotencyKey`, 응답 `BadRequest`·`Unauthorized`·`Forbidden`·`NotFound`·`TooManyRequests`, 보안 방식 `bearerJwt`·`refreshCookie`
 - [x] T007 `.github/workflows/contracts-ci.yml`에 "코드 값 생성본 일치" 단계 추가(`pip install pyyaml` + `python scripts/gen_openapi_codes.py --check`), OpenAPI 린트 대상을 `openapi/*-server.yaml`로(components는 참조로 함께 검사)
 
 **Checkpoint**: 공통 파일이 lint를 통과(빈 서버 파일 하나로 확인)

@@ -63,12 +63,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/RentalTimeline'
               example:
-                rentalId: 0193a1c2-0000-7000-8000-000000000201
+                rentalId: Ws0HLv6QRbDILPWOcz5I2
                 modelCode: MBA13-M2
                 chainStatus: VALID
                 verifyUrl: https://trace.example.com/verify/0123456789abcdef0123456789abcdef
                 checkpoints:
-                  - checkpointId: 0193a1c2-0000-7000-8000-000000000301
+                  - checkpointId: aJ3bYet82WYF8iVlHstT2
                     type: OUT
                     status: SEALED
                     occurredAt: '2026-11-12T09:00:00+09:00'
@@ -79,14 +79,14 @@ paths:
                       maxCapacityPct: 91.2
                       flags: []
                     sealedAt: '2026-11-12T09:10:00+09:00'
-                  - checkpointId: 0193a1c2-0000-7000-8000-000000000302
+                  - checkpointId: h40b9AN9xMQhXRHrOyJWB
                     type: RCV
                     status: SEALED
                     occurredAt: '2026-11-12T13:05:00+09:00'
                     grade: B
                     newDefectCount: 1
                     pins:
-                      - defectId: 0193a1c2-0000-7000-8000-000000000701
+                      - defectId: wcMFSsKlYBJ0vrxTlC8t5
                         face: TOP
                         x: 150.2
                         y: 85.0
@@ -118,10 +118,10 @@ paths:
         예:
         ```
         event: progress
-        data: {"checkpointId":"0193a1c2-0000-7000-8000-000000000302","stage":"INSPECTED","percent":60,"at":"2026-11-12T13:20:00+09:00"}
+        data: {"checkpointId":"h40b9AN9xMQhXRHrOyJWB","stage":"INSPECTED","percent":60,"at":"2026-11-12T13:20:00+09:00"}
 
         event: done
-        data: {"checkpointId":"0193a1c2-0000-7000-8000-000000000302","grade":"B"}
+        data: {"checkpointId":"h40b9AN9xMQhXRHrOyJWB","grade":"B"}
         ```
       security:
         - bearerJwt: []
@@ -181,11 +181,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/Chain'
               example:
-                rentalId: 0193a1c2-0000-7000-8000-000000000201
+                rentalId: Ws0HLv6QRbDILPWOcz5I2
                 valid: true
                 records:
                   - seq: 1
-                    checkpointId: 0193a1c2-0000-7000-8000-000000000301
+                    checkpointId: aJ3bYet82WYF8iVlHstT2
                     checkpointType: OUT
                     payloadHash: 7f3a0c1e5b9d2f4a6c8e0b1d3f5a7c9e1b3d5f7a9c1e3b5d7f9a1c3e5b7de21b
                     prevHash: null
@@ -278,7 +278,7 @@ paths:
                 $ref: '#/components/schemas/ReportSearchPage'
               example:
                 items:
-                  - rentalId: 0193a1c2-0000-7000-8000-000000000201
+                  - rentalId: Ws0HLv6QRbDILPWOcz5I2
                     serial: C02EXAMPLE01
                     modelCode: MBA13-M2
                     chainStatus: VALID
@@ -300,14 +300,14 @@ components:
       in: path
       required: true
       schema:
-        $ref: './components/common.yaml#/components/schemas/Uuid'
+        $ref: './components/common.yaml#/components/schemas/PublicId'
   schemas:
     Pin:
       type: object
       required: [defectId, face, x, y, isNew]
       properties:
         defectId:
-          $ref: './components/common.yaml#/components/schemas/Uuid'
+          $ref: './components/common.yaml#/components/schemas/PublicId'
         face:
           $ref: './components/codes.gen.yaml#/components/schemas/CaptureFace'
         x:
@@ -323,7 +323,7 @@ components:
       required: [checkpointId, type, status, occurredAt, grade, newDefectCount, pins, diagnosticsSummary, sealedAt]
       properties:
         checkpointId:
-          $ref: './components/common.yaml#/components/schemas/Uuid'
+          $ref: './components/common.yaml#/components/schemas/PublicId'
         type:
           $ref: './components/codes.gen.yaml#/components/schemas/RentalCheckpointType'
         status:
@@ -364,7 +364,7 @@ components:
       required: [rentalId, modelCode, chainStatus, verifyUrl, checkpoints]
       properties:
         rentalId:
-          $ref: './components/common.yaml#/components/schemas/Uuid'
+          $ref: './components/common.yaml#/components/schemas/PublicId'
         modelCode:
           type: string
         chainStatus:
@@ -383,7 +383,7 @@ components:
       required: [checkpointId, stage, percent, at]
       properties:
         checkpointId:
-          $ref: './components/common.yaml#/components/schemas/Uuid'
+          $ref: './components/common.yaml#/components/schemas/PublicId'
         stage:
           $ref: './components/codes.gen.yaml#/components/schemas/ReportProgressStage'
         percent:
@@ -398,7 +398,7 @@ components:
       required: [checkpointId, grade]
       properties:
         checkpointId:
-          $ref: './components/common.yaml#/components/schemas/Uuid'
+          $ref: './components/common.yaml#/components/schemas/PublicId'
         grade:
           oneOf:
             - $ref: './components/codes.gen.yaml#/components/schemas/InspectionGrade'
@@ -411,7 +411,7 @@ components:
           type: integer
           minimum: 1
         checkpointId:
-          $ref: './components/common.yaml#/components/schemas/Uuid'
+          $ref: './components/common.yaml#/components/schemas/PublicId'
         checkpointType:
           $ref: './components/codes.gen.yaml#/components/schemas/RentalCheckpointType'
         payloadHash:
@@ -432,7 +432,7 @@ components:
       required: [rentalId, valid, records]
       properties:
         rentalId:
-          $ref: './components/common.yaml#/components/schemas/Uuid'
+          $ref: './components/common.yaml#/components/schemas/PublicId'
         valid:
           type: boolean
         records:
@@ -484,7 +484,7 @@ components:
             required: [rentalId, serial, modelCode, chainStatus, updatedAt]
             properties:
               rentalId:
-                $ref: './components/common.yaml#/components/schemas/Uuid'
+                $ref: './components/common.yaml#/components/schemas/PublicId'
               serial:
                 type: string
               modelCode:

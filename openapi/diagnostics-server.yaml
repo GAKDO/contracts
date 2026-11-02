@@ -141,10 +141,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/DiagnosticRunCreated'
               example:
-                runId: 0193a1c2-0000-7000-8000-000000000801
+                runId: rvOxWZUKqB0ADJXHI6dsr
                 flags:
                   - kind: CAPACITY_DROP
-                    baseRunId: 0193a1c2-0000-7000-8000-000000000800
+                    baseRunId: XesYrBEmTvUpyXxp1I1jj
                     detail:
                       metric: maxCapacityPct
                       before: 91.2
@@ -195,7 +195,7 @@ paths:
         in: path
         required: true
         schema:
-          $ref: './components/common.yaml#/components/schemas/Uuid'
+          $ref: './components/common.yaml#/components/schemas/PublicId'
     get:
       tags: [진단]
       operationId: getCheckpointDiagnostics
@@ -216,9 +216,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/CheckpointDiagnostics'
               example:
-                checkpointId: 0193a1c2-0000-7000-8000-000000000302
+                checkpointId: h40b9AN9xMQhXRHrOyJWB
                 current:
-                  runId: 0193a1c2-0000-7000-8000-000000000801
+                  runId: rvOxWZUKqB0ADJXHI6dsr
                   collectedAt: '2026-11-12T13:20:00+09:00'
                   os: MACOS
                   battery:
@@ -244,7 +244,7 @@ paths:
                     - metric: CPU_SINGLE
                       median: 2580.0
                 previous:
-                  runId: 0193a1c2-0000-7000-8000-000000000800
+                  runId: XesYrBEmTvUpyXxp1I1jj
                   collectedAt: '2026-11-12T09:02:00+09:00'
                   os: MACOS
                   battery:
@@ -259,7 +259,7 @@ paths:
                   benchmarks: []
                 flags:
                   - kind: CAPACITY_DROP
-                    baseRunId: 0193a1c2-0000-7000-8000-000000000800
+                    baseRunId: XesYrBEmTvUpyXxp1I1jj
                     detail:
                       metric: maxCapacityPct
                       before: 91.2
@@ -285,7 +285,7 @@ components:
         kind:
           $ref: './components/codes.gen.yaml#/components/schemas/DiagnosticsFlagKind'
         baseRunId:
-          $ref: './components/common.yaml#/components/schemas/Uuid'
+          $ref: './components/common.yaml#/components/schemas/PublicId'
         detail:
           type: object
           description: 플래그별 근거(비교한 값 before·after 등)
@@ -294,7 +294,7 @@ components:
       required: [runId, flags]
       properties:
         runId:
-          $ref: './components/common.yaml#/components/schemas/Uuid'
+          $ref: './components/common.yaml#/components/schemas/PublicId'
         flags:
           type: array
           items:
@@ -340,7 +340,7 @@ components:
       required: [runId, collectedAt, os, battery, ssd, components, benchmarks]
       properties:
         runId:
-          $ref: './components/common.yaml#/components/schemas/Uuid'
+          $ref: './components/common.yaml#/components/schemas/PublicId'
         collectedAt:
           $ref: './components/common.yaml#/components/schemas/DateTime'
         os:
@@ -378,7 +378,7 @@ components:
       required: [checkpointId, current, previous, flags]
       properties:
         checkpointId:
-          $ref: './components/common.yaml#/components/schemas/Uuid'
+          $ref: './components/common.yaml#/components/schemas/PublicId'
         current:
           $ref: '#/components/schemas/RunSummary'
         previous:

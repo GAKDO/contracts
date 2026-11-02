@@ -1,6 +1,6 @@
 # 데이터 모델: C3 이벤트 5종
 
-봉투(모든 이벤트, 필수): `schemaVersion`("1.0") · `eventId`(UUIDv7) · `occurredAt`(ISO 8601 + 오프셋) · `rentalId` · `checkpointId`
+봉투(모든 이벤트, 필수): `schemaVersion`("1.0") · `eventId`(NanoID 21자) · `occurredAt`(ISO 8601 + 오프셋) · `rentalId` · `checkpointId`
 
 | 라우팅 키 | 필수 필드 | 선택 필드 | 코드 값 참조 |
 | --- | --- | --- | --- |

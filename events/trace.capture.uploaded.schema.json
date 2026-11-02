@@ -25,7 +25,7 @@
   ],
   "properties": {
     "captureSetId": {
-      "$ref": "envelope.schema.json#/$defs/Uuid"
+      "$ref": "envelope.schema.json#/$defs/PublicId"
     },
     "source": {
       "$ref": "../schemas/codes.gen.schema.json#/$defs/CaptureSource"
@@ -52,7 +52,7 @@
         ],
         "properties": {
           "photoId": {
-            "$ref": "envelope.schema.json#/$defs/Uuid"
+            "$ref": "envelope.schema.json#/$defs/PublicId"
           },
           "face": {
             "$ref": "../schemas/codes.gen.schema.json#/$defs/CaptureFace"

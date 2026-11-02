@@ -28,7 +28,7 @@
   ],
   "properties": {
     "captureSetId": {
-      "$ref": "envelope.schema.json#/$defs/Uuid"
+      "$ref": "envelope.schema.json#/$defs/PublicId"
     },
     "checkpointType": {
       "$ref": "../schemas/codes.gen.schema.json#/$defs/RentalCheckpointType"
@@ -47,7 +47,7 @@
       "uniqueItems": true,
       "description": "이전 시점에 없던 흠집 ID. 출고(OUT)는 비교 대상이 없어 빈 배열",
       "items": {
-        "$ref": "envelope.schema.json#/$defs/Uuid"
+        "$ref": "envelope.schema.json#/$defs/PublicId"
       }
     },
     "unjudgeableFaces": {
@@ -72,7 +72,7 @@
         ],
         "properties": {
           "photoId": {
-            "$ref": "envelope.schema.json#/$defs/Uuid"
+            "$ref": "envelope.schema.json#/$defs/PublicId"
           },
           "sha256": {
             "$ref": "envelope.schema.json#/$defs/Sha256"

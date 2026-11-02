@@ -8,7 +8,7 @@
 
 **Backlog**: C1 (담당 A, 리뷰 B·C, 마감 11/3 계약 고정)
 
-**Input**: "auth, rental, capture, diagnostics, report 서버의 REST API를 OpenAPI 3.1 파일 5개(openapi/<서버>.yaml)로 고정한다. 원본은 GAKDO/docs design/rest-api-v0.md의 경로·역할 표와 요청·응답 예시다. 모든 오류는 RFC 9457 Problem Details, JSON 필드는 camelCase, ID는 UUIDv7, 시각은 ISO 8601 + 오프셋이다. 각 경로에 필요한 역할(ADMIN, CUSTOMER, BOOTH, AGENT)과 범위를 적고, /api/v1/<경로>/ping은 인증 없음으로 둔다. 코드 값은 codes.yaml을 참조한다. 수용 기준: redocly lint가 통과하고, rest-api-v0.md의 모든 경로가 빠짐없이 있으며, 화면(C)·에이전트(B) 담당이 리뷰에서 승인한다."
+**Input**: "auth, rental, capture, diagnostics, report 서버의 REST API를 OpenAPI 3.1 파일 5개(openapi/<서버>.yaml)로 고정한다. 원본은 GAKDO/docs design/rest-api-v0.md의 경로·역할 표와 요청·응답 예시다. 모든 오류는 RFC 9457 Problem Details, JSON 필드는 camelCase, ID는 UUIDv7(11/2 NanoID 21자 PublicId로 바뀜), 시각은 ISO 8601 + 오프셋이다. 각 경로에 필요한 역할(ADMIN, CUSTOMER, BOOTH, AGENT)과 범위를 적고, /api/v1/<경로>/ping은 인증 없음으로 둔다. 코드 값은 codes.yaml을 참조한다. 수용 기준: redocly lint가 통과하고, rest-api-v0.md의 모든 경로가 빠짐없이 있으며, 화면(C)·에이전트(B) 담당이 리뷰에서 승인한다."
 
 ## Clarifications
 
@@ -100,7 +100,7 @@ A가 gateway(GW1)의 역할 검사와 통합 테스트를 만들 때, 경로마�
 - **FR-003**: 경로마다 표의 "하는 일", "요구사항" ID, 필요한 역할과 범위 조건을 적는다.
 - **FR-004**: 경로마다 표의 "주요 응답"에 있는 상태 코드를 모두 적고, 인증이 필요한 경로에는 401·403을 더한다.
 - **FR-005**: 2xx가 아닌 모든 응답은 RFC 9457 Problem Details 형식(`application/problem+json`)이고 `code` 필드를 가진다.
-- **FR-006**: 요청·응답 본문의 모든 필드는 camelCase이고, ID는 UUIDv7 형식, 시각은 ISO 8601 + 오프셋 형식으로 적는다.
+- **FR-006**: 요청·응답 본문의 모든 필드는 camelCase이고, ID는 PublicId(NanoID 21자, `^[A-Za-z0-9_-]{21}$`) 형식이며 DB 기본 키(bigint)는 내보내지 않고, 시각은 ISO 8601 + 오프셋 형식으로 적는다.
 - **FR-007**: 면·조명·카메라·시점·상태·등급 같은 코드 값은 codes.yaml 0.2.0의 값만 쓰고, 값 목록을 손으로 다르게 쓰지 않는다.
 - **FR-008**: 모든 목록 응답은 공통 규칙(`limit`, `cursor` → `items`, `nextCursor`)을 따른다. `GET /devices`도 표의 `page=` 대신 커서를 쓴다(원본과 다른 점으로 PR 본문에 적는다).
 - **FR-009**: 촬영 완료와 진단 업로드는 `Idempotency-Key` 요청 헤더를 필수로 적는다.
@@ -114,7 +114,7 @@ A가 gateway(GW1)의 역할 검사와 통합 테스트를 만들 때, 경로마�
 
 - **계약 파일(서버별)**: 서버 이름, 버전, 경로 목록, 공통 형식(Problem Details, 목록, 오류 code).
 - **경로**: 메서드, 경로, 역할·범위, 요청(헤더·본문), 응답(상태 코드별 본문), 요구사항 ID.
-- **공통 형식**: Problem Details(+code), 커서 목록, UUIDv7 ID, 오프셋 시각, codes.yaml 값.
+- **공통 형식**: Problem Details(+code), 커서 목록, PublicId(NanoID 21자), 오프셋 시각, codes.yaml 값.
 
 ## 성공 기준 *(필수)*
 
