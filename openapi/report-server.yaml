@@ -227,12 +227,12 @@ paths:
                   - seq: 1
                     checkpointType: OUT
                     grade: A
-                    payloadHash: 7f3a…e21b
+                    payloadHash: 7f3a0c1e5b9d2f4a6c8e0b1d3f5a7c9e1b3d5f7a9c1e3b5d7f9a1c3e5b7de21b
                     signedAt: '2026-11-12T09:00:00+09:00'
                   - seq: 2
                     checkpointType: RCV
                     grade: A
-                    payloadHash: c41d…9a07
+                    payloadHash: c41d2b6f8a0c3e5d7f9b1a3c5e7d9f0b2a4c6e8d0f1b3a5c7e9d1f2b4a6c9a07
                     signedAt: '2026-11-12T13:10:00+09:00'
                 checkedAt: '2026-11-18T15:00:00+09:00'
         '404':
@@ -453,8 +453,8 @@ components:
             - $ref: './components/codes.gen.yaml#/components/schemas/InspectionGrade'
             - type: 'null'
         payloadHash:
-          type: string
-          description: 지문. 화면에는 앞 4자와 뒤 4자만 보여 준다(예 7f3a…e21b).
+          $ref: './components/common.yaml#/components/schemas/Sha256'
+          description: 지문(전체 해시). 화면에서 줄여 보여 준다(예 7f3a…e21b).
         signedAt:
           $ref: './components/common.yaml#/components/schemas/DateTime'
     VerifyResponse:
