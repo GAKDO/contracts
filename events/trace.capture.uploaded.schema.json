@@ -37,7 +37,7 @@
     "photos": {
       "type": "array",
       "minItems": 1,
-      "maxItems": 54,
+      "maxItems": 80,
       "description": "세트의 사진(9면 × 조명, 부스는 카메라 2대)",
       "items": {
         "type": "object",
