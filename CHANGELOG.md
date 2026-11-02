@@ -7,6 +7,9 @@ main에 버전이 적힌 CHANGELOG가 올라가면 release.yml이 태그와 GitH
 ## [Unreleased]
 
 ### 변경
+- 부스 탐지 저장: 같은 세트에 다시 보내면 그 세트의 부스 탐지를 통째로 바꿈(중복 없음, Idempotency-Key 없음) (11/2 B 질문)
+- 세트 생성 `photos` 최대 54 → 80 (카메라 2대를 셈하지 않던 설명을 고침, 부스 실제 29장) (11/2 C 지적)
+- 세트 생성 설명의 URL 다시 받기 경로에 `/api/v1`을 붙임 (문구만, 11/2 C 지적)
 - 부스 탐지 `Detection`: `camera`(필수) 추가, `polygon`은 원본 사진 px(`PhotoPolygon`). 표준 좌표 변환은 inspect-worker의 alignments로 capture-server가 (11/2 결정, **깨지는 변경**)
 - 기기 수정: 폐기(RETIRED) 기기는 수리 중으로만 되돌림. RETIRED → ACTIVE는 409 `DEVICE_STATUS_TRANSITION_INVALID` (codes.yaml 0.6.0, 11/2 결정)
 - 촬영 세트 생성 설명: 같은 세트에서 겹치지 않는 키를 (face, light) → (face, light, camera)로 (문구만, DB·서버는 이미 카메라까지)
