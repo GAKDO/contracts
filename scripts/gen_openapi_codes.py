@@ -4,7 +4,8 @@
 값은 codes.yaml 한 곳에서만 정한다(헌법 I). 이 스크립트가 만든 파일은 손으로 고치지 않고,
 CI는 --check로 생성본이 codes.yaml과 같은지 확인한다.
 
-이름 규칙: <구역><키>를 PascalCase로(rental.status → RentalStatus), 최상위 목록은 키만(error_code → ErrorCode).
+이름 규칙: <구역><키>를 PascalCase로(rental.status → RentalStatus), 최상위 목록은 키만(error_code → ErrorCode),
+한 단계 더 들어간 목록은 하위 키를 붙인다(capture.face_required.BOOTH → CaptureFaceRequiredBooth).
 """
 from __future__ import annotations
 
@@ -46,6 +47,16 @@ def build_schemas(codes: dict) -> dict[str, dict]:
                         "enum": values,
                         "description": f"codes.yaml {section}.{key}",
                     }
+                elif isinstance(values, dict):
+                    # 출처별 목록(capture.face_required.BOOTH → CaptureFaceRequiredBooth)
+                    for sub, items in values.items():
+                        if isinstance(items, list):
+                            check_strings(f"{section}.{key}.{sub}", items)
+                            schemas[pascal(section, key) + sub.capitalize()] = {
+                                "type": "string",
+                                "enum": items,
+                                "description": f"codes.yaml {section}.{key}.{sub}",
+                            }
     return schemas
 
 

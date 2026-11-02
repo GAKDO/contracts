@@ -51,6 +51,7 @@ paths:
         - BOOTH: source=BOOTH, 자기 부스(scope=boothId)로만.
         - 고객 촬영 JWT: source=PHONE, 토큰의 checkpointId와 같은 시점만. 다르면 403 OUT_OF_SCOPE.
         같은 세트 안에서 (face, light)는 겹치지 않는다.
+        응답 `uploads`는 요청 `photos`와 같은 순서·같은 개수로 돌려준다(i번째 업로드 = i번째 사진).
       security:
         - bearerJwt: []
       x-trace-requirements: [FR-CAP-01, FR-CAP-05]
@@ -87,6 +88,7 @@ paths:
                 uploads:
                   - face: TOP
                     light: ROOM
+                    camera: PHONE
                     method: PUT
                     url: https://minio.example.com/trace-captures/0193a1c2-0000-7000-8000-0000000000aa/TOP-ROOM.jpg?X-Amz-Signature=example
                     headers:
@@ -116,7 +118,10 @@ paths:
       summary: 촬영 완료
       description: |
         올라간 사진의 해시를 확인하고 capture.uploaded 이벤트를 발행한다(검사 시작). (FR-CAP-01·02)
-        필요한 면이 빠지면 409 CAPTURE_FACES_MISSING, 해시가 다르면 409 CAPTURE_HASH_MISMATCH.
+        - 필수 면은 세트 source별 codes.yaml `capture.face_required`(BOOTH 8면, PHONE은 KB 제외). 하나라도 없으면
+          409 CAPTURE_FACES_MISSING(Problem `missingFaces`에 빠진 면).
+        - 필수가 아닌 면(예: SCR1)을 찍지 못했으면 본문 `skippedFaces`에 면 → 사유로 적는다. 필수 면을 넣으면 400 VALIDATION_FAILED.
+        - 해시가 다르면 409 CAPTURE_HASH_MISMATCH.
         `Idempotency-Key`로 한 번만 처리하고, 같은 키로 다시 보내면 처음 응답을 돌려준다.
       security:
         - bearerJwt: []
@@ -128,6 +133,16 @@ paths:
         note: BOOTH는 scope=BOOTH(자기 부스), CUSTOMER는 촬영 JWT만(scope=CHECKPOINT)
       parameters:
         - $ref: './components/common.yaml#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: false
+        description: 건너뛴 면이 없으면 본문을 비우거나 `{}`를 보낸다.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CaptureSetCompleteRequest'
+            example:
+              skippedFaces:
+                SCR1: 화면이 켜지지 않음
       responses:
         '202':
           description: 접수됨(검사 대기)
@@ -149,6 +164,20 @@ paths:
                     sha256: 9f2c4e0b7a1d3c5e8f0a2b4c6d8e0f1a3b5c7d9e1f2a4b6c8d0e2f4a6b8c0d2e
                     uploaded: true
                     qualityOk: true
+        '400':
+          description: 형식 오류 또는 필수 면을 skippedFaces에 넣음
+          x-trace-error-codes: [VALIDATION_FAILED]
+          content:
+            application/problem+json:
+              schema:
+                $ref: './components/common.yaml#/components/schemas/Problem'
+              example:
+                title: 필수 면은 건너뛸 수 없습니다
+                status: 400
+                code: VALIDATION_FAILED
+                errors:
+                  - field: skippedFaces.KB
+                    message: 부스 촬영에서 KB는 필수 면입니다
         '401':
           $ref: './components/common.yaml#/components/responses/Unauthorized'
         '403':
@@ -170,6 +199,7 @@ paths:
                     status: 409
                     code: CAPTURE_FACES_MISSING
                     detail: 'KB, SCR0 면을 올려 주세요.'
+                    missingFaces: [KB, SCR0]
                 hashMismatch:
                   summary: 해시 불일치
                   value:
@@ -436,12 +466,14 @@ components:
             $ref: '#/components/schemas/PhotoSpec'
     UploadTarget:
       type: object
-      required: [face, light, method, url, expiresAt]
+      required: [face, light, camera, method, url, expiresAt]
       properties:
         face:
           $ref: './components/codes.gen.yaml#/components/schemas/CaptureFace'
         light:
           $ref: './components/codes.gen.yaml#/components/schemas/CaptureLight'
+        camera:
+          $ref: './components/codes.gen.yaml#/components/schemas/CaptureCamera'
         method:
           type: string
           const: PUT
@@ -464,8 +496,22 @@ components:
           $ref: './components/common.yaml#/components/schemas/Uuid'
         uploads:
           type: array
+          description: 요청 photos와 같은 순서·같은 개수
           items:
             $ref: '#/components/schemas/UploadTarget'
+    CaptureSetCompleteRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        skippedFaces:
+          type: object
+          description: 찍지 못한 선택 면 → 사유. 키는 codes.yaml capture.face, 세트 source의 face_required에 없는 면만.
+          propertyNames:
+            $ref: './components/codes.gen.yaml#/components/schemas/CaptureFace'
+          additionalProperties:
+            type: string
+            minLength: 1
+            maxLength: 200
     CaptureSetPhoto:
       type: object
       required: [face, light, camera, sha256, uploaded, qualityOk]

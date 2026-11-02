@@ -69,7 +69,8 @@
 | --- | --- |
 | `CaptureSetCreateRequest` | checkpointId, source(`CaptureSource`), photos[`PhotoSpec`] (1~54) |
 | `PhotoSpec` | face, light, camera, sha256, contentType(`image/jpeg`·`image/png`), takenAt |
-| `CaptureSetCreateResponse` | captureSetId, uploads[{face, light, method(`PUT`), url, headers?, expiresAt}] |
+| `CaptureSetCreateResponse` | captureSetId, uploads[{face, light, camera, method(`PUT`), url, headers?, expiresAt}] — 요청 photos와 같은 순서 |
+| `CaptureSetCompleteRequest` | skippedFaces?: {면 → 사유} — codes.yaml `capture.face_required`(출처별)에 없는 면만. 필수 면이 빠지면 409 `CAPTURE_FACES_MISSING` + Problem `missingFaces` |
 | `CaptureSet` | captureSetId, checkpointId, source, boothId, status(`CaptureSetStatus`), quality(`CaptureQuality`), photos[{face, light, camera, sha256, uploaded(bool), qualityOk}] |
 | `DetectionBatchRequest` | modelVersion, detections[{face, light, class(`DefectClass`), polygon[[x,y]], confidence}] |
 | `DetectionBatchResponse` | accepted(int) |

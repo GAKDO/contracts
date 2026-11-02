@@ -78,6 +78,11 @@ components:
           type: integer
           minimum: 0
           description: 400 CODE_INVALID일 때 남은 시도 횟수
+        missingFaces:
+          type: array
+          description: 409 CAPTURE_FACES_MISSING일 때 빠진 필수 면
+          items:
+            $ref: './codes.gen.yaml#/components/schemas/CaptureFace'
     PingResponse:
       type: object
       required: [service, version, commit]
