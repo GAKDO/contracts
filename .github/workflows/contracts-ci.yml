@@ -36,6 +36,8 @@ jobs:
           check-jsonschema --check-metaschema $files
       - name: 이벤트 계약 (라우팅 키·예시·위반 사례)
         run: python scripts/check_events.py
+      - name: 진단 JSON 예시 (C2)
+        run: scripts/check_diagnostics_examples.sh
       - name: OpenAPI 린트
         run: |
           files=$(git ls-files 'openapi/*-server.yaml')

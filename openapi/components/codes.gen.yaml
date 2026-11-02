@@ -1,10 +1,10 @@
 # 생성 파일입니다. 손으로 고치지 말고 codes.yaml을 고친 뒤
 #   python3 scripts/gen_openapi_codes.py
-# 로 다시 만드세요. (codes.yaml version 0.3.0)
+# 로 다시 만드세요. (codes.yaml version 0.4.0)
 openapi: 3.1.0
 info:
   title: TRACE 코드 값 (생성)
-  version: 0.3.0
+  version: 0.4.0
 paths: {}
 components:
   schemas:
@@ -176,6 +176,47 @@ components:
       - CAPACITY_DROP
       - BENCH_DROP
       description: codes.yaml diagnostics.flag_kind
+    DiagnosticsBatteryStatus:
+      type: string
+      enum:
+      - OK
+      - SKIPPED
+      - NO_BATTERY
+      description: codes.yaml diagnostics.battery_status
+    DiagnosticsStorageStatus:
+      type: string
+      enum:
+      - OK
+      - SKIPPED
+      description: codes.yaml diagnostics.storage_status
+    DiagnosticsSkippedReason:
+      type: string
+      enum:
+      - NO_PERMISSION
+      - UNSUPPORTED
+      - TOOL_ERROR
+      - NO_AC_POWER
+      description: codes.yaml diagnostics.skipped_reason
+    DiagnosticsStorageProtocol:
+      type: string
+      enum:
+      - NVME
+      - ATA
+      description: codes.yaml diagnostics.storage_protocol
+    DiagnosticsBatteryCondition:
+      type: string
+      enum:
+      - NORMAL
+      - SERVICE_RECOMMENDED
+      description: codes.yaml diagnostics.battery_condition
+    DiagnosticsThermalState:
+      type: string
+      enum:
+      - NOMINAL
+      - FAIR
+      - SERIOUS
+      - CRITICAL
+      description: codes.yaml diagnostics.thermal_state
     MlSplit:
       type: string
       enum:
