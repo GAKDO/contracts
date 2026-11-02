@@ -118,7 +118,7 @@ paths:
       summary: 촬영 완료
       description: |
         올라간 사진의 해시를 확인하고 capture.uploaded 이벤트를 발행한다(검사 시작). (FR-CAP-01·02)
-        - 필수 면은 세트 source별 codes.yaml `capture.face_required`(BOOTH 8면, PHONE은 KB 제외). 하나라도 없으면
+        - 필수 면은 세트 source별 codes.yaml `capture.face_required`(BOOTH 8면, PHONE은 WE2에서 정함·KB 제외). 하나라도 없으면
           409 CAPTURE_FACES_MISSING(Problem `missingFaces`에 빠진 면).
         - 필수가 아닌 면(예: SCR1)을 찍지 못했으면 본문 `skippedFaces`에 면 → 사유로 적는다. 필수 면을 넣으면 400 VALIDATION_FAILED.
         - 해시가 다르면 409 CAPTURE_HASH_MISMATCH.
