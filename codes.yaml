@@ -1,6 +1,6 @@
 # TRACE 코드 값의 원본. 서버는 DB CHECK 제약으로, 화면·에이전트·부스는 이 파일로 같은 값을 쓴다.
 # 값을 더하면 각 서버의 마이그레이션(CHECK 제약)도 함께 고친다. (GAKDO/docs db/V1__init.sql 기준, 2026-10-31)
-version: 0.2.0
+version: 0.3.0
 
 rental:
   status: [OPEN, RETURNED, CLOSED]
@@ -14,7 +14,11 @@ capture:
   source: [BOOTH, PHONE]
   set_status: [UPLOADING, UPLOADED, INSPECTED, GRADED]
   quality: [OK, UNJUDGEABLE]
+  # 면: TOP 상판 · BOT 바닥 · SF·SB·SL·SR 옆면 앞·뒤·왼·오른 · KB 키보드·팜레스트 · SCR0 화면 꺼짐 · SCR1 화면을 켜 전체 흰색
   face: [TOP, BOT, SF, SB, SL, SR, KB, SCR0, SCR1]   # 9면
+  face_required:                       # 세트 완료(/complete)에 꼭 있어야 하는 면, 출처별 (11/2)
+    BOOTH: [TOP, BOT, SF, SB, SL, SR, KB, SCR0]   # SCR1(화면 흰색)은 선택: 건너뛰면 skippedFaces에 사유
+    # PHONE: WE2에서 정해 더한다 (폰은 KB를 찍지 않음)
   light: [L1, L2, L3, L4, ROOM, OFF]   # 부스: L1 확산, L2 왼쪽·L3 뒤·L4 앞 스침광 / 폰: ROOM
   camera: [CAM1, CAM2, PHONE]          # 부스 위 카메라 앞 반·뒤 반, 수령 폰
 inspection:
