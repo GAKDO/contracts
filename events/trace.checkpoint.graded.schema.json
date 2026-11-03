@@ -50,6 +50,10 @@
         "$ref": "envelope.schema.json#/$defs/PublicId"
       }
     },
+    "compared": {
+      "type": "boolean",
+      "description": "1.2 추가(선택, 11/3). 앞 시점과 흠집을 비교했는지. false면 비교하지 않은 것(출고 OUT, 앞 시점 결과가 없는 기준선, 부스 빠른 검사 QUICK 세트)이라 newDefectIds가 빈 배열이어도 '신규 흠집 없음'이 아니다. 1.2 발행자는 이 값을 언제나 싣고 schemaVersion을 1.2로 보낸다. 1.1 이벤트처럼 없으면 checkpointType이 OUT이면 false, 그 밖에는 true로 본다"
+    },
     "unjudgeableFaces": {
       "type": "array",
       "uniqueItems": true,
