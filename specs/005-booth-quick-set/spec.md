@@ -13,7 +13,7 @@ MVP는 "부스에서 위·아래를 찍어 문제 있음/없음을 바로 판정
 
 ## 사용자 시나리오
 
-1. 부스 운영자가 목록에서 기기를 고르고 버튼을 누르면 BOT·TOP을 CAM1·CAM2, 조명 L1로 찍는다(사진 4장).
+1. 부스 운영자가 목록에서 기기를 고르고 버튼을 누르면 BOT·TOP을 CAM1·CAM2, 조명 L1(확산)·L2(옆 스침광)로 찍는다(사진 8장). 얕은 긁힘은 옆 스침광에서 보인다(민서 11/3).
 2. 부스가 `profile: QUICK` 세트를 만들고 사진을 올린 뒤 완료하고, Jetson 탐지 결과를 보낸다.
 3. capture-server가 정합 없이 그 탐지로 등급을 매기고(A = 문제 없음), 관리자 화면이 원본 사진 위에 흠집 폴리곤을 겹쳐 본다.
 
@@ -22,7 +22,7 @@ MVP는 "부스에서 위·아래를 찍어 문제 있음/없음을 바로 판정
 - FR-1 codes.yaml `capture.profile: [FULL, QUICK]`, `capture.face_required_quick.BOOTH: [TOP, BOT]`를 더한다.
 - FR-2 세트 생성 요청·세트 응답에 선택 필드 `profile`을 더한다. 빼면 FULL. QUICK + source=PHONE은 400.
 - FR-3 QUICK 세트 완료는 `face_required_quick`로 검사한다.
-- FR-4 QUICK 세트는 완료 + 부스 탐지가 있으면 정합 없이 등급을 매긴다. 시점 비교는 하지 않는다(match = null).
+- FR-4 QUICK 세트는 완료 + 부스 탐지가 있으면 정합 없이 등급을 매긴다. 시점 비교는 하지 않는다(match = null). 같은 면·같은 카메라의 조명만 다른 사진에 겹친 흠집은 하나로 센다(카메라 고정이라 좌표가 같음).
 - FR-5 `Defect`에 선택 필드 `coordinateSpace`(STANDARD·PHOTO)·`camera`·`light`를 더한다. QUICK은 PHOTO(원본 px), 길이·넓이 null.
 - FR-6 `CheckpointMedia`에 선택 필드 `photos`(면·조명·카메라·보기 URL)를 더한다.
 - FR-7 기존 필드·경로·코드 값·이벤트 스키마는 바꾸지 않는다.
