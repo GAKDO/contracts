@@ -1,0 +1,11 @@
+# OpenAPI 린트 규칙 (CI '계약 검사'의 OpenAPI 린트 단계가 읽는다)
+extends:
+  - recommended
+rules:
+  info-license: off          # 내부 계약이라 라이선스를 적지 않는다
+  info-license-strict: off
+  # 예시 검사가 if/then 안의 부분 스키마에 unevaluatedProperties:false를 덧붙여 정상 예시를 실패로 보는 문제를 끈다.
+  # 정해진 필드 밖의 키는 스키마 자체의 additionalProperties:false로 계속 잡힌다(진단 JSON C2).
+  no-invalid-media-type-examples:
+    severity: warn
+    allowAdditionalProperties: true

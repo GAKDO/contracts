@@ -1,0 +1,17 @@
+# ping·JWKS는 4XX 응답이 없어서 operation-4xx-response 경고만 이 경로에서 끈다.
+openapi/auth-server.yaml:
+  operation-4xx-response:
+    - '#/paths/~1api~1v1~1auth~1ping/get/responses'
+    - '#/paths/~1.well-known~1jwks.json/get/responses'
+openapi/capture-server.yaml:
+  operation-4xx-response:
+    - '#/paths/~1api~1v1~1captures~1ping/get/responses'
+openapi/diagnostics-server.yaml:
+  operation-4xx-response:
+    - '#/paths/~1api~1v1~1diagnostics~1ping/get/responses'
+openapi/rental-server.yaml:
+  operation-4xx-response:
+    - '#/paths/~1api~1v1~1rentals~1ping/get/responses'
+openapi/report-server.yaml:
+  operation-4xx-response:
+    - '#/paths/~1api~1v1~1reports~1ping/get/responses'

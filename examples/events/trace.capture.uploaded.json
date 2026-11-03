@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "1.0",
+  "eventId": "KRMZfXJuFEOzJeErsbsHe",
+  "occurredAt": "2026-11-09T14:05:12+09:00",
+  "rentalId": "Ws0HLv6QRbDILPWOcz5I2",
+  "checkpointId": "h40b9AN9xMQhXRHrOyJWB",
+  "captureSetId": "Z4U03wInx137yk13jDsmn",
+  "source": "PHONE",
+  "needDetection": true,
+  "photos": [
+    {
+      "photoId": "aAXQFO2Vz6ZTFbPctC2dq",
+      "face": "TOP",
+      "light": "ROOM",
+      "camera": "PHONE",
+      "objectKey": "captures/Z4U03wInx137yk13jDsmn/TOP-ROOM-PHONE.jpg",
+      "sha256": "3a7bd3e2360a3d29eea436fcfb7e44c735d117c42d1c1835420b6b9942dd4f1b"
+    },
+    {
+      "photoId": "MR9xaeQrOBS8Jx4XqyKzi",
+      "face": "SF",
+      "light": "ROOM",
+      "camera": "PHONE",
+      "objectKey": "captures/Z4U03wInx137yk13jDsmn/SF-ROOM-PHONE.jpg",
+      "sha256": "5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+    }
+  ],
+  "device": {
+    "modelCode": "MBA13-M2",
+    "dimensions": {
+      "widthMm": 304.1,
+      "depthMm": 215.0,
+      "baseHMm": 7.0,
+      "lidHMm": 4.0
+    }
+  },
+  "skippedFaces": {
+    "SCR1": "화면이 켜지지 않음"
+  }
+}

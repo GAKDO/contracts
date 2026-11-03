@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "1.1",
+  "eventId": "GwDyVZSKOPiNusw9FbqMY",
+  "occurredAt": "2026-11-09T14:10:30+09:00",
+  "rentalId": "Ws0HLv6QRbDILPWOcz5I2",
+  "checkpointId": "h40b9AN9xMQhXRHrOyJWB",
+  "runId": "enpoBXpA0LOdI8kEchjQD",
+  "sha256": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+  "baseRunId": "wcMFSsKlYBJ0vrxTlC8t5",
+  "flags": [
+    {
+      "kind": "CAPACITY_DROP",
+      "detail": {
+        "baseMaxCapacityPct": 91.2,
+        "maxCapacityPct": 84.5
+      }
+    }
+  ],
+  "maxCapacityPct": 84.5
+}
