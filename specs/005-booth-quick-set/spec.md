@@ -23,7 +23,8 @@ MVP는 "부스에서 위·아래를 찍어 문제 있음/없음을 바로 판정
 - FR-2 세트 생성 요청·세트 응답에 선택 필드 `profile`을 더한다. 빼면 FULL. QUICK + source=PHONE은 400.
 - FR-3 QUICK 세트 완료는 `face_required_quick`로 검사한다.
 - FR-4 QUICK 세트는 완료 + 부스 탐지가 있으면 정합 없이 등급을 매긴다. 시점 비교는 하지 않는다(match = null). 같은 면·같은 카메라의 조명만 다른 사진에 겹친 흠집은 등급을 셀 때만 하나로 센다. 겹침 기준은 같은 면·같은 카메라에서 흠집 폴리곤 중심이 원본 px 20 px 안(부스 카메라·받침이 고정이라 조명만 바꾼 사진은 거의 같은 자리). 다른 카메라 사진은 합치지 않는다. 흠집(`Defect`)은 합치지 않고 사진별로 그대로 돌려주므로, 관리자 화면은 각 흠집의 camera·light로 그 사진에 겹쳐 그린다(대표 사진 고르기 없음).
-- FR-5 `Defect`에 선택 필드 `coordinateSpace`(STANDARD·PHOTO)·`camera`·`light`를 더한다. QUICK은 PHOTO(원본 px), 길이·넓이 null.
+- FR-5 검사 결과 `Inspection`에 선택 필드 `photoDefects`(PhotoDefect: 면·조명·카메라·원본 px polygon)를 더한다. QUICK 세트는 흠집을 여기에만 넣고 `defects`는 빈 배열(`Defect.polygon`은 늘 표준 좌표, 민서 11/3 결정).
+- FR-5b 부스 탐지 요청에 선택 필드 `analyzedPhotos`를 더한다. QUICK 세트는 필수이고 TOP·BOT 세트 사진을 모두 담아야 한다(아니면 400). 흠집 없는 사진은 여기에만 넣는다.
 - FR-6 `CheckpointMedia`에 선택 필드 `photos`(면·조명·카메라·보기 URL)를 더한다.
 - FR-7 기존 필드·경로·코드 값은 바꾸지 않는다. 이벤트·리포트에는 선택 필드 `compared`만 더한다(리뷰 반영).
 
@@ -43,4 +44,6 @@ MVP는 "부스에서 위·아래를 찍어 문제 있음/없음을 바로 판정
 
 - 두 카메라가 면의 앞·뒤 반을 나눠 찍으므로 QUICK 필수 면(TOP·BOT)은 CAM1·CAM2 사진이 모두 있어야 완료된다. 하나라도 없으면 409 CAPTURE_FACES_MISSING.
 - QUICK은 앞 시점과 비교하지 않는다. trace.checkpoint.graded와 리포트 TimelineCheckpoint에 선택 필드 `compared`를 더해 false로 알린다(없으면 true). newDefectIds 빈 배열이 '신규 없음'으로 읽히지 않게 한다.
-- Defect.polygon은 그대로 두고 coordinateSpace로 구분한다. QUICK 흠집을 읽는 곳은 관리자 결과 화면 하나(새로 만듦)이고, 3D 리포트는 이벤트 핀을 쓰는데 QUICK은 핀을 싣지 않는다.
+- 원본 px 흠집은 `Defect`가 아니라 별도 필드 `photoDefects`로 돌려준다(민서 11/3 결정). 기존 소비자는 `defects[].polygon`을 늘 표준 좌표로 읽어도 된다.
+- 일부 사진만 분석한 탐지 요청으로 등급이 나지 않게, QUICK 탐지 요청은 `analyzedPhotos`로 TOP·BOT 사진 전부의 분석 완료를 알린다.
+- 탐지가 완료보다 먼저 와도 완료할 때 등급을 매긴다.
