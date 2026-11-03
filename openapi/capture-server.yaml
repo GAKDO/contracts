@@ -912,7 +912,8 @@ components:
           type: array
           description: >-
             원본 사진 보기 URL(선택 필드, 11/3 추가). 정합 텍스처가 없는 QUICK 세트도 관리자 화면에서 사진과 `photoDefects`를 겹쳐 보이게.
-            만료는 expiresAt과 같다
+            QUICK 세트는 반드시 싣는다. 완료 때 올라간 사진을 모두 넣으므로, 모든 `photoDefects[]`의 face·light·camera와 같은 항목이
+            여기 하나씩 있다(관리자 화면은 이 세 값으로 짝을 짓는다). 만료는 expiresAt과 같다
           items:
             type: object
             required: [face, light, camera, url]
