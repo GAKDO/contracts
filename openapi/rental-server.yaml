@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: TRACE rental-server
-  version: 0.1.0
+  version: 1.0.0
   description: |
     렌탈·시점·기기·기종·파일럿. 원본은 GAKDO/docs design/rest-api-v0.md "rental-server" 표.
 

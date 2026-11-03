@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: TRACE diagnostics-server
-  version: 0.3.0
+  version: 1.0.0
   description: |
     진단 JSON 업로드와 시점별 진단 요약·이전 시점 비교·점검 플래그. 원본은 GAKDO/docs design/rest-api-v0.md "diagnostics-server" 표.
 

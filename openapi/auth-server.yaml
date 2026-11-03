@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: TRACE auth-server
-  version: 0.2.0
+  version: 1.0.0
   description: |
     회원·로그인·자격 교환·QR 링크·페어링·JWKS. 원본은 GAKDO/docs design/rest-api-v0.md "auth-server" 표.
 
