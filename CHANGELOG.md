@@ -7,7 +7,7 @@ main에 버전이 적힌 CHANGELOG가 올라가면 release.yml이 태그와 GitH
 ## [Unreleased]
 
 ### 추가
-- 부스 빠른 검사 세트(11/3 MVP 재조정, 민서 결정): codes.yaml `capture.profile`(FULL·QUICK)·`capture.face_required_quick.BOOTH`(TOP·BOT), 세트 생성·세트 응답에 선택 필드 `profile`, 검사 결과 `Inspection`에 선택 필드 `photoDefects`(원본 사진 px 흠집, QUICK만), 부스 탐지 요청에 선택 필드 `analyzedPhotos`(QUICK은 필수), `CheckpointMedia`에 선택 필드 `photos`(원본 사진 보기 URL). QUICK 세트는 정합 없이 부스 탐지로 등급. 기존 값·필드는 그대로 (깨지지 않음) / 이벤트 trace.checkpoint.graded·리포트 TimelineCheckpoint에 선택 필드 `compared`(이벤트 1.2, 출고·기준선·QUICK은 false, 1.2 발행자는 언제나 실음. 없는 1.1 이벤트는 OUT이면 false, 그 밖에는 true). QUICK `/media`는 `photos`를 반드시 싣고 모든 `photoDefects`의 사진이 들어 있음. QUICK 필수 면은 CAM1·CAM2 둘 다
+- 부스 빠른 검사 세트(11/3 MVP 재조정, 민서 결정): codes.yaml `capture.profile`(FULL·QUICK)·`capture.face_required_quick.BOOTH`(TOP·BOT), 세트 생성·세트 응답에 선택 필드 `profile`, 검사 결과 `Inspection`에 선택 필드 `photoDefects`(원본 사진 px 흠집, QUICK만), 부스 탐지 요청에 선택 필드 `analyzedPhotos`(QUICK은 필수), `CheckpointMedia`에 선택 필드 `photos`(원본 사진 보기 URL). QUICK 세트는 정합 없이 부스 탐지로 등급. 기존 값·필드는 그대로 (깨지지 않음) / 이벤트 trace.checkpoint.graded·리포트 TimelineCheckpoint에 선택 필드 `compared`(이벤트 1.2, 출고·기준선·QUICK은 false, 1.2 발행자는 언제나 실음. 없는 1.1 이벤트는 OUT이면 false, 그 밖에는 true). QUICK `/media`는 `photos`를 반드시 싣고 모든 `photoDefects`의 사진이 들어 있음. 완료 요청 `skippedFaces`는 profile별 필수 면 기준(QUICK은 TOP·BOT 밖의 면만). QUICK 필수 면은 CAM1·CAM2 둘 다
 - rental-server 렌탈 상세·생성 응답 `Rental`에 기기 시리얼 `serial`, 렌탈 목록 `RentalSummary`에 지금 시점 `currentCheckpoint`(시작된 시점 중 가장 뒤, 없으면 null). 선택 필드로 더하고 서버는 항상 보낸다. 웹 렌탈 화면이 기기·상세를 따로 부르지 않게 (11/3 C 요청, 깨지지 않음)
 
 ## [1.0.0] - 2026-11-03

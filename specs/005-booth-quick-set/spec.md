@@ -43,7 +43,7 @@ MVP는 "부스에서 위·아래를 찍어 문제 있음/없음을 바로 판정
 ## 리뷰 반영 (11/3)
 
 - 두 카메라가 면의 앞·뒤 반을 나눠 찍으므로 QUICK 필수 면(TOP·BOT)은 CAM1·CAM2 사진이 모두 있어야 완료된다. 하나라도 없으면 409 CAPTURE_FACES_MISSING.
-- QUICK은 앞 시점과 비교하지 않는다. trace.checkpoint.graded와 리포트 TimelineCheckpoint에 선택 필드 `compared`를 더해 false로 알린다(없으면 true). newDefectIds 빈 배열이 '신규 없음'으로 읽히지 않게 한다.
+- QUICK은 앞 시점과 비교하지 않는다. trace.checkpoint.graded와 리포트 TimelineCheckpoint에 선택 필드 `compared`를 더해 false로 알린다(이벤트 1.2. 출고·기준선도 false, 값이 없는 1.1 이벤트는 OUT이면 false, 그 밖에는 true). newDefectIds 빈 배열이 '신규 없음'으로 읽히지 않게 한다.
 - 원본 px 흠집은 `Defect`가 아니라 별도 필드 `photoDefects`로 돌려준다(민서 11/3 결정). 기존 소비자는 `defects[].polygon`을 늘 표준 좌표로 읽어도 된다.
 - 일부 사진만 분석한 탐지 요청으로 등급이 나지 않게, QUICK 탐지 요청은 `analyzedPhotos`로 TOP·BOT 사진 전부의 분석 완료를 알린다.
 - 탐지가 완료보다 먼저 와도 완료할 때 등급을 매긴다.
