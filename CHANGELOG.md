@@ -6,6 +6,9 @@ main에 버전이 적힌 CHANGELOG가 올라가면 release.yml이 태그와 GitH
 
 ## [Unreleased]
 
+### 추가
+- rental-server 렌탈 상세·생성 응답 `Rental`에 기기 시리얼 `serial`, 렌탈 목록 `RentalSummary`에 지금 시점 `currentCheckpoint`(시작된 시점 중 가장 뒤, 없으면 null). 선택 필드로 더하고 서버는 항상 보낸다. 웹 렌탈 화면이 기기·상세를 따로 부르지 않게 (11/3 C 요청, 깨지지 않음)
+
 ## [1.0.0] - 2026-11-03
 
 **목표: 계약 고정** (11/3)
