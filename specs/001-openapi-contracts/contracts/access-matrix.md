@@ -24,7 +24,7 @@ x-trace-access:
 | QR 교환 | 13 | CUSTOMER · NONE · false |
 | 기기·기종 목록, 렌탈·기기·기종 쓰기, 파일럿 | 19·22·23·24·25·26·27·29·30 | ADMIN · NONE |
 | 렌탈 읽기, 기종 치수 읽기 | 20·21·28 | ADMIN·CUSTOMER · OWN_RENTAL(21) |
-| 촬영 세트 생성·완료 | 32·33 | BOOTH(BOOTH) + 촬영(CHECKPOINT) · captureToken true |
+| 촬영 세트 생성·완료·URL 다시 받기 | 32·33·33a | BOOTH(BOOTH) + 촬영(CHECKPOINT) · captureToken true |
 | 탐지 결과 올리기 | 34 | BOOTH · BOOTH |
 | 검사 결과·사진 URL 읽기 | 36·37 | ADMIN·CUSTOMER · OWN_RENTAL |
 | 진단 올리기 | 39 | AGENT · CHECKPOINT |

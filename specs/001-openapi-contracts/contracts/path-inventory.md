@@ -1,4 +1,4 @@
-# 경로 대조표 (46개)
+# 경로 대조표 (47개)
 
 rest-api-v0.md 표 41개 + ping 5개. scope: NONE·OWN_RENTAL·CHECKPOINT·BOOTH. "촬영"은 CUSTOMER 역할의 촬영 JWT(`captureToken: true`). 추가 응답은 원본 표에 없고 이번에 더한 것.
 
@@ -36,7 +36,8 @@ rest-api-v0.md 표 41개 + ping 5개. scope: NONE·OWN_RENTAL·CHECKPOINT·BOOTH
 | 30 | rental | POST | /pilot/participants | ADMIN | 201 | 400·401·403·409 | FR-PIL-01 |
 | 31 | capture | GET | /captures/ping | 없음 | 200 |  | - |
 | 32 | capture | POST | /captures/sets | BOOTH · BOOTH, 촬영 · CHECKPOINT | 201·403 | 400·401 | FR-CAP-01·05 |
-| 33 | capture | POST | /captures/sets/{setId}/complete | BOOTH · BOOTH, 촬영 · CHECKPOINT | 202·409 | 401·403·404 | FR-CAP-01·02 |
+| 33 | capture | POST | /captures/sets/{setId}/complete | BOOTH · BOOTH, 촬영 · CHECKPOINT | 202·409 | 400·401·403·404·422 | FR-CAP-01·02 |
+| 33a | capture | POST | /captures/sets/{setId}/uploads | BOOTH · BOOTH, 촬영 · CHECKPOINT | 200 | 400·401·403·404·409 | FR-CAP-05 |
 | 34 | capture | POST | /captures/sets/{setId}/detections | BOOTH · BOOTH | 201 | 400·401·403·404·409 | FR-INS-01 |
 | 35 | capture | GET | /captures/sets/{setId} | ADMIN, 촬영 · CHECKPOINT | 200 | 401·403·404 | FR-CAP-01 |
 | 36 | capture | GET | /captures/checkpoints/{checkpointId}/inspection | ADMIN·CUSTOMER · OWN_RENTAL | 200 | 401·403·404 | FR-INS-03·04 |
