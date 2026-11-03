@@ -15,6 +15,7 @@ OpenAPI 5개 `info.version`과 codes.yaml `version`을 1.0.0으로 맞췄다(값
 ### 변경
 - OpenAPI 5개 `info.version`, codes.yaml `version`을 1.0.0으로 (계약 고정, 값 변경 없음)
 - 진단 요약 `BatterySummary.condition`·`SsdSummary.skippedReason`을 자유 문자열 → 코드 값(DiagnosticsBatteryCondition·DiagnosticsSkippedReason 또는 null)으로. 업로드 스키마가 이미 코드만 받으므로 실제 응답은 그대로 (릴리스 리뷰)
+- 페어링 코드 교환에 전역 실패 한도(모든 클라이언트 합쳐 1분에 30번 넘게 틀리면 1분 동안 429)를 명시. 6자리 코드를 여러 IP로 나눠 대입하는 것을 막으려고 (릴리스 리뷰, 보안)
 - 기종 치수 `ModelDimensions`에 촬영 세트와 같은 상한(가로·세로 1000 mm, 본체·상판 두께 100 mm). 넘는 기종을 저장하면 그 기종의 촬영 세트가 모두 400이 되던 틈 (릴리스 리뷰)
 - 페어링 코드 발급 요청에 `deviceSerial`(필수, 등록 시리얼) 추가, AGENT JWT 클레임과 토큰 응답에 `deviceSerial`. diagnostics-server는 진단 `device.serial`을 이 클레임과 대조 (auth-server 0.2.0, 11/2 민서 결정, **깨지는 변경**: 웹 페어링 화면이 시리얼을 보내야 함)
 - `BatterySummary`에 `skippedReason`(DiagnosticsSkippedReason 또는 null, 필수) 추가 (diagnostics-server 0.3.0, 11/2 민서 결정)
