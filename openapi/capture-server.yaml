@@ -198,8 +198,10 @@ paths:
         올라간 사진의 해시를 확인하고 capture.uploaded 이벤트를 발행한다(검사 시작). (FR-CAP-01·02)
         - 필수 면은 세트 source별 codes.yaml `capture.face_required`(BOOTH 8면, PHONE 7면·KB 제외). 하나라도 없으면
           409 CAPTURE_FACES_MISSING(Problem `missingFaces`에 빠진 면).
-        - profile=QUICK 세트(부스 빠른 검사)는 `capture.face_required_quick`(BOOTH: TOP·BOT)로 검사한다. 완료 뒤 부스 탐지
-          (`POST /api/v1/captures/sets/{setId}/detections`)가 오면 inspect-worker 정합을 기다리지 않고 바로 등급을 매긴다(11/3 MVP).
+        - profile=QUICK 세트(부스 빠른 검사)는 `capture.face_required_quick`(BOOTH: TOP·BOT)로 검사한다. 두 카메라가 면의 앞·뒤 반을
+          나눠 찍으므로 필수 면마다 CAM1·CAM2 사진이 모두 올라가야 있는 것으로 보고, 하나라도 없으면 그 면을 `missingFaces`에 넣어 409.
+          완료 뒤 부스 탐지(`POST /api/v1/captures/sets/{setId}/detections`)가 오면 inspect-worker 정합을 기다리지 않고 바로 등급을
+          매긴다(11/3 MVP). 앞 시점과 비교하지 않으므로 trace.checkpoint.graded는 `compared: false`, 핀은 빈 배열이다.
         - 필수가 아닌 면(예: SCR1)을 찍지 못했으면 본문 `skippedFaces`에 면 → 사유로 적는다. 필수 면을 넣으면 400 VALIDATION_FAILED.
         - 해시가 다르면 409 CAPTURE_HASH_MISMATCH.
         `Idempotency-Key`로 한 번만 처리하고, 같은 키로 다시 보내면 처음 응답을 돌려준다.

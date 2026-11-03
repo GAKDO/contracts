@@ -7,7 +7,7 @@ main에 버전이 적힌 CHANGELOG가 올라가면 release.yml이 태그와 GitH
 ## [Unreleased]
 
 ### 추가
-- 부스 빠른 검사 세트(11/3 MVP 재조정, 민서 결정): codes.yaml `capture.profile`(FULL·QUICK)·`capture.face_required_quick.BOOTH`(TOP·BOT), 세트 생성·세트 응답에 선택 필드 `profile`, `Defect`에 선택 필드 `coordinateSpace`(STANDARD·PHOTO)·`camera`·`light`, `CheckpointMedia`에 선택 필드 `photos`(원본 사진 보기 URL). QUICK 세트는 정합 없이 부스 탐지로 등급. 기존 값·필드는 그대로 (깨지지 않음)
+- 부스 빠른 검사 세트(11/3 MVP 재조정, 민서 결정): codes.yaml `capture.profile`(FULL·QUICK)·`capture.face_required_quick.BOOTH`(TOP·BOT), 세트 생성·세트 응답에 선택 필드 `profile`, `Defect`에 선택 필드 `coordinateSpace`(STANDARD·PHOTO)·`camera`·`light`, `CheckpointMedia`에 선택 필드 `photos`(원본 사진 보기 URL). QUICK 세트는 정합 없이 부스 탐지로 등급. 기존 값·필드는 그대로 (깨지지 않음) / 이벤트 trace.checkpoint.graded·리포트 TimelineCheckpoint에 선택 필드 `compared`(QUICK은 false, 없으면 true). QUICK 필수 면은 CAM1·CAM2 둘 다
 - rental-server 렌탈 상세·생성 응답 `Rental`에 기기 시리얼 `serial`, 렌탈 목록 `RentalSummary`에 지금 시점 `currentCheckpoint`(시작된 시점 중 가장 뒤, 없으면 null). 선택 필드로 더하고 서버는 항상 보낸다. 웹 렌탈 화면이 기기·상세를 따로 부르지 않게 (11/3 C 요청, 깨지지 않음)
 
 ## [1.0.0] - 2026-11-03

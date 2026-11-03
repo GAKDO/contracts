@@ -38,3 +38,9 @@ MVP는 "부스에서 위·아래를 찍어 문제 있음/없음을 바로 판정
 
 - `trace.capture.uploaded`에 profile 싣기(MVP에는 inspect-worker가 없음, 2단계에 워커를 다시 켤 때 추가)
 - QUICK 세트의 mm 길이 환산(부스 카메라 배율 실측 뒤)
+
+## 리뷰 반영 (11/3)
+
+- 두 카메라가 면의 앞·뒤 반을 나눠 찍으므로 QUICK 필수 면(TOP·BOT)은 CAM1·CAM2 사진이 모두 있어야 완료된다. 하나라도 없으면 409 CAPTURE_FACES_MISSING.
+- QUICK은 앞 시점과 비교하지 않는다. trace.checkpoint.graded와 리포트 TimelineCheckpoint에 선택 필드 `compared`를 더해 false로 알린다(없으면 true). newDefectIds 빈 배열이 '신규 없음'으로 읽히지 않게 한다.
+- Defect.polygon은 그대로 두고 coordinateSpace로 구분한다. QUICK 흠집을 읽는 곳은 관리자 결과 화면 하나(새로 만듦)이고, 3D 리포트는 이벤트 핀을 쓰는데 QUICK은 핀을 싣지 않는다.
