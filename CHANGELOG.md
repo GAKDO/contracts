@@ -10,10 +10,12 @@ main에 버전이 적힌 CHANGELOG가 올라가면 release.yml이 태그와 GitH
 
 **목표: 계약 고정** (11/3)
 TRACE MVP의 API·이벤트·진단 JSON·코드 값을 1.0.0으로 고정한다. 이후로는 선택 필드·새 값·새 경로 추가만 하고, 필드 삭제·이름 변경 같은 깨지는 변경은 하지 않는다(CONTRIBUTING.md 2번).
-OpenAPI 5개 `info.version`과 codes.yaml `version`을 1.0.0으로 맞췄다(값은 0.7.0과 같음). 이벤트 `schemaVersion`은 1.0 그대로이고 1.1 필드는 선택이다.
+OpenAPI 5개 `info.version`과 codes.yaml `version`을 1.0.0으로 맞췄다(값은 0.7.0과 같음). 이벤트 `schemaVersion`은 `trace.checkpoint.graded`·`trace.diagnostics.recorded`·`trace.checkpoint.started`가 1.1, 나머지는 1.0이다. 1.1에서 더한 필드는 선택이다.
 
 ### 변경
 - OpenAPI 5개 `info.version`, codes.yaml `version`을 1.0.0으로 (계약 고정, 값 변경 없음)
+- 진단 요약 `BatterySummary.condition`·`SsdSummary.skippedReason`을 자유 문자열 → 코드 값(DiagnosticsBatteryCondition·DiagnosticsSkippedReason 또는 null)으로. 업로드 스키마가 이미 코드만 받으므로 실제 응답은 그대로 (릴리스 리뷰)
+- 기종 치수 `ModelDimensions`에 촬영 세트와 같은 상한(가로·세로 1000 mm, 본체·상판 두께 100 mm). 넘는 기종을 저장하면 그 기종의 촬영 세트가 모두 400이 되던 틈 (릴리스 리뷰)
 - 페어링 코드 발급 요청에 `deviceSerial`(필수, 등록 시리얼) 추가, AGENT JWT 클레임과 토큰 응답에 `deviceSerial`. diagnostics-server는 진단 `device.serial`을 이 클레임과 대조 (auth-server 0.2.0, 11/2 민서 결정, **깨지는 변경**: 웹 페어링 화면이 시리얼을 보내야 함)
 - `BatterySummary`에 `skippedReason`(DiagnosticsSkippedReason 또는 null, 필수) 추가 (diagnostics-server 0.3.0, 11/2 민서 결정)
 - 이벤트 `trace.inspect.completed`의 흠집 `polygon` 단위 설명을 mm → 표준 좌표 px(1 px = 0.25 mm)로 고침. REST·DB·capture/faces.md와 맞춤, 값 형식은 그대로 (11/2 C 지적)

@@ -910,15 +910,19 @@ components:
         widthMm:
           type: number
           exclusiveMinimum: 0
+          maximum: 1000
         depthMm:
           type: number
           exclusiveMinimum: 0
+          maximum: 1000
         baseHMm:
           type: number
           exclusiveMinimum: 0
+          maximum: 100
         lidHMm:
           type: number
           exclusiveMinimum: 0
+          maximum: 100
     DeviceModel:
       type: object
       required: [modelCode, name, manufacturer, formFactor, spec, dimensions, updatedAt]
