@@ -198,6 +198,8 @@ paths:
         올라간 사진의 해시를 확인하고 capture.uploaded 이벤트를 발행한다(검사 시작). (FR-CAP-01·02)
         - 필수 면은 세트 source별 codes.yaml `capture.face_required`(BOOTH 8면, PHONE 7면·KB 제외). 하나라도 없으면
           409 CAPTURE_FACES_MISSING(Problem `missingFaces`에 빠진 면).
+        - profile=QUICK 세트(부스 빠른 검사)는 `capture.face_required_quick`(BOOTH: TOP·BOT)로 검사한다. 완료 뒤 부스 탐지
+          (`POST /api/v1/captures/sets/{setId}/detections`)가 오면 inspect-worker 정합을 기다리지 않고 바로 등급을 매긴다(11/3 MVP).
         - 필수가 아닌 면(예: SCR1)을 찍지 못했으면 본문 `skippedFaces`에 면 → 사유로 적는다. 필수 면을 넣으면 400 VALIDATION_FAILED.
         - 해시가 다르면 409 CAPTURE_HASH_MISMATCH.
         `Idempotency-Key`로 한 번만 처리하고, 같은 키로 다시 보내면 처음 응답을 돌려준다.
@@ -564,6 +566,11 @@ components:
             $ref: '#/components/schemas/PhotoSpec'
         device:
           $ref: '#/components/schemas/CaptureDevice'
+        profile:
+          $ref: './components/codes.gen.yaml#/components/schemas/CaptureProfile'
+          description: >-
+            세트 범위(11/3 MVP, 선택). 빼면 FULL. QUICK은 부스 빠른 검사(위·아래 2면)로 source=BOOTH만 허용(PHONE이면 400 VALIDATION_FAILED).
+            QUICK 세트는 codes.yaml capture.face_required_quick로 완료를 검사하고, inspect-worker 정합 없이 부스 탐지만으로 등급을 매긴다
     CaptureDevice:
       type: object
       additionalProperties: false
@@ -704,6 +711,9 @@ components:
           $ref: './components/common.yaml#/components/schemas/PublicId'
         source:
           $ref: './components/codes.gen.yaml#/components/schemas/CaptureSource'
+        profile:
+          $ref: './components/codes.gen.yaml#/components/schemas/CaptureProfile'
+          description: 세트 범위(선택 필드, 11/3 추가). 없으면 FULL로 본다
         boothId:
           type: [string, 'null']
         status:
@@ -793,6 +803,18 @@ components:
           oneOf:
             - $ref: '#/components/schemas/DefectMatch'
             - type: 'null'
+        coordinateSpace:
+          type: string
+          enum: [STANDARD, PHOTO]
+          description: >-
+            polygon 좌표 기준(선택 필드, 11/3 추가). 없거나 STANDARD면 표준 좌표 px(1 px = 0.25 mm, capture/faces.md).
+            PHOTO면 정합 없이 판정한 QUICK 세트라 원본 사진 px이고, 어느 사진인지는 camera·light로 찾는다(lengthMm·areaMm2는 null)
+        camera:
+          $ref: './components/codes.gen.yaml#/components/schemas/CaptureCamera'
+          description: 탐지한 사진의 카메라(선택 필드, 11/3 추가). coordinateSpace=PHOTO면 항상 있다
+        light:
+          $ref: './components/codes.gen.yaml#/components/schemas/CaptureLight'
+          description: 탐지한 사진의 조명(선택 필드, 11/3 추가). coordinateSpace=PHOTO면 항상 있다
     Inspection:
       type: object
       required: [checkpointId, grade, ruleVersion, reasons, defects]
@@ -841,6 +863,24 @@ components:
             properties:
               defectId:
                 $ref: './components/common.yaml#/components/schemas/PublicId'
+              url:
+                type: string
+                format: uri
+        photos:
+          type: array
+          description: >-
+            원본 사진 보기 URL(선택 필드, 11/3 추가). 정합 텍스처가 없는 QUICK 세트도 관리자 화면에서 사진과 PHOTO 좌표 흠집을 겹쳐 보이게.
+            만료는 expiresAt과 같다
+          items:
+            type: object
+            required: [face, light, camera, url]
+            properties:
+              face:
+                $ref: './components/codes.gen.yaml#/components/schemas/CaptureFace'
+              light:
+                $ref: './components/codes.gen.yaml#/components/schemas/CaptureLight'
+              camera:
+                $ref: './components/codes.gen.yaml#/components/schemas/CaptureCamera'
               url:
                 type: string
                 format: uri
