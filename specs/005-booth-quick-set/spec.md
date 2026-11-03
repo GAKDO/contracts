@@ -22,10 +22,10 @@ MVP는 "부스에서 위·아래를 찍어 문제 있음/없음을 바로 판정
 - FR-1 codes.yaml `capture.profile: [FULL, QUICK]`, `capture.face_required_quick.BOOTH: [TOP, BOT]`를 더한다.
 - FR-2 세트 생성 요청·세트 응답에 선택 필드 `profile`을 더한다. 빼면 FULL. QUICK + source=PHONE은 400.
 - FR-3 QUICK 세트 완료는 `face_required_quick`로 검사한다.
-- FR-4 QUICK 세트는 완료 + 부스 탐지가 있으면 정합 없이 등급을 매긴다. 시점 비교는 하지 않는다(match = null). 같은 면·같은 카메라의 조명만 다른 사진에 겹친 흠집은 하나로 센다(카메라 고정이라 좌표가 같음).
+- FR-4 QUICK 세트는 완료 + 부스 탐지가 있으면 정합 없이 등급을 매긴다. 시점 비교는 하지 않는다(match = null). 같은 면·같은 카메라의 조명만 다른 사진에 겹친 흠집은 등급을 셀 때만 하나로 센다. 겹침 기준은 같은 면·같은 카메라에서 흠집 폴리곤 중심이 원본 px 20 px 안(부스 카메라·받침이 고정이라 조명만 바꾼 사진은 거의 같은 자리). 다른 카메라 사진은 합치지 않는다. 흠집(`Defect`)은 합치지 않고 사진별로 그대로 돌려주므로, 관리자 화면은 각 흠집의 camera·light로 그 사진에 겹쳐 그린다(대표 사진 고르기 없음).
 - FR-5 `Defect`에 선택 필드 `coordinateSpace`(STANDARD·PHOTO)·`camera`·`light`를 더한다. QUICK은 PHOTO(원본 px), 길이·넓이 null.
 - FR-6 `CheckpointMedia`에 선택 필드 `photos`(면·조명·카메라·보기 URL)를 더한다.
-- FR-7 기존 필드·경로·코드 값·이벤트 스키마는 바꾸지 않는다.
+- FR-7 기존 필드·경로·코드 값은 바꾸지 않는다. 이벤트·리포트에는 선택 필드 `compared`만 더한다(리뷰 반영).
 
 ## 수용 기준
 
