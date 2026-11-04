@@ -521,7 +521,7 @@ paths:
       tags: [기종]
       operationId: listDeviceModels
       summary: 기종 목록
-      description: 기기 등록 화면의 선택 목록. 기종 수가 적어 페이지 없이 전부 준다. (FR-RNT-03)
+      description: 기기 등록 화면의 선택 목록이자 관리자 기종 목록. 기종 수가 적어 페이지 없이 전부 주고, 정렬·검색은 화면에서 한다. 항목마다 기준 사양 `spec`을 함께 준다. (FR-RNT-03)
       security:
         - bearerJwt: []
       x-trace-requirements: [FR-RNT-03]
@@ -548,6 +548,19 @@ paths:
                     name: MacBook Air (M2, 2022)
                     manufacturer: Apple
                     formFactor: CLAMSHELL
+                    spec:
+                      cpu: Apple M2
+                      ramGb: 8
+                      ssdGb: 256
+                  - modelCode: GRAM16-2024
+                    name: LG 그램 16 (2024)
+                    manufacturer: LG
+                    formFactor: CLAMSHELL
+                    spec:
+                      cpu: Intel Core Ultra 7 155H
+                      ramGb: 16
+                      ssdGb: 512
+                      gpu: Intel Arc Graphics
         '401':
           $ref: './components/common.yaml#/components/responses/Unauthorized'
         '403':
@@ -910,6 +923,11 @@ components:
           type: [string, 'null']
         formFactor:
           $ref: './components/codes.gen.yaml#/components/schemas/DeviceFormFactor'
+        spec:
+          description: 기준 사양(선택 필드, 1.0.0 뒤 추가). 목록에서 기준 사양을 한눈에 보려고 넣는다. 서버는 언제나 보내고, 사양이 없는 기종은 null
+          oneOf:
+            - $ref: '#/components/schemas/ModelSpec'
+            - type: 'null'
     ModelSpec:
       type: object
       description: 기준 사양(진단 비교용)
@@ -922,6 +940,10 @@ components:
         ssdGb:
           type: integer
           minimum: 1
+        gpu:
+          type: string
+          maxLength: 128
+          description: 그래픽(선택). 외장 GPU가 있는 Windows 노트북 등, 예 "NVIDIA GeForce RTX 4060 Laptop". 내장 그래픽만 있으면 비워 둔다
     ModelDimensions:
       type: object
       description: 3D 트윈 치수(mm)
