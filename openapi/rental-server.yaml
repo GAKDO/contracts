@@ -220,6 +220,43 @@ paths:
           $ref: './components/common.yaml#/components/responses/Forbidden'
         '404':
           $ref: './components/common.yaml#/components/responses/NotFound'
+    delete:
+      tags: [렌탈]
+      operationId: deleteTestRental
+      summary: 시험 렌탈 지우기
+      description: >-
+        시험 데이터 전용. 기기 시리얼이 `TEST-`로 시작하는 렌탈만 지운다(아니면 409 NOT_TEST_DATA). 렌탈 상태와 관계없이
+        렌탈·시점을 지우고, 그 기기에 남은 렌탈·파일럿 참가가 없으면 기기도 지운다(같은 시리얼로 다시 등록할 수 있게).
+        시점마다 trace.checkpoint.purged를 내서 capture-server(세트·사진·흠집·등급)·report-server(기록 체인·리포트)·
+        diagnostics-server(진단)가 자기 데이터를 지운다. 실제 렌탈 기록(봉인된 증거)은 지울 수 없다. (11/4 민서 요청)
+      security:
+        - bearerJwt: []
+      x-trace-requirements: [FR-RNT-02]
+      x-trace-access:
+        roles: [ADMIN]
+        scope: NONE
+        captureToken: false
+      responses:
+        '204':
+          description: 지움
+        '401':
+          $ref: './components/common.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: './components/common.yaml#/components/responses/Forbidden'
+        '404':
+          $ref: './components/common.yaml#/components/responses/NotFound'
+        '409':
+          description: 시험 데이터가 아님
+          x-trace-error-codes: [NOT_TEST_DATA]
+          content:
+            application/problem+json:
+              schema:
+                $ref: './components/common.yaml#/components/schemas/Problem'
+              example:
+                title: 시험 데이터만 지울 수 있습니다
+                status: 409
+                code: NOT_TEST_DATA
+                detail: 기기 시리얼이 TEST-로 시작하는 렌탈만 지울 수 있습니다.
   /api/v1/rentals/{rentalId}/checkpoints:
     parameters:
       - $ref: '#/components/parameters/RentalId'
