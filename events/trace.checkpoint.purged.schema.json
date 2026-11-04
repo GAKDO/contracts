@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/GAKDO/contracts/main/events/trace.checkpoint.purged.schema.json",
+  "title": "시험 시점 지움",
+  "description": "rental-server가 시험 렌탈(기기 시리얼 TEST-)을 지울 때 그 렌탈의 시점마다 하나씩 발행한다. 받는 서버는 checkpointId에 딸린 데이터와 rentalId 단위 데이터(리포트·기록 체인)를 지운다. 이미 없으면 아무것도 하지 않는다(멱등). 실제 렌탈에는 발행하지 않는다. (11/4 민서 요청, 1.0)",
+  "x-routing-key": "trace.checkpoint.purged",
+  "x-publisher": "rental-server",
+  "x-consumers": [
+    {
+      "service": "capture-server",
+      "queue": "trace.capture.purged"
+    },
+    {
+      "service": "report-server",
+      "queue": "trace.report.updates"
+    },
+    {
+      "service": "diagnostics-server",
+      "queue": "trace.diagnostics.purged"
+    }
+  ],
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "envelope.schema.json#/$defs/Envelope"
+    }
+  ],
+  "required": [
+    "checkpointType",
+    "deviceId",
+    "serial"
+  ],
+  "properties": {
+    "checkpointType": {
+      "$ref": "../schemas/codes.gen.schema.json#/$defs/RentalCheckpointType"
+    },
+    "deviceId": {
+      "$ref": "envelope.schema.json#/$defs/PublicId"
+    },
+    "serial": {
+      "type": "string",
+      "pattern": "^TEST-",
+      "maxLength": 64,
+      "description": "지운 기기 시리얼. 시험 데이터만 지우므로 언제나 TEST-로 시작한다"
+    }
+  },
+  "unevaluatedProperties": false
+}

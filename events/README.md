@@ -1,6 +1,6 @@
 # 이벤트
 
-RabbitMQ topic exchange `trace.events`로 오가는 이벤트 6종의 JSON Schema(2020-12)를 둔다. 원본 표는 GAKDO/docs `design/mvp-design.md`의 "이벤트 계약"이다.
+RabbitMQ topic exchange `trace.events`로 오가는 이벤트 7종의 JSON Schema(2020-12)를 둔다. 원본 표는 GAKDO/docs `design/mvp-design.md`의 "이벤트 계약"이다.
 
 | 라우팅 키 | 스키마 | 발행 | 소비 (큐) | 예시 |
 | --- | --- | --- | --- | --- |
@@ -10,6 +10,7 @@ RabbitMQ topic exchange `trace.events`로 오가는 이벤트 6종의 JSON Schem
 | `trace.diagnostics.recorded` | [trace.diagnostics.recorded.schema.json](trace.diagnostics.recorded.schema.json) | diagnostics-server | report-server (`trace.report.updates`) | [예시](../examples/events/trace.diagnostics.recorded.json) |
 | `trace.checkpoint.started` | [trace.checkpoint.started.schema.json](trace.checkpoint.started.schema.json) | rental-server | report-server (`trace.report.updates`) | [예시](../examples/events/trace.checkpoint.started.json) |
 | `trace.record.sealed` | [trace.record.sealed.schema.json](trace.record.sealed.schema.json) | report-server | auth-server 영수증 메일 (`trace.auth.receipts`), web(SSE, report-server가 전달), 검색 색인(선택) | [예시](../examples/events/trace.record.sealed.json) |
+| `trace.checkpoint.purged` | [trace.checkpoint.purged.schema.json](trace.checkpoint.purged.schema.json) | rental-server | capture-server (`trace.capture.purged`), report-server (`trace.report.updates`), diagnostics-server (`trace.diagnostics.purged`) | [예시](../examples/events/trace.checkpoint.purged.json) |
 
 ## 공통 규칙
 
@@ -39,6 +40,10 @@ RabbitMQ topic exchange `trace.events`로 오가는 이벤트 6종의 JSON Schem
 ## 1.2에서 더한 것 (11/3 MVP 재조정, 선택 필드라 1.1 소비자는 그대로 동작)
 
 - `trace.checkpoint.graded.compared`(boolean): 앞 시점과 흠집을 비교했는지. 출고(OUT)·기준선·부스 빠른 검사(QUICK)는 `false`라 빈 `newDefectIds`를 "신규 흠집 없음"으로 읽지 않는다. 1.2 발행자는 언제나 싣는다. 없는 1.1 이벤트는 OUT이면 `false`, 그 밖에는 `true`로 본다.
+
+## 시험 데이터 지우기 (11/4 민서 요청, 새 이벤트라 기존 소비자는 그대로 동작)
+
+- 새 이벤트 `trace.checkpoint.purged`(rental-server → capture·report·diagnostics, 1.0): 관리자가 `DELETE /api/v1/rentals/{rentalId}`로 시험 렌탈(시리얼 `TEST-`)을 지우면 시점마다 하나씩 낸다. 받는 서버는 그 시점 데이터와 렌탈 단위 데이터를 지우고, 이미 없으면 그냥 ack한다.
 
 ## 검사
 
