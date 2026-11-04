@@ -7,6 +7,7 @@ main에 버전이 적힌 CHANGELOG가 올라가면 release.yml이 태그와 GitH
 ## [Unreleased]
 
 ### 추가
+- 부스 6자리 코드(11/4 민서 요청): rental-server `POST /api/v1/rentals/{rentalId}/booth-code`(ADMIN, 지금 시점이 OPEN일 때 10분짜리 한 번 쓰는 코드), `POST /api/v1/rentals/booth-codes/redeem`(BOOTH, 코드 → 기기·렌탈·시점 ID, 전역 실패 한도 1분 30번), codes.yaml `error_code.BOOTH_CODE_INVALID`·`BOOTH_CODE_EXPIRED`. 부스가 21자 ID 세 개를 손으로 옮기지 않게. 기존 경로는 그대로 (깨지지 않음)
 - 시험 렌탈 지우기(11/4 민서 요청): rental-server `DELETE /api/v1/rentals/{rentalId}`(ADMIN, 기기 시리얼 `TEST-`만, 아니면 409 `NOT_TEST_DATA`), codes.yaml `error_code.NOT_TEST_DATA`, 새 이벤트 `trace.checkpoint.purged`(1.0, 시점마다 하나, capture·report·diagnostics가 자기 데이터를 지움). 기존 경로·이벤트는 그대로 (깨지지 않음)
 - rental-server 기종 기준 사양 `ModelSpec`에 선택 필드 `gpu`(문자열, 최대 128자). Windows 노트북의 외장 그래픽을 적으려고. 기종 목록 `DeviceModelSummary`에 선택 필드 `spec`(ModelSpec 또는 null, 서버는 항상 보냄)을 더해 목록에서 기준 사양을 한눈에 본다 (11/4 민서 요청, 깨지지 않음)
 - rental-server 렌탈 목록 `GET /api/v1/rentals`에 BOOTH 역할 추가: 진행 중(OPEN) 렌탈만, 부스 태블릿 "검사 기다리는 기기" 목록용(11/3 MVP, 민서 승인 기기 목록 탭). 기존 ADMIN·CUSTOMER 동작은 그대로 (깨지지 않음)
