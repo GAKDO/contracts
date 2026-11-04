@@ -429,7 +429,21 @@ paths:
                 status: 410
                 code: BOOTH_CODE_EXPIRED
         '429':
-          $ref: './components/common.yaml#/components/responses/TooManyRequests'
+          description: 요청 제한 초과 (모든 부스를 합쳐 틀린 코드 분당 30회, 넘으면 1분 차단, RATE_LIMITED)
+          headers:
+            Retry-After:
+              description: 다시 시도할 수 있을 때까지 초
+              required: true
+              schema:
+                type: integer
+          content:
+            application/problem+json:
+              schema:
+                $ref: './components/common.yaml#/components/schemas/Problem'
+              example:
+                title: 요청이 너무 많습니다
+                status: 429
+                code: RATE_LIMITED
   /api/v1/rentals/{rentalId}/close:
     parameters:
       - $ref: '#/components/parameters/RentalId'
