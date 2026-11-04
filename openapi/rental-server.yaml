@@ -433,6 +433,7 @@ paths:
           headers:
             Retry-After:
               description: 다시 시도할 수 있을 때까지 초
+              required: true
               schema:
                 type: integer
           content:
