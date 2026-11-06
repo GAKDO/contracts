@@ -7,6 +7,7 @@ main에 버전이 적힌 CHANGELOG가 올라가면 release.yml이 태그와 GitH
 ## [Unreleased]
 
 ### 추가
+- 성능 그래프 2(11/6 C 요청): 부스 탐지 요청 `DetectionBatchRequest`에 선택 필드 `boothTotalMs`(촬영 시작 버튼→부스 판정 ms), `CaptureBenchmark`에 선택 필드 `boothTotalMs`(서버는 항상 보냄), `CaptureBenchmarkList`에 선택 필드 `models`(모델별 mAP@0.5·mAP@0.5:0.95, 학습 뒤 서버 설정, 없으면 빈 배열). 기존 경로·필드는 그대로 (깨지지 않음)
 - 성능 그래프(11/6 C 요청, 민서 승인): capture-server 부스 탐지 요청 `DetectionBatchRequest`에 선택 필드 `inferenceMs`(Jetson 탐지 시간 ms), 새 경로 `GET /api/v1/captures/benchmarks`(ADMIN, 최근 세트부터 세트별 탐지 시간·완료→등급 ms, `source`·`limit` 거르기). 기존 경로·필드는 그대로 (깨지지 않음)
 - 기기별 렌탈 이력(11/6 강사님 피드백, 민서 요청): rental-server 렌탈 목록 `GET /api/v1/rentals`에 쿼리 `deviceId`(선택), 목록 항목 `RentalSummary`에 선택 필드 `renterRef`·`startedAt`·`endedAt`(서버는 항상 보냄), 새 경로 `GET /api/v1/devices/{deviceId}`(ADMIN, 기기 상세). 기존 경로·필드는 그대로 (깨지지 않음)
 - 부스 6자리 코드(11/4 민서 요청): rental-server `POST /api/v1/rentals/{rentalId}/booth-code`(ADMIN, 지금 시점이 OPEN일 때 10분짜리 한 번 쓰는 코드), `POST /api/v1/rentals/booth-codes/redeem`(BOOTH, 코드 → 기기·렌탈·시점 ID, 전역 실패 한도 1분 30번), codes.yaml `error_code.BOOTH_CODE_INVALID`·`BOOTH_CODE_EXPIRED`. 부스가 21자 ID 세 개를 손으로 옮기지 않게. 기존 경로는 그대로 (깨지지 않음)
