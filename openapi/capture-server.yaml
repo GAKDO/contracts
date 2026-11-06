@@ -507,6 +507,7 @@ paths:
       x-trace-requirements: [FR-INS-01]
       x-trace-access:
         roles: [ADMIN]
+        scope: NONE
         captureToken: false
       parameters:
         - name: source
