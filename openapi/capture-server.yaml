@@ -578,7 +578,8 @@ paths:
         후보를 모두 확정·기각한 뒤 부른다(11/8 추가, 사람 검수). 기각(DISMISSED)을 뺀 흠집으로 등급을 매기고
         trace.checkpoint.graded를 발행한다(이벤트 `review`에 검수자·시각·건수). 그 뒤로 결정은 바꿀 수 없다.
         - AI 후보가 하나도 없던 세트는 검수 없이 탐지 직후 바로 등급을 매기므로 이 경로를 부를 일이 없다(부르면 409 REVIEW_CLOSED).
-        - PENDING이 남아 있으면 409 REVIEW_PENDING_REMAINS(Problem `pending`에 남은 수). 탐지·업로드가 아직 다 오지 않았으면 409 REVIEW_PENDING_REMAINS.
+        - PENDING이 남아 있으면 409 REVIEW_PENDING_REMAINS(Problem `pending`에 남은 후보 수, 1 이상).
+        - 촬영 완료·부스 탐지·정합 결과가 아직 다 오지 않았으면 409 REVIEW_NOT_READY(후보가 더 생기거나 바뀔 수 있으니 조금 뒤 다시).
         `Idempotency-Key`로 한 번만 처리한다.
       security:
         - bearerJwt: []
@@ -603,8 +604,8 @@ paths:
         '404':
           $ref: './components/common.yaml#/components/responses/NotFound'
         '409':
-          description: 검수하지 않은 후보가 남음, 또는 이미 검수 완료
-          x-trace-error-codes: [REVIEW_PENDING_REMAINS, REVIEW_CLOSED]
+          description: 검수하지 않은 후보가 남음, 탐지·정합 결과가 아직 오지 않음, 또는 이미 검수 완료
+          x-trace-error-codes: [REVIEW_PENDING_REMAINS, REVIEW_NOT_READY, REVIEW_CLOSED]
           content:
             application/problem+json:
               schema:
