@@ -697,7 +697,7 @@ paths:
         '400':
           $ref: './components/common.yaml#/components/responses/BadRequest'
         '429':
-          $ref: './components/common.yaml#/components/responses/TooManyRequests'
+          $ref: './components/common.yaml#/components/responses/CatalogTooManyRequests'
   /api/v1/captures/catalog/checkpoints/{checkpointId}:
     parameters:
       - $ref: '#/components/parameters/CheckpointId'
@@ -744,7 +744,7 @@ paths:
         '404':
           $ref: './components/common.yaml#/components/responses/NotFound'
         '429':
-          $ref: './components/common.yaml#/components/responses/TooManyRequests'
+          $ref: './components/common.yaml#/components/responses/CatalogTooManyRequests'
   /api/v1/captures/benchmarks:
     get:
       tags: [검사]
