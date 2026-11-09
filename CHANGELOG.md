@@ -1,10 +1,14 @@
 # 변경 기록
 
 이 레포의 버전별 변경을 적는다. 형식은 [Keep a Changelog](https://keepachangelog.com/ko/1.1.0/)를 따른다.
-기능 PR은 `## [Unreleased]` 아래에 한 줄을 더하고, 릴리스 PR에서 `## [x.y.z] - 날짜`로 바꾼다(CONTRIBUTING.md 3번).
+기능 PR은 `## [Unreleased]`
+ 아래에 한 줄을 더하고, 릴리스 PR에서 `## [x.y.z] - 날짜`로 바꾼다(CONTRIBUTING.md 3번).
 main에 버전이 적힌 CHANGELOG가 올라가면 release.yml이 태그와 GitHub Release를 만든다.
 
 ## [Unreleased]
+
+### 바뀜
+- capture `PhotoDefect.groupId` 설명: CAM1·CAM2 두 카메라에 함께 찍힌 같은 흠집도 한 묶음(11/9). 설명만 바뀌고 필드 모양은 그대로
 
 ### 추가
 - 놓친 흠집 직접 추가(11/9 민서 요청, AI가 조명에 가려 못 잡은 미세 흠집 2~3개): capture-server 새 경로 `POST /api/v1/captures/checkpoints/{checkpointId}/reviews/additions`(ADMIN, 원본 사진 한 장 위 다각형 `HumanDefectRequest`, 점 표시는 화면이 작은 다각형으로), `DELETE .../reviews/additions/{defectId}`(ADMIN, 사람이 더한 흠집만). 더한 흠집은 codes.yaml에 이미 있는 `defect_source.HUMAN`·CONFIRMED로 저장돼 등급·비교·고객 리포트에 쓰인다. `PhotoDefect`에 선택 필드 `source`, `InspectionReview`에 선택 필드 `added`(직접 더한 수)·`open`(지금 검수할 수 있음). 기존 경로·필드·코드 값은 그대로 (깨지지 않음). **동작 변화**: AI 후보가 없는 세트도 기본으로 검수를 기다린다(capture-server `REVIEW_HOLD_EMPTY=true`, 끄면 예전처럼 바로 등급)
