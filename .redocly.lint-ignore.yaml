@@ -6,6 +6,9 @@ openapi/auth-server.yaml:
 openapi/capture-server.yaml:
   operation-4xx-response:
     - '#/paths/~1api~1v1~1captures~1ping/get/responses'
+openapi/chat-server.yaml:
+  operation-4xx-response:
+    - '#/paths/~1api~1v1~1chat~1ping/get/responses'
 openapi/diagnostics-server.yaml:
   operation-4xx-response:
     - '#/paths/~1api~1v1~1diagnostics~1ping/get/responses'

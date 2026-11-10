@@ -9,6 +9,7 @@
 | `capture-server.yaml` | capture-server | 7 |
 | `diagnostics-server.yaml` | diagnostics-server | 3 |
 | `report-server.yaml` | report-server | 6 |
+| `chat-server.yaml` | chat-server | 2 (11/10 추가, 사이트 도우미 챗봇) |
 | `components/common.yaml` | 공통 | Problem(+code), PublicId·DateTime·Sha256, 커서 목록 파라미터, 공통 오류 응답, 인증 방식 |
 | `components/codes.gen.yaml` | 생성 | codes.yaml의 enum. **손으로 고치지 않는다** |
 
