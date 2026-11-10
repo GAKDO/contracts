@@ -883,6 +883,9 @@ components:
         password:
           type: string
           writeOnly: true
+    SocialLoginError:
+      description: 콜백이 웹 `/login?socialError=<값>`으로 실어 보내는 실패 사유(화면이 안내 문장을 고른다)
+      $ref: './components/codes.gen.yaml#/components/schemas/AuthSocialLoginError'
     SocialProvidersResponse:
       type: object
       additionalProperties: false
