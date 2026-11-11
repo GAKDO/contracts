@@ -31,6 +31,7 @@ DESIGN_TABLE: dict[str, tuple[str, set[str]]] = {
     "trace.diagnostics.recorded": ("diagnostics-server", {"trace.report.updates"}),
     "trace.record.sealed": ("report-server", {"trace.auth.receipts"}),
     "trace.checkpoint.started": ("rental-server", {"trace.report.updates"}),
+    "trace.checkpoint.purged": ("rental-server", {"trace.capture.purged", "trace.report.updates", "trace.diagnostics.purged"}),
 }
 ENVELOPE = ["schemaVersion", "eventId", "occurredAt", "rentalId", "checkpointId"]
 
@@ -74,6 +75,8 @@ def bad_cases(key: str) -> list[tuple[str, Callable[[dict], None]]]:
             ("없는 흠집 클래스", lambda e: e["defects"][0].update({"class": "dirt"})),
             ("confidence 1 초과", lambda e: e["defects"][0].update(confidence=1.2)),
         ]
+    if key == "trace.checkpoint.purged":
+        cases += [("시험이 아닌 시리얼", lambda e: e.update(serial="C02DEMO0001"))]
     if key == "trace.checkpoint.graded":
         cases += [("없는 등급", lambda e: e.update(grade="E")), ("없는 시점", lambda e: e.update(checkpointType="OUTBOUND"))]
     if key == "trace.checkpoint.graded":

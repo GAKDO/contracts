@@ -1,11 +1,19 @@
-# ping·JWKS는 4XX 응답이 없어서 operation-4xx-response 경고만 이 경로에서 끈다.
+# ping·JWKS·소셜 제공자 목록은 4XX 응답이 없어서 operation-4xx-response 경고만 이 경로에서 끈다.
 openapi/auth-server.yaml:
   operation-4xx-response:
     - '#/paths/~1api~1v1~1auth~1ping/get/responses'
     - '#/paths/~1.well-known~1jwks.json/get/responses'
+    - '#/paths/~1api~1v1~1auth~1oauth~1providers/get/responses'
+  # 소셜 로그인 시작·콜백은 브라우저 이동이라 성공도 302로 답한다(2XX 없음)
+  operation-2xx-response:
+    - '#/paths/~1api~1v1~1auth~1oauth~1{provider}~1start/get/responses'
+    - '#/paths/~1api~1v1~1auth~1oauth~1{provider}~1callback/get/responses'
 openapi/capture-server.yaml:
   operation-4xx-response:
     - '#/paths/~1api~1v1~1captures~1ping/get/responses'
+openapi/chat-server.yaml:
+  operation-4xx-response:
+    - '#/paths/~1api~1v1~1chat~1ping/get/responses'
 openapi/diagnostics-server.yaml:
   operation-4xx-response:
     - '#/paths/~1api~1v1~1diagnostics~1ping/get/responses'

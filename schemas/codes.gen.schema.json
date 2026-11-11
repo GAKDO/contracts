@@ -124,6 +124,22 @@
       ],
       "description": "codes.yaml capture.face_required.PHONE"
     },
+    "CaptureProfile": {
+      "type": "string",
+      "enum": [
+        "FULL",
+        "QUICK"
+      ],
+      "description": "codes.yaml capture.profile"
+    },
+    "CaptureFaceRequiredQuickBooth": {
+      "type": "string",
+      "enum": [
+        "TOP",
+        "BOT"
+      ],
+      "description": "codes.yaml capture.face_required_quick.BOOTH"
+    },
     "CaptureLight": {
       "type": "string",
       "enum": [
@@ -171,6 +187,26 @@
       ],
       "description": "codes.yaml inspection.defect_source"
     },
+    "InspectionReviewStatus": {
+      "type": "string",
+      "enum": [
+        "PENDING",
+        "CONFIRMED",
+        "DISMISSED"
+      ],
+      "description": "codes.yaml inspection.review_status"
+    },
+    "InspectionDismissReason": {
+      "type": "string",
+      "enum": [
+        "DUST",
+        "TAPE",
+        "REFLECTION",
+        "PART",
+        "OTHER"
+      ],
+      "description": "codes.yaml inspection.dismiss_reason"
+    },
     "InspectionMatchStatus": {
       "type": "string",
       "enum": [
@@ -188,6 +224,15 @@
         "D"
       ],
       "description": "codes.yaml inspection.grade"
+    },
+    "InspectionSettlementStatus": {
+      "type": "string",
+      "enum": [
+        "READY",
+        "PENDING",
+        "NOT_APPLICABLE"
+      ],
+      "description": "codes.yaml inspection.settlement_status"
     },
     "DiagnosticsComponentKind": {
       "type": "string",
@@ -225,7 +270,10 @@
       "enum": [
         "COMPONENT_CHANGED",
         "CAPACITY_DROP",
-        "BENCH_DROP"
+        "BENCH_DROP",
+        "ACTIVATION_LOCK_ON",
+        "DISK_ENCRYPTION_ON",
+        "DISK_HEALTH_WARNING"
       ],
       "description": "codes.yaml diagnostics.flag_kind"
     },
@@ -281,6 +329,22 @@
         "CRITICAL"
       ],
       "description": "codes.yaml diagnostics.thermal_state"
+    },
+    "DiagnosticsLockState": {
+      "type": "string",
+      "enum": [
+        "ON",
+        "OFF"
+      ],
+      "description": "codes.yaml diagnostics.lock_state"
+    },
+    "DiagnosticsDiskHealth": {
+      "type": "string",
+      "enum": [
+        "OK",
+        "WARNING"
+      ],
+      "description": "codes.yaml diagnostics.disk_health"
     },
     "MlSplit": {
       "type": "string",
@@ -353,6 +417,27 @@
       ],
       "description": "codes.yaml auth.token_role"
     },
+    "AuthSocialProvider": {
+      "type": "string",
+      "enum": [
+        "GOOGLE",
+        "GITHUB",
+        "KAKAO",
+        "NAVER"
+      ],
+      "description": "codes.yaml auth.social_provider"
+    },
+    "AuthSocialLoginError": {
+      "type": "string",
+      "enum": [
+        "UNAVAILABLE",
+        "CANCELLED",
+        "STATE_INVALID",
+        "EMAIL_REQUIRED",
+        "PROVIDER_ERROR"
+      ],
+      "description": "codes.yaml auth.social_login_error"
+    },
     "ErrorCode": {
       "type": "string",
       "enum": [
@@ -385,9 +470,17 @@
         "DEVICE_HAS_OPEN_RENTAL",
         "DEVICE_STATUS_TRANSITION_INVALID",
         "PILOT_ALIAS_EXISTS",
+        "NOT_TEST_DATA",
+        "DEVICE_IN_USE",
+        "DEVICE_MODEL_IN_USE",
+        "BOOTH_CODE_INVALID",
+        "BOOTH_CODE_EXPIRED",
         "CAPTURE_FACES_MISSING",
         "CAPTURE_HASH_MISMATCH",
         "CAPTURE_SET_CLOSED",
+        "REVIEW_PENDING_REMAINS",
+        "REVIEW_NOT_READY",
+        "REVIEW_CLOSED",
         "DIAGNOSTIC_ALREADY_UPLOADED",
         "DIAGNOSTIC_SCHEMA_INVALID",
         "DEVICE_SERIAL_MISMATCH",
