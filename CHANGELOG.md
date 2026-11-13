@@ -8,6 +8,7 @@ main에 버전이 적힌 CHANGELOG가 올라가면 release.yml이 태그와 GitH
 ## [Unreleased]
 
 ### 더함
+- capture-server 검사 방식 고정(11/13 민서 요청): `GET /api/v1/captures/rentals/{rentalId}/profile`(BOOTH·ADMIN·CUSTOMER)과 `RentalCaptureProfile` 추가. 세트 생성은 같은 렌탈의 기준(가장 먼저 완료된 다른 시점의 마지막 세트) profile과 다르면 400 `VALIDATION_FAILED`(errors[].field=profile, 기존 코드 재사용). 이미 저장된 세트는 그대로
 - diagnostics-server `POST /api/v1/diagnostics/checkpoints/{checkpointId}/redo`(11/13 민서 요청, ADMIN): 봉인 전 시점의 진단을 이전 진단으로 돌려 새 페어링 코드로 다시 진단할 수 있게 함. 이전 진단은 지우지 않음. 봉인된 시점은 409 `RECORD_ALREADY_SEALED`(기존 코드 재사용). `trace.record.sealed` 소비자에 diagnostics-server(`trace.diagnostics.seals`) 추가
 
 ### 바뀜
