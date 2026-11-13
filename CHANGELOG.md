@@ -7,6 +7,9 @@ main에 버전이 적힌 CHANGELOG가 올라가면 release.yml이 태그와 GitH
 
 ## [Unreleased]
 
+### 더함
+- diagnostics-server `POST /api/v1/diagnostics/checkpoints/{checkpointId}/redo`(11/13 민서 요청, ADMIN): 봉인 전 시점의 진단을 이전 진단으로 돌려 새 페어링 코드로 다시 진단할 수 있게 함. 이전 진단은 지우지 않음. 봉인된 시점은 409 `RECORD_ALREADY_SEALED`(기존 코드 재사용). `trace.record.sealed` 소비자에 diagnostics-server(`trace.diagnostics.seals`) 추가
+
 ### 바뀜
 - rental-server 렌탈 생성·고치기의 `dueAt`(11/13 민서 요청): 오늘(한국 시간)보다 과거 날짜는 400 `VALIDATION_FAILED`(errors[].field=dueAt). 오늘은 허용, 이미 저장된 과거 날짜를 같은 값으로 다시 보내는 것도 허용(기존 데이터 보존). 설명만 바뀌고 필드 모양·코드 값은 그대로
 - capture `PhotoDefect.groupId` 설명: CAM1·CAM2 두 카메라에 함께 찍힌 같은 흠집도 한 묶음(11/9). 설명만 바뀌고 필드 모양은 그대로

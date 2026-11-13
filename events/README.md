@@ -9,7 +9,7 @@ RabbitMQ topic exchange `trace.events`로 오가는 이벤트 7종의 JSON Schem
 | `trace.checkpoint.graded` | [trace.checkpoint.graded.schema.json](trace.checkpoint.graded.schema.json) | capture-server | report-server (`trace.report.updates`) | [예시](../examples/events/trace.checkpoint.graded.json) |
 | `trace.diagnostics.recorded` | [trace.diagnostics.recorded.schema.json](trace.diagnostics.recorded.schema.json) | diagnostics-server | report-server (`trace.report.updates`) | [예시](../examples/events/trace.diagnostics.recorded.json) |
 | `trace.checkpoint.started` | [trace.checkpoint.started.schema.json](trace.checkpoint.started.schema.json) | rental-server | report-server (`trace.report.updates`) | [예시](../examples/events/trace.checkpoint.started.json) |
-| `trace.record.sealed` | [trace.record.sealed.schema.json](trace.record.sealed.schema.json) | report-server | auth-server 영수증 메일 (`trace.auth.receipts`), web(SSE, report-server가 전달), 검색 색인(선택) | [예시](../examples/events/trace.record.sealed.json) |
+| `trace.record.sealed` | [trace.record.sealed.schema.json](trace.record.sealed.schema.json) | report-server | auth-server 영수증 메일 (`trace.auth.receipts`), web(SSE, report-server가 전달), diagnostics-server 진단 다시 하기 잠금(`trace.diagnostics.seals`), 검색 색인(선택) | [예시](../examples/events/trace.record.sealed.json) |
 | `trace.checkpoint.purged` | [trace.checkpoint.purged.schema.json](trace.checkpoint.purged.schema.json) | rental-server | capture-server (`trace.capture.purged`), report-server (`trace.report.updates`), diagnostics-server (`trace.diagnostics.purged`) | [예시](../examples/events/trace.checkpoint.purged.json) |
 
 ## 공통 규칙

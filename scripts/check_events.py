@@ -29,7 +29,7 @@ DESIGN_TABLE: dict[str, tuple[str, set[str]]] = {
     "trace.inspect.completed": ("inspect-worker", {"trace.capture.inspected"}),
     "trace.checkpoint.graded": ("capture-server", {"trace.report.updates"}),
     "trace.diagnostics.recorded": ("diagnostics-server", {"trace.report.updates"}),
-    "trace.record.sealed": ("report-server", {"trace.auth.receipts"}),
+    "trace.record.sealed": ("report-server", {"trace.auth.receipts", "trace.diagnostics.seals"}),
     "trace.checkpoint.started": ("rental-server", {"trace.report.updates"}),
     "trace.checkpoint.purged": ("rental-server", {"trace.capture.purged", "trace.report.updates", "trace.diagnostics.purged"}),
 }
