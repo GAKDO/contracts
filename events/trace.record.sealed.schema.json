@@ -13,6 +13,10 @@
     {
       "service": "web",
       "queue": "SSE(report-server가 전달)"
+    },
+    {
+      "service": "diagnostics-server",
+      "queue": "trace.diagnostics.seals"
     }
   ],
   "type": "object",
