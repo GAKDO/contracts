@@ -7,6 +7,9 @@ main에 버전이 적힌 CHANGELOG가 올라가면 release.yml이 태그와 GitH
 
 ## [Unreleased]
 
+### 추가
+- auth-server `POST /api/v1/auth/password/reset-request`·`POST /api/v1/auth/password/reset`에 429 `RATE_LIMITED`(공통 `TooManyRequests`, Retry-After) 응답을 적음(11/20 API 리뷰). gateway가 11/8 보안 점검부터 이미 IP당 분당 10회로 막고 있어 동작은 그대로이고 문서만 실제와 맞춤. 새 코드 값 없음 (깨지지 않음)
+
 ## [1.1.0] - 2026-11-20
 
 **목표: 11/3 고정 뒤 더한 계약을 한 버전으로 묶는다** (11/20 리뷰 준비)

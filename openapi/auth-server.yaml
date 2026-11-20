@@ -428,6 +428,8 @@ paths:
           description: 접수됨(항상)
         '400':
           $ref: './components/common.yaml#/components/responses/BadRequest'
+        '429':
+          $ref: './components/common.yaml#/components/responses/TooManyRequests'
   /api/v1/auth/password/reset:
     post:
       tags: [계정]
@@ -472,6 +474,8 @@ paths:
                 title: 재설정 코드가 만료되었습니다
                 status: 410
                 code: CODE_EXPIRED
+        '429':
+          $ref: './components/common.yaml#/components/responses/TooManyRequests'
   /api/v1/auth/me:
     get:
       tags: [계정]
