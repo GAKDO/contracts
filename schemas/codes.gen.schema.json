@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://raw.githubusercontent.com/GAKDO/contracts/main/schemas/codes.gen.schema.json",
   "title": "TRACE 코드 값 (생성)",
-  "description": "생성 파일입니다. 손으로 고치지 말고 codes.yaml을 고친 뒤 python3 scripts/gen_schema_codes.py로 다시 만드세요. (codes.yaml version 1.0.0)",
+  "description": "생성 파일입니다. 손으로 고치지 말고 codes.yaml을 고친 뒤 python3 scripts/gen_schema_codes.py로 다시 만드세요. (codes.yaml version 1.1.0)",
   "$defs": {
     "RentalStatus": {
       "type": "string",
@@ -273,7 +273,9 @@
         "BENCH_DROP",
         "ACTIVATION_LOCK_ON",
         "DISK_ENCRYPTION_ON",
-        "DISK_HEALTH_WARNING"
+        "DISK_HEALTH_WARNING",
+        "SECURITY_PROTECTION_OFF",
+        "THREAT_DETECTED"
       ],
       "description": "codes.yaml diagnostics.flag_kind"
     },
@@ -462,6 +464,7 @@
         "CLIENT_CREDENTIALS_INVALID",
         "PAIRING_CODE_INVALID",
         "PAIRING_CODE_EXPIRED",
+        "REAUTH_REQUIRED",
         "RENTAL_OPEN_EXISTS",
         "DEVICE_NOT_ACTIVE",
         "CHECKPOINT_ORDER_VIOLATION",

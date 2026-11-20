@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: TRACE rental-server
-  version: 1.0.0
+  version: 1.1.0
   description: |
     렌탈·시점·기기·기종·파일럿. 원본은 GAKDO/docs design/rest-api-v0.md "rental-server" 표.
 
@@ -10,8 +10,10 @@ info:
     - `x-trace-error-codes`: 그 응답이 낼 수 있는 `code` 값.
     - 목록은 커서 방식(`limit`, `cursor` → `items`, `nextCursor`). `GET /devices`도 같다(원본의 page에서 바꿈).
 servers:
+  - url: https://gakdo.site
+    description: 운영(학교 서버 nginx → web nginx /api/ → gateway, 11/3부터)
   - url: https://{gateway}
-    description: gateway(8314) 뒤
+    description: gateway(8314) 직접(로컬 Compose·예전 클러스터)
     variables:
       gateway:
         default: localhost:8314
@@ -54,6 +56,7 @@ paths:
         ACTIVE 기기로만 만들 수 있고, 같은 기기에 진행 중(OPEN) 렌탈은 하나만. 생성되면 상태 OPEN. (FR-RNT-01)
         수리 중(MAINTENANCE)·폐기(RETIRED) 기기면 409 DEVICE_NOT_ACTIVE.
         customerName·dueAt·note(11/10 추가, contracts #23-2)는 선택이다. 고객 이름은 개인정보라 관리자에게만 보이고 공개 목록(catalog)에는 나가지 않는다.
+        dueAt이 오늘(한국 시간)보다 과거면 400 VALIDATION_FAILED(errors[].field=dueAt). 오늘은 허용한다(11/13 추가).
       security:
         - bearerJwt: []
       x-trace-requirements: [FR-RNT-01]
@@ -259,6 +262,8 @@ paths:
       description: >-
         11/10 추가(contracts #23-2). 보낸 칸만 바꾸고 null을 보내면 그 칸을 비운다. 렌탈 상태와 관계없이(종료된 렌탈 포함) 고칠 수 있다.
         시점·상태·대여자 참조는 바꾸지 않는다. 빈 본문은 400.
+        dueAt을 오늘(한국 시간)보다 과거로 바꾸면 400 VALIDATION_FAILED(errors[].field=dueAt). 오늘은 허용하고,
+        이미 저장된 과거 날짜를 같은 값으로 다시 보내는 것은 허용한다(기존 데이터 보존, 11/13 추가).
       security:
         - bearerJwt: []
       x-trace-requirements: [FR-RNT-01]
@@ -1183,7 +1188,7 @@ components:
     DueDate:
       type: string
       format: date
-      description: 반납 예정일(11/10 추가, 선택). 날짜만(YYYY-MM-DD, 한국 시간 기준)
+      description: 반납 예정일(11/10 추가, 선택). 날짜만(YYYY-MM-DD, 한국 시간 기준). 새로 넣거나 바꿀 때 오늘보다 과거면 400(11/13)
     RentalNote:
       type: string
       minLength: 1

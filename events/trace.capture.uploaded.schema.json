@@ -9,6 +9,14 @@
     {
       "service": "inspect-worker",
       "queue": "trace.inspect.requested"
+    },
+    {
+      "service": "rental-server",
+      "queue": "trace.rental.checkpoints"
+    },
+    {
+      "service": "report-server",
+      "queue": "trace.report.updates"
     }
   ],
   "type": "object",
