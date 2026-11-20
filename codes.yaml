@@ -14,8 +14,9 @@
 # Unreleased(2026-11-10): error_code DEVICE_IN_USE·DEVICE_MODEL_IN_USE 추가(기기·기종 지우기). 값 추가만.
 # Unreleased(2026-11-12): error_code REAUTH_REQUIRED 추가(비밀번호 없는 탈퇴는 로그인 10분 안만). 값 추가만.
 # Unreleased(2026-11-12): flag_kind SECURITY_PROTECTION_OFF·THREAT_DETECTED 추가(보안 프로그램 상태 점검, 사업단 설문 반영). 값 추가만.
+# 1.1.0(2026-11-20): 11/3 뒤 더한 값(위 Unreleased 줄들)을 묶어 릴리스. 삭제·이름 변경 없음.
 #   OpenAPI용 enum은 scripts/gen_openapi_codes.py로 만든다. 값은 문자열이어야 한다(OFF·ON·YES·NO는 따옴표).
-version: 1.0.0
+version: 1.1.0
 
 rental:
   status: [OPEN, RETURNED, CLOSED]

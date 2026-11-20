@@ -9,6 +9,10 @@
     {
       "service": "capture-server",
       "queue": "trace.capture.inspected"
+    },
+    {
+      "service": "report-server",
+      "queue": "trace.report.updates"
     }
   ],
   "type": "object",

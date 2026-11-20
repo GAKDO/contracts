@@ -17,6 +17,10 @@
     {
       "service": "diagnostics-server",
       "queue": "trace.diagnostics.seals"
+    },
+    {
+      "service": "rental-server",
+      "queue": "trace.rental.checkpoints"
     }
   ],
   "type": "object",
