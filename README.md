@@ -2,11 +2,11 @@
 
 TRACE 레포들이 함께 지키는 **계약의 원본**입니다. 서버·화면·에이전트·부스·챗봇은 여기 정의를 따르고, 바꿀 때는 이 레포 PR을 먼저 머지합니다.
 
-11/3에 1.0.0으로 고정했고, 그 뒤로는 **깨지지 않는 변경만** 더합니다(선택 필드·새 경로·코드 값 추가. 이름 변경·삭제 없음). 바뀐 것은 [CHANGELOG.md](CHANGELOG.md)의 `[Unreleased]`에 날짜와 요청한 사람을 적습니다.
+11/3에 1.0.0으로 고정했고(11/20에 그 뒤 추가분을 1.1.0으로 릴리스), 그 뒤로는 **깨지지 않는 변경만** 더합니다(선택 필드·새 경로·코드 값 추가. 이름 변경·삭제 없음). 바뀐 것은 [CHANGELOG.md](CHANGELOG.md)의 `[Unreleased]`에 날짜와 요청한 사람을 적고, 깨지는 변경은 CI `scripts/check_breaking.py`가 마지막 릴리스 태그와 비교해 막습니다.
 
 | 폴더·파일 | 내용 |
 |---|---|
-| [`codes.yaml`](codes.yaml) | 면·조명·흠집 클래스·등급·시점·기기 상태·검수 상태·소셜 제공자·점검 플래그·오류 코드 등 코드 값(DB CHECK 제약과 같음). 1.0.0 |
+| [`codes.yaml`](codes.yaml) | 면·조명·흠집 클래스·등급·시점·기기 상태·검수 상태·소셜 제공자·점검 플래그·오류 코드 등 코드 값(DB CHECK 제약과 같음). 1.1.0 |
 | [`openapi/`](openapi/README.md) | 서버별 OpenAPI 3.1: auth-server · rental-server · capture-server · diagnostics-server · report-server · chat-server(11/10 추가). 공통 컴포넌트와 codes.yaml에서 만든 `components/codes.gen.yaml` |
 | [`diagnostics/`](diagnostics/README.md) | 진단 결과 JSON Schema `diag.v1`(`result.schema.json`). 잠금·디스크 상태 `checks`(11/7), 보안 보호·위협 건수(11/12) |
 | [`events/`](events/README.md) | RabbitMQ `trace.events` 이벤트 7종 JSON Schema(`trace.checkpoint.graded` 1.3에 사람 검수 `review`) |

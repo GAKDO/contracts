@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: TRACE chat-server
-  version: 1.0.0
+  version: 1.1.0
   description: |
     사이트 도우미 챗봇(11/10 민서 요청, 구현 GAKDO/chat-server). 사이트 사용자가 자연어로 묻는 질문에 답한다.
 
