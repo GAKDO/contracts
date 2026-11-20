@@ -24,12 +24,13 @@ EVENTS = ROOT / "events"
 EXAMPLES = ROOT / "examples" / "events"
 
 # 설계서 "이벤트 계약" 표를 옮긴 것. 표가 바뀌면 여기와 스키마를 같은 PR에서 바꾼다.
+# 11/20: 서버 코드의 큐 바인딩과 대조해 rental-server·report-server 소비를 더함.
 DESIGN_TABLE: dict[str, tuple[str, set[str]]] = {
-    "trace.capture.uploaded": ("capture-server", {"trace.inspect.requested"}),
-    "trace.inspect.completed": ("inspect-worker", {"trace.capture.inspected"}),
-    "trace.checkpoint.graded": ("capture-server", {"trace.report.updates"}),
+    "trace.capture.uploaded": ("capture-server", {"trace.inspect.requested", "trace.rental.checkpoints", "trace.report.updates"}),
+    "trace.inspect.completed": ("inspect-worker", {"trace.capture.inspected", "trace.report.updates"}),
+    "trace.checkpoint.graded": ("capture-server", {"trace.report.updates", "trace.rental.checkpoints"}),
     "trace.diagnostics.recorded": ("diagnostics-server", {"trace.report.updates"}),
-    "trace.record.sealed": ("report-server", {"trace.auth.receipts", "trace.diagnostics.seals"}),
+    "trace.record.sealed": ("report-server", {"trace.auth.receipts", "trace.diagnostics.seals", "trace.rental.checkpoints"}),
     "trace.checkpoint.started": ("rental-server", {"trace.report.updates"}),
     "trace.checkpoint.purged": ("rental-server", {"trace.capture.purged", "trace.report.updates", "trace.diagnostics.purged"}),
 }

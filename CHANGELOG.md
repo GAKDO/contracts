@@ -41,6 +41,7 @@ main에 버전이 적힌 CHANGELOG가 올라가면 release.yml이 태그와 GitH
 - rental-server 렌탈 상세·생성 응답 `Rental`에 기기 시리얼 `serial`, 렌탈 목록 `RentalSummary`에 지금 시점 `currentCheckpoint`(시작된 시점 중 가장 뒤, 없으면 null). 선택 필드로 더하고 서버는 항상 보낸다. 웹 렌탈 화면이 기기·상세를 따로 부르지 않게 (11/3 C 요청, 깨지지 않음)
 
 ### 바뀜
+- 이벤트 소비자 표기(`x-consumers`·`events/README.md`·`check_events.py`)를 서버 코드의 큐 바인딩과 맞춤(11/20, 문서만): rental-server `trace.rental.checkpoints`(uploaded·graded·sealed), report-server `trace.report.updates`(uploaded·inspect.completed 진행률)가 빠져 있었다. 스키마 모양·라우팅 키는 그대로
 - `events/README.md`: 지금 버전을 `trace.checkpoint.graded` 1.2 → 1.3으로 바로잡고(발행 코드는 이미 1.3) 1.3 절과 서버별 멱등·전달 구현 대조 표를 더함. `openapi/README.md` 경로 수를 11/20 기준으로 (문서만, 11/20)
 - rental-server 렌탈 생성·고치기의 `dueAt`(11/13 민서 요청): 오늘(한국 시간)보다 과거 날짜는 400 `VALIDATION_FAILED`(errors[].field=dueAt). 오늘은 허용, 이미 저장된 과거 날짜를 같은 값으로 다시 보내는 것도 허용(기존 데이터 보존). 설명만 바뀌고 필드 모양·코드 값은 그대로
 - capture `PhotoDefect.groupId` 설명: CAM1·CAM2 두 카메라에 함께 찍힌 같은 흠집도 한 묶음(11/9). 설명만 바뀌고 필드 모양은 그대로

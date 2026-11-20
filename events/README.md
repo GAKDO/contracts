@@ -2,14 +2,16 @@
 
 RabbitMQ topic exchange `trace.events`로 오가는 이벤트 7종의 JSON Schema(2020-12)를 둔다. 원본 표는 GAKDO/docs `design/mvp-design.md`의 "이벤트 계약"이다.
 
+소비 큐는 11/20 각 서버 코드의 큐 바인딩과 대조했다.
+
 | 라우팅 키 | 스키마 | 발행 | 소비 (큐) | 예시 |
 | --- | --- | --- | --- | --- |
-| `trace.capture.uploaded` | [trace.capture.uploaded.schema.json](trace.capture.uploaded.schema.json) | capture-server | inspect-worker (`trace.inspect.requested`) | [예시](../examples/events/trace.capture.uploaded.json) |
-| `trace.inspect.completed` | [trace.inspect.completed.schema.json](trace.inspect.completed.schema.json) | inspect-worker | capture-server (`trace.capture.inspected`) | [예시](../examples/events/trace.inspect.completed.json) |
-| `trace.checkpoint.graded` | [trace.checkpoint.graded.schema.json](trace.checkpoint.graded.schema.json) | capture-server | report-server (`trace.report.updates`) | [예시](../examples/events/trace.checkpoint.graded.json) |
+| `trace.capture.uploaded` | [trace.capture.uploaded.schema.json](trace.capture.uploaded.schema.json) | capture-server | inspect-worker (`trace.inspect.requested`), rental-server 시점 CAPTURED (`trace.rental.checkpoints`), report-server 진행률 (`trace.report.updates`) | [예시](../examples/events/trace.capture.uploaded.json) |
+| `trace.inspect.completed` | [trace.inspect.completed.schema.json](trace.inspect.completed.schema.json) | inspect-worker | capture-server (`trace.capture.inspected`), report-server 진행률 (`trace.report.updates`) | [예시](../examples/events/trace.inspect.completed.json) |
+| `trace.checkpoint.graded` | [trace.checkpoint.graded.schema.json](trace.checkpoint.graded.schema.json) | capture-server | report-server (`trace.report.updates`), rental-server 시점 GRADED (`trace.rental.checkpoints`) | [예시](../examples/events/trace.checkpoint.graded.json) |
 | `trace.diagnostics.recorded` | [trace.diagnostics.recorded.schema.json](trace.diagnostics.recorded.schema.json) | diagnostics-server | report-server (`trace.report.updates`) | [예시](../examples/events/trace.diagnostics.recorded.json) |
 | `trace.checkpoint.started` | [trace.checkpoint.started.schema.json](trace.checkpoint.started.schema.json) | rental-server | report-server (`trace.report.updates`) | [예시](../examples/events/trace.checkpoint.started.json) |
-| `trace.record.sealed` | [trace.record.sealed.schema.json](trace.record.sealed.schema.json) | report-server | auth-server 영수증 메일 (`trace.auth.receipts`), web(SSE, report-server가 전달), diagnostics-server 진단 다시 하기 잠금(`trace.diagnostics.seals`), 검색 색인(선택) | [예시](../examples/events/trace.record.sealed.json) |
+| `trace.record.sealed` | [trace.record.sealed.schema.json](trace.record.sealed.schema.json) | report-server | auth-server 영수증 메일 (`trace.auth.receipts`), web(SSE, report-server가 전달), diagnostics-server 진단 다시 하기 잠금(`trace.diagnostics.seals`), rental-server 시점 SEALED·렌탈 RETURNED (`trace.rental.checkpoints`), 검색 색인(선택, 구현 안 됨) | [예시](../examples/events/trace.record.sealed.json) |
 | `trace.checkpoint.purged` | [trace.checkpoint.purged.schema.json](trace.checkpoint.purged.schema.json) | rental-server | capture-server (`trace.capture.purged`), report-server (`trace.report.updates`), diagnostics-server (`trace.diagnostics.purged`) | [예시](../examples/events/trace.checkpoint.purged.json) |
 
 ## 공통 규칙
