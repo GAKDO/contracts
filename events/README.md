@@ -2,20 +2,22 @@
 
 RabbitMQ topic exchange `trace.events`로 오가는 이벤트 7종의 JSON Schema(2020-12)를 둔다. 원본 표는 GAKDO/docs `design/mvp-design.md`의 "이벤트 계약"이다.
 
+소비 큐는 11/20 각 서버 코드의 큐 바인딩과 대조했다.
+
 | 라우팅 키 | 스키마 | 발행 | 소비 (큐) | 예시 |
 | --- | --- | --- | --- | --- |
-| `trace.capture.uploaded` | [trace.capture.uploaded.schema.json](trace.capture.uploaded.schema.json) | capture-server | inspect-worker (`trace.inspect.requested`) | [예시](../examples/events/trace.capture.uploaded.json) |
-| `trace.inspect.completed` | [trace.inspect.completed.schema.json](trace.inspect.completed.schema.json) | inspect-worker | capture-server (`trace.capture.inspected`) | [예시](../examples/events/trace.inspect.completed.json) |
-| `trace.checkpoint.graded` | [trace.checkpoint.graded.schema.json](trace.checkpoint.graded.schema.json) | capture-server | report-server (`trace.report.updates`) | [예시](../examples/events/trace.checkpoint.graded.json) |
+| `trace.capture.uploaded` | [trace.capture.uploaded.schema.json](trace.capture.uploaded.schema.json) | capture-server | inspect-worker (`trace.inspect.requested`), rental-server 시점 CAPTURED (`trace.rental.checkpoints`), report-server 진행률 (`trace.report.updates`) | [예시](../examples/events/trace.capture.uploaded.json) |
+| `trace.inspect.completed` | [trace.inspect.completed.schema.json](trace.inspect.completed.schema.json) | inspect-worker | capture-server (`trace.capture.inspected`), report-server 진행률 (`trace.report.updates`) | [예시](../examples/events/trace.inspect.completed.json) |
+| `trace.checkpoint.graded` | [trace.checkpoint.graded.schema.json](trace.checkpoint.graded.schema.json) | capture-server | report-server (`trace.report.updates`), rental-server 시점 GRADED (`trace.rental.checkpoints`) | [예시](../examples/events/trace.checkpoint.graded.json) |
 | `trace.diagnostics.recorded` | [trace.diagnostics.recorded.schema.json](trace.diagnostics.recorded.schema.json) | diagnostics-server | report-server (`trace.report.updates`) | [예시](../examples/events/trace.diagnostics.recorded.json) |
 | `trace.checkpoint.started` | [trace.checkpoint.started.schema.json](trace.checkpoint.started.schema.json) | rental-server | report-server (`trace.report.updates`) | [예시](../examples/events/trace.checkpoint.started.json) |
-| `trace.record.sealed` | [trace.record.sealed.schema.json](trace.record.sealed.schema.json) | report-server | auth-server 영수증 메일 (`trace.auth.receipts`), web(SSE, report-server가 전달), diagnostics-server 진단 다시 하기 잠금(`trace.diagnostics.seals`), 검색 색인(선택) | [예시](../examples/events/trace.record.sealed.json) |
+| `trace.record.sealed` | [trace.record.sealed.schema.json](trace.record.sealed.schema.json) | report-server | auth-server 영수증 메일 (`trace.auth.receipts`), web(SSE, report-server가 전달), diagnostics-server 진단 다시 하기 잠금(`trace.diagnostics.seals`), rental-server 시점 SEALED·렌탈 RETURNED (`trace.rental.checkpoints`), 검색 색인(선택, 구현 안 됨) | [예시](../examples/events/trace.record.sealed.json) |
 | `trace.checkpoint.purged` | [trace.checkpoint.purged.schema.json](trace.checkpoint.purged.schema.json) | rental-server | capture-server (`trace.capture.purged`), report-server (`trace.report.updates`), diagnostics-server (`trace.diagnostics.purged`) | [예시](../examples/events/trace.checkpoint.purged.json) |
 
 ## 공통 규칙
 
 - **봉투:** 모든 이벤트에 `schemaVersion`, `eventId`(NanoID 21자), `occurredAt`(ISO 8601 + 오프셋), `rentalId`, `checkpointId`가 있다. 정의는 [envelope.schema.json](envelope.schema.json)의 `$defs/Envelope`이고, 이벤트 스키마는 `allOf`로 포함한다. 모든 `*Id`는 `$defs/PublicId`(NanoID 21자, `^[A-Za-z0-9_-]{21}$`)이고 DB 기본 키(bigint)는 싣지 않는다.
-- **버전:** `schemaVersion`은 이벤트마다 정하는 `<주>.<부>` 문자열이다. 지금 `trace.checkpoint.graded`는 `1.2`, `trace.diagnostics.recorded`·`trace.checkpoint.started`는 `1.1`, 나머지는 `1.0`이다. 필드를 더하면 그 이벤트의 부 버전을 올린다. 필드 삭제·이름 변경 같은 깨지는 변경은 하지 않고, 꼭 필요하면 주 버전과 새 라우팅 키로 낸다.
+- **버전:** `schemaVersion`은 이벤트마다 정하는 `<주>.<부>` 문자열이다. 지금 `trace.checkpoint.graded`는 `1.3`, `trace.diagnostics.recorded`·`trace.checkpoint.started`는 `1.1`, 나머지는 `1.0`이다(11/20 발행 코드와 대조). 필드를 더하면 그 이벤트의 부 버전을 올린다. 필드 삭제·이름 변경 같은 깨지는 변경은 하지 않고, 꼭 필요하면 주 버전과 새 라우팅 키로 낸다.
 - **닫힌 스키마, 너그러운 소비자:** 스키마는 모르는 필드를 막는다(`unevaluatedProperties: false`). 발행하는 쪽이 오타를 내지 않게 하려는 것이다. 소비하는 쪽은 모르는 필드를 무시해(Jackson `FAIL_ON_UNKNOWN_PROPERTIES=false`, Python은 필요한 키만 읽기) 부 버전이 올라도 깨지지 않게 한다.
 - **코드 값:** 면·조명·카메라·등급·시점·흠집 클래스·플래그 종류는 `codes.yaml`을 복사하지 않고 [../schemas/codes.gen.schema.json](../schemas/codes.gen.schema.json)의 `$defs`를 `$ref`로 쓴다. 그 파일은 `python3 scripts/gen_schema_codes.py`로 만든다.
 - **읽지 못한 값:** 0이 아니라 `null`(예: `errorPx`, `lengthMm`)이고, 사진 단위 실패는 `failedPhotos`에 사유를 남긴다.
@@ -41,9 +43,31 @@ RabbitMQ topic exchange `trace.events`로 오가는 이벤트 7종의 JSON Schem
 
 - `trace.checkpoint.graded.compared`(boolean): 앞 시점과 흠집을 비교했는지. 출고(OUT)·기준선·부스 빠른 검사(QUICK)는 `false`라 빈 `newDefectIds`를 "신규 흠집 없음"으로 읽지 않는다. 1.2 발행자는 언제나 싣는다. 없는 1.1 이벤트는 OUT이면 `false`, 그 밖에는 `true`로 본다.
 
+## 1.3에서 더한 것 (11/8 사람 검수, 선택 필드라 1.2 소비자는 그대로 동작)
+
+- `trace.checkpoint.graded.review`{reviewedBy, completedAt, confirmed, dismissed}: AI 후보를 관리자가 검수한 기록. 후보가 있던 세트는 검수 완료 때 발행되고 이 값을 싣는다. 등급·`newDefectIds`·`pins`는 기각(DISMISSED)을 뺀 흠집으로 매긴 것이다. report-server는 모르는 필드를 무시하므로 바꾸지 않았다.
+
 ## 시험 데이터 지우기 (11/4 민서 요청, 새 이벤트라 기존 소비자는 그대로 동작)
 
 - 새 이벤트 `trace.checkpoint.purged`(rental-server → capture·report·diagnostics, 1.0): 관리자가 `DELETE /api/v1/rentals/{rentalId}`로 시험 렌탈(시리얼 `TEST-`)을 지우면 시점마다 하나씩 낸다. 받는 서버는 그 시점 데이터와 렌탈 단위 데이터를 지우고, 이미 없으면 그냥 ack한다.
+
+## 구현 대조 (11/20)
+
+계약의 멱등·전달 규칙을 각 서버가 어떻게 지키는지 develop 코드와 대조했다.
+
+| 규칙 | 구현 |
+| --- | --- |
+| 발행: DB 저장과 함께 나간다 | 발행하는 서버 4곳(rental·capture·diagnostics·report)은 `RabbitTemplate.setChannelTransacted(true)`라, 메시지가 DB 트랜잭션 커밋 직후 함께 커밋된다(커밋 전 실패면 둘 다 나가지 않음). DB 커밋 뒤 브로커 커밋이 실패하는 좁은 틈은 남는다(아웃박스 표 없음, 아래 "알려진 한계") |
+| `message_id` = `eventId` | 발행 서버 4곳 모두 `setMessageId(eventId)` |
+| 멱등: 처리한 이벤트 표 | report-server `processed_event(event_id UNIQUE)`에 먼저 넣고, 이미 있으면 건너뜀 |
+| 멱등: 자연 키 | auth-server 영수증 `seal_receipt.checkpoint_id UNIQUE`, diagnostics-server 봉인 기록(같은 봉인 두 번이면 false) |
+| 멱등: 상태는 앞으로만 | rental-server 시점 상태(OPEN→CAPTURED→GRADED→SEALED)는 뒤로 가지 않아, 중복·늦게 온 이벤트는 바뀌는 것이 없다 |
+| 멱등: 같은 입력이면 같은 ID | inspect-worker `stable_id(eventId, photoId, n)`로 `defectId`와 결과 `eventId`를 만든다. capture-server는 이미 검사 결과를 받은 세트면 건너뜀 |
+| 너그러운 소비자 | Java 소비자는 `FAIL_ON_UNKNOWN_PROPERTIES` 끔 또는 `readTree`로 필요한 키만, inspect-worker는 `schemaVersion`이 `1.`로 시작하면 받음 |
+| 실패 처리 | 소비 큐마다 `trace.dlx`(topic) → `<큐>.dlq`. 형식이 깨진 메시지는 `AmqpRejectAndDontRequeueException`으로 바로 DLQ |
+| 스키마 대조 테스트 | diagnostics-server는 발행 이벤트를 contracts 스키마 사본으로 검증하는 테스트가 있다(사본은 11/20 contracts와 같음). 다른 발행 서버는 필드 단위 단위 테스트만 있다 |
+
+**알려진 한계:** 트랜잭션 아웃박스가 없어서 DB 커밋 직후 브로커가 죽으면 이벤트가 빠질 수 있다. 시연 규모에서는 관리자 수동 봉인(`POST .../seal`)과 진단 다시 하기가 되살리는 길이다. 운영으로 가면 서버마다 `outbox` 표 + 발행기(또는 Debezium CDC)로 바꾸는 것이 다음 단계다.
 
 ## 검사
 

@@ -9,6 +9,10 @@
     {
       "service": "report-server",
       "queue": "trace.report.updates"
+    },
+    {
+      "service": "rental-server",
+      "queue": "trace.rental.checkpoints"
     }
   ],
   "type": "object",

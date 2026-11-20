@@ -7,15 +7,17 @@ main에 버전이 적힌 CHANGELOG가 올라가면 release.yml이 태그와 GitH
 
 ## [Unreleased]
 
-### 더함
-- capture-server 검사 방식 고정(11/13 민서 요청): `GET /api/v1/captures/rentals/{rentalId}/profile`(BOOTH·ADMIN·CUSTOMER)과 `RentalCaptureProfile` 추가. 세트 생성은 같은 렌탈의 기준(가장 먼저 완료된 다른 시점의 마지막 세트) profile과 다르면 400 `VALIDATION_FAILED`(errors[].field=profile, 기존 코드 재사용). 이미 저장된 세트는 그대로
-- diagnostics-server `POST /api/v1/diagnostics/checkpoints/{checkpointId}/redo`(11/13 민서 요청, ADMIN): 봉인 전 시점의 진단을 이전 진단으로 돌려 새 페어링 코드로 다시 진단할 수 있게 함. 이전 진단은 지우지 않음. 봉인된 시점은 409 `RECORD_ALREADY_SEALED`(기존 코드 재사용). `trace.record.sealed` 소비자에 diagnostics-server(`trace.diagnostics.seals`) 추가
+## [1.1.0] - 2026-11-20
 
-### 바뀜
-- rental-server 렌탈 생성·고치기의 `dueAt`(11/13 민서 요청): 오늘(한국 시간)보다 과거 날짜는 400 `VALIDATION_FAILED`(errors[].field=dueAt). 오늘은 허용, 이미 저장된 과거 날짜를 같은 값으로 다시 보내는 것도 허용(기존 데이터 보존). 설명만 바뀌고 필드 모양·코드 값은 그대로
-- capture `PhotoDefect.groupId` 설명: CAM1·CAM2 두 카메라에 함께 찍힌 같은 흠집도 한 묶음(11/9). 설명만 바뀌고 필드 모양은 그대로
+**목표: 11/3 고정 뒤 더한 계약을 한 버전으로 묶는다** (11/20 리뷰 준비)
+1.0.0 이후 더한 선택 필드·새 경로·새 코드 값을 1.1.0으로 릴리스한다. 깨지는 변경은 없다(`scripts/check_breaking.py`로 v1.0.0과 대조). OpenAPI 6개 `info.version`과 codes.yaml `version`을 1.1.0으로 올렸고, 이벤트 `schemaVersion`은 이벤트마다 따로 간다(graded 1.3, recorded·started 1.1, 나머지 1.0).
 
 ### 추가
+- 깨지는 변경 검사 `scripts/check_breaking.py`와 CI 단계(11/20 리뷰 준비): 마지막 릴리스 태그와 비교해 operation·스키마·속성 삭제, 새 required, enum·코드 값 삭제를 막는다. 1.0.0 → 1.1.0 사이 깨지는 변경 0건
+- OpenAPI 6개 `servers`에 운영 주소 `https://gakdo.site`(11/20). 기존 `{gateway}` 변수 주소는 그대로
+- 소셜 로그인 3개 경로(`FR-AUTH-01`, `FR-USR-01`)와 렌탈 검사 방식 조회(`FR-INS-03`)에 빠져 있던 `x-trace-requirements`(11/20, 설명만)
+- capture-server 검사 방식 고정(11/13 민서 요청): `GET /api/v1/captures/rentals/{rentalId}/profile`(BOOTH·ADMIN·CUSTOMER)과 `RentalCaptureProfile` 추가. 세트 생성은 같은 렌탈의 기준(가장 먼저 완료된 다른 시점의 마지막 세트) profile과 다르면 400 `VALIDATION_FAILED`(errors[].field=profile, 기존 코드 재사용). 이미 저장된 세트는 그대로
+- diagnostics-server `POST /api/v1/diagnostics/checkpoints/{checkpointId}/redo`(11/13 민서 요청, ADMIN): 봉인 전 시점의 진단을 이전 진단으로 돌려 새 페어링 코드로 다시 진단할 수 있게 함. 이전 진단은 지우지 않음. 봉인된 시점은 409 `RECORD_ALREADY_SEALED`(기존 코드 재사용). `trace.record.sealed` 소비자에 diagnostics-server(`trace.diagnostics.seals`) 추가
 - 보안 프로그램 상태 점검(11/12 민서 결정, 사업단·기자재 담당자 설문 반영): 진단 JSON(`diag.v1` 그대로) `checks`에 선택 필드 `securityProtection`(lock_state ON·OFF 또는 null: Windows Defender 백신·실시간 보호, macOS Gatekeeper·SIP)·`threatCount`(Defender 위협 탐지 건수만, 경로 등 상세 없음), codes.yaml `flag_kind`에 `SECURITY_PROTECTION_OFF`(이번 진단만 보고)·`THREAT_DETECTED`(앞 진단보다 건수 증가, 첫 진단은 1건 이상), diagnostics-server `RunChecks`에 같은 두 선택 필드(서버는 항상 보냄). 파일·설치 프로그램 목록은 읽지 않는다. 기존 필드·값은 그대로 (깨지지 않음). **배포 순서**: `checks`는 모르는 키를 거부하므로 diagnostics-server(새 스키마 사본)를 먼저 배포하고, 새 칸을 보내는 에이전트는 그 뒤에 쓴다
 - 소셜 가입자 비밀번호 없는 탈퇴(11/12 팀 결정): auth-server `WithdrawRequest.password`를 필수에서 선택으로. 비밀번호를 정한 적 없는 계정(`MeResponse.passwordSet` false)만 뺄 수 있고, 로그인한 지 10분 안(액세스 토큰의 새 클레임 `auth_time`, 리프레시해도 그대로)이어야 한다. 지났으면 403 `REAUTH_REQUIRED`(codes.yaml error_code 새 값), passwordSet이 true인데 빼면 401 INVALID_CREDENTIALS. `MeResponse`에 선택 필드 `socialProviders`(AuthSocialProvider 배열)·`passwordSet`(서버는 항상 보냄). 기존 요청(비밀번호 포함)은 그대로 동작 (깨지지 않음)
 - 렌탈 시점 등급(11/10 민서 요청, contracts #23 후속): rental-server `Checkpoint`에 선택 필드 `grade`(InspectionGrade 또는 null, trace.checkpoint.graded의 마지막 값). 렌탈 목록 `currentCheckpoint.grade`로 문제 있는 렌탈이 왜 걸렸는지 보인다. 새 코드 값 없음, 기존 경로·필드는 그대로 (깨지지 않음)
@@ -37,6 +39,12 @@ main에 버전이 적힌 CHANGELOG가 올라가면 release.yml이 태그와 GitH
 - rental-server 렌탈 목록 `GET /api/v1/rentals`에 BOOTH 역할 추가: 진행 중(OPEN) 렌탈만, 부스 태블릿 "검사 기다리는 기기" 목록용(11/3 MVP, 민서 승인 기기 목록 탭). 기존 ADMIN·CUSTOMER 동작은 그대로 (깨지지 않음)
 - 부스 빠른 검사 세트(11/3 MVP 재조정, 민서 결정): codes.yaml `capture.profile`(FULL·QUICK)·`capture.face_required_quick.BOOTH`(TOP·BOT), 세트 생성·세트 응답에 선택 필드 `profile`, 검사 결과 `Inspection`에 선택 필드 `photoDefects`(원본 사진 px 흠집, QUICK만), 부스 탐지 요청에 선택 필드 `analyzedPhotos`(QUICK은 필수), `CheckpointMedia`에 선택 필드 `photos`(원본 사진 보기 URL). QUICK 세트는 정합 없이 부스 탐지로 등급. 기존 값·필드는 그대로 (깨지지 않음) / 이벤트 trace.checkpoint.graded·리포트 TimelineCheckpoint에 선택 필드 `compared`(이벤트 1.2, 출고·기준선·QUICK은 false, 1.2 발행자는 언제나 실음. 없는 1.1 이벤트는 OUT이면 false, 그 밖에는 true). QUICK `/media`는 `photos`를 반드시 싣고 모든 `photoDefects`의 사진이 들어 있음. 완료 요청 `skippedFaces`는 profile별 필수 면 기준(QUICK은 TOP·BOT 밖의 면만). QUICK 필수 면은 CAM1·CAM2 둘 다
 - rental-server 렌탈 상세·생성 응답 `Rental`에 기기 시리얼 `serial`, 렌탈 목록 `RentalSummary`에 지금 시점 `currentCheckpoint`(시작된 시점 중 가장 뒤, 없으면 null). 선택 필드로 더하고 서버는 항상 보낸다. 웹 렌탈 화면이 기기·상세를 따로 부르지 않게 (11/3 C 요청, 깨지지 않음)
+
+### 바뀜
+- 이벤트 소비자 표기(`x-consumers`·`events/README.md`·`check_events.py`)를 서버 코드의 큐 바인딩과 맞춤(11/20, 문서만): rental-server `trace.rental.checkpoints`(uploaded·graded·sealed), report-server `trace.report.updates`(uploaded·inspect.completed 진행률)가 빠져 있었다. 스키마 모양·라우팅 키는 그대로
+- `events/README.md`: 지금 버전을 `trace.checkpoint.graded` 1.2 → 1.3으로 바로잡고(발행 코드는 이미 1.3) 1.3 절과 서버별 멱등·전달 구현 대조 표를 더함. `openapi/README.md` 경로 수를 11/20 기준으로 (문서만, 11/20)
+- rental-server 렌탈 생성·고치기의 `dueAt`(11/13 민서 요청): 오늘(한국 시간)보다 과거 날짜는 400 `VALIDATION_FAILED`(errors[].field=dueAt). 오늘은 허용, 이미 저장된 과거 날짜를 같은 값으로 다시 보내는 것도 허용(기존 데이터 보존). 설명만 바뀌고 필드 모양·코드 값은 그대로
+- capture `PhotoDefect.groupId` 설명: CAM1·CAM2 두 카메라에 함께 찍힌 같은 흠집도 한 묶음(11/9). 설명만 바뀌고 필드 모양은 그대로
 
 ## [1.0.0] - 2026-11-03
 
