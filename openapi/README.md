@@ -1,15 +1,15 @@
 # OpenAPI
 
-서버별 OpenAPI 3.1 계약(11/3 고정). 원본 표는 GAKDO/docs `design/rest-api-v0.md`, 명세는 `specs/001-openapi-contracts/`.
+서버별 OpenAPI 3.1 계약(11/3 고정, 그 뒤로는 더하는 변경만). 원본 표는 GAKDO/docs `design/rest-api-v0.md`, 명세는 `specs/001-openapi-contracts/`.
 
-| 파일 | 서버 | 경로 |
+| 파일 | 서버 | 경로·작업 수 (11/20) |
 | --- | --- | --- |
-| `auth-server.yaml` | auth-server | 17 (ping, JWKS 포함) |
-| `rental-server.yaml` | rental-server | 13 |
-| `capture-server.yaml` | capture-server | 7 |
-| `diagnostics-server.yaml` | diagnostics-server | 3 |
-| `report-server.yaml` | report-server | 6 |
-| `chat-server.yaml` | chat-server | 2 (11/10 추가, 사이트 도우미 챗봇) |
+| `auth-server.yaml` | auth-server | 19경로 20작업 (ping, 내부 JWKS 포함) |
+| `rental-server.yaml` | rental-server | 13경로 21작업 |
+| `capture-server.yaml` | capture-server | 18경로 18작업 |
+| `diagnostics-server.yaml` | diagnostics-server | 5경로 5작업 |
+| `report-server.yaml` | report-server | 8경로 8작업 |
+| `chat-server.yaml` | chat-server | 2경로 2작업 (11/10 추가, 사이트 도우미 챗봇) |
 | `components/common.yaml` | 공통 | Problem(+code), PublicId·DateTime·Sha256, 커서 목록 파라미터, 공통 오류 응답, 인증 방식 |
 | `components/codes.gen.yaml` | 생성 | codes.yaml의 enum. **손으로 고치지 않는다** |
 
