@@ -9,8 +9,10 @@ info:
     - 검증 응답에는 사진·진단 상세와 개인정보를 넣지 않는다.
     - 오류는 모두 `application/problem+json`(Problem, `code`는 codes.yaml `error_code`).
 servers:
+  - url: https://gakdo.site
+    description: 운영(학교 서버 nginx → web nginx /api/ → gateway, 11/3부터)
   - url: https://{gateway}
-    description: gateway(8314) 뒤
+    description: gateway(8314) 직접(로컬 Compose·예전 클러스터)
     variables:
       gateway:
         default: localhost:8314

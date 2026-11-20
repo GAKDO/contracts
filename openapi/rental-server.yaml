@@ -10,8 +10,10 @@ info:
     - `x-trace-error-codes`: 그 응답이 낼 수 있는 `code` 값.
     - 목록은 커서 방식(`limit`, `cursor` → `items`, `nextCursor`). `GET /devices`도 같다(원본의 page에서 바꿈).
 servers:
+  - url: https://gakdo.site
+    description: 운영(학교 서버 nginx → web nginx /api/ → gateway, 11/3부터)
   - url: https://{gateway}
-    description: gateway(8314) 뒤
+    description: gateway(8314) 직접(로컬 Compose·예전 클러스터)
     variables:
       gateway:
         default: localhost:8314

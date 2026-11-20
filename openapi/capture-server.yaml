@@ -10,8 +10,10 @@ info:
     - `x-trace-access`: roles(codes.yaml `auth.token_role`), scope(NONE·OWN_RENTAL·CHECKPOINT·BOOTH),
       captureToken(고객 촬영 JWT = CUSTOMER + scope=checkpointId 허용 여부).
 servers:
+  - url: https://gakdo.site
+    description: 운영(학교 서버 nginx → web nginx /api/ → gateway, 11/3부터)
   - url: https://{gateway}
-    description: gateway(8314) 뒤
+    description: gateway(8314) 직접(로컬 Compose·예전 클러스터)
     variables:
       gateway:
         default: localhost:8314
@@ -140,6 +142,7 @@ paths:
         없으면 `profile`이 null(어느 방식이든 고를 수 있음). 세트 생성(createCaptureSet)이 같은 규칙으로 다른 profile을 400으로 거부한다.
       security:
         - bearerJwt: []
+      x-trace-requirements: [FR-INS-03]
       x-trace-access:
         roles: [ADMIN, BOOTH, CUSTOMER]
         scope: OWN_RENTAL
